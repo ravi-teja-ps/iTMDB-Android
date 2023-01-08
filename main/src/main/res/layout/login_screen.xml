@@ -61,7 +61,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:text="Ironman!234"
+            android:text=""
             android:layout_height="wrap_content"
             android:hint="password"
             android:inputType="textPassword" />
