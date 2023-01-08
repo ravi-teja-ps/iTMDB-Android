@@ -1,0 +1,87 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    namespace 'com.imoviedb.app.data'
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        //can secure even better with a jenkins key during production signing
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField "String", "API_KEY", "\"${properties.getProperty('API_KEY_V3')}\""
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+        debug {
+            buildConfigField("String", "BASE_URL_PREFIX", "\"https://api.themoviedb.org/3/\"")
+
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+}
+
+dependencies {
+
+    //Core Android
+    implementation coreAndroidLibs.coreKTX
+
+    //testing
+    testImplementation junitTestLibs.junit
+    testImplementation junitTestLibs.mockito
+    testImplementation junitTestLibs.turbine
+    testImplementation junitTestLibs.mockitoInline
+    testImplementation androidTestLibs.coreTesting
+
+    //android testing
+    androidTestImplementation  androidTestLibs.junitAndroidXTest
+    androidTestImplementation androidTestLibs.espressoTest
+
+    //DI
+    implementation dependencyInjectionLibs.hilt
+    kapt dependencyInjectionLibs.hiltCompiler
+
+    //Networking
+    implementation networkLibs.retrofit
+    implementation networkLibs.gsonConvertor
+    implementation networkLibs.okHTTPLogInterceptor
+
+    //Concurrency
+    implementation coroutinesLibs.coroutineCore
+    implementation coroutinesLibs.coroutineAndroid
+    testImplementation coroutinesLibs.coroutineTest
+
+
+    //local storage
+    implementation localStorageLib.roomKtx
+    implementation localStorageLib.roomRuntime
+    kapt    localStorageLib.roomCompiler
+    implementation localStorageLib.roomPaging
+
+    //Paging
+    implementation pagingLib.pagingRuntime
+
+
+}

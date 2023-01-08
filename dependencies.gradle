@@ -1,0 +1,116 @@
+ext{
+    //DI Dependencies
+    HILT_VERSION = '2.44'
+    HILT_GRADLE_VERSION = '2.44'
+
+    //Android Core UI & Platform
+    APP_COMPAT_VERSION = "1.5.1"
+    CONSTRAINT_LAYOUT="2.1.4"
+    FRAGMENT_VERSION  = "1.5.5"
+    MATERIAL_VERSION = "1.7.0"
+    LIFECYCLE_RUNTIME_KTX_VERSION  = "2.5.1"
+
+    //ROOM
+    ROOM_VERSION = "2.4.3"
+    //Paging3
+    PAGING_RUNTIME ="3.1.1"
+
+    //Navigation
+    NAVIGATION_FRAGMENT_KTX_VERSION = "2.5.3"
+    NAV_VERSION = "2.5.3"
+    //Kotlin
+    CORE_KTX_VERSION = "1.9.0"
+
+    //Kotlin Coroutines & Threading
+    COROUTINES_CORE_VERSION = "1.5.2"
+    COROUTINES_ANDROID_VERSION = "1.6.4"
+
+    //Networking
+    RETROFIT_VERSION = "2.9.0"
+    GSON_VERSION= "2.9.0"
+    LOGGING_INTERCEPTER_VERSION= "3.9.0"
+
+    //Third Party Libs
+    PICASSO_VERSION = "2.5.2"
+
+    //Static Analyzer libs
+    DETEKT_VERSION = "1.22.0"
+
+    //Testing libs
+    JUINT_4_VERSION ="4.13.2"
+    JUNIT_ANDROIDX_VERSION= "1.1.4"
+    MOCKK_VERSION = "1.13.3"
+    MOCKITO_VERSION= "3.4.6"
+    CORE_TESTING_VERSION ="2.1.0"
+    TURBINE_VERSION= "0.11.0"
+    MOCKITO_INLINE_VERSION = "3.4.6"
+
+    //UI testing
+    ESPRESSO_CORE_VERSION = "3.5.0"
+
+
+    coreAndroidLibs =[
+            coreKTX             :   "androidx.core:core-ktx:"+CORE_KTX_VERSION,
+            appCompat           :   "androidx.appcompat:appcompat:"+APP_COMPAT_VERSION,
+            lifeCycleRunTime    :   "androidx.lifecycle:lifecycle-runtime-ktx:"+LIFECYCLE_RUNTIME_KTX_VERSION,
+            fragmentKtx         :   "androidx.fragment:fragment-ktx:"+FRAGMENT_VERSION
+
+    ]
+
+    uiAndroidLibs =[
+            material            :   "com.google.android.material:material:"+MATERIAL_VERSION,
+            constraintLayout    :   "androidx.constraintlayout:constraintlayout:"+CONSTRAINT_LAYOUT
+    ]
+
+    androidNavigationLibs =[
+            navigation          :   "androidx.navigation:navigation-fragment-ktx:"+NAV_VERSION,
+            navigationUIKtx     :   "androidx.navigation:navigation-ui-ktx:"+NAV_VERSION
+    ]
+
+    dependencyInjectionLibs =[
+            hilt                :   "com.google.dagger:hilt-android:"+HILT_VERSION,
+            hiltCompiler        :   "com.google.dagger:hilt-compiler:"+HILT_VERSION
+    ]
+
+    networkLibs =[
+            retrofit            :   "com.squareup.retrofit2:retrofit:"+RETROFIT_VERSION,
+            gsonConvertor       :   "com.squareup.retrofit2:converter-gson:"+GSON_VERSION,
+            okHTTPLogInterceptor:   "com.squareup.okhttp3:logging-interceptor:"+LOGGING_INTERCEPTER_VERSION
+    ]
+
+    coroutinesLibs =[
+            coroutineCore       :  "org.jetbrains.kotlinx:kotlinx-coroutines-core:"+COROUTINES_CORE_VERSION,
+            coroutineAndroid    :  "org.jetbrains.kotlinx:kotlinx-coroutines-android:"+COROUTINES_ANDROID_VERSION,
+            coroutineTest       :  "org.jetbrains.kotlinx:kotlinx-coroutines-test:"+COROUTINES_ANDROID_VERSION
+    ]
+
+    localStorageLib  =[
+            roomKtx             :   "androidx.room:room-ktx:"+ROOM_VERSION,
+            roomCompiler        :   "androidx.room:room-compiler:"+ROOM_VERSION,
+            roomRuntime         :   "androidx.room:room-runtime:"+ROOM_VERSION,
+            roomPaging          :   "androidx.room:room-paging:"+ROOM_VERSION
+    ]
+
+    pagingLib =[
+            pagingRuntime               :   "androidx.paging:paging-runtime:"+ PAGING_RUNTIME
+    ]
+
+    thirdPartyLibs =[
+            picasso             :   "com.squareup.picasso:picasso:"+PICASSO_VERSION
+    ]
+
+    junitTestLibs =[
+            junit               :   "junit:junit:"+JUINT_4_VERSION,
+            mockito             :   "org.mockito:mockito-core:"+MOCKITO_VERSION ,
+            mockitoInline       :   "org.mockito:mockito-inline:"+MOCKITO_INLINE_VERSION,
+            turbine             :   "app.cash.turbine:turbine:"+TURBINE_VERSION,
+
+    ]
+
+
+    androidTestLibs =[
+            coreTesting         :   "androidx.arch.core:core-testing:"+CORE_TESTING_VERSION,
+            junitAndroidXTest   :   "androidx.test.ext:junit:"+JUNIT_ANDROIDX_VERSION,
+            espressoTest        :   "androidx.test.espresso:espresso-core:"+ESPRESSO_CORE_VERSION
+    ]
+}
