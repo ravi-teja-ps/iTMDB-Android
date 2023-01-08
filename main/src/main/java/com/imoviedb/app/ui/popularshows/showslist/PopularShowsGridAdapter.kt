@@ -16,7 +16,6 @@ class PopularShowsGridAdapter(private val onListItemSelected: (position: Int, id
     override fun onBindViewHolder(holder: ShowsViewHolder, position: Int) {
         getItem(position)?.let {
             holder.view.root.tag = it.id
-            holder.view.gridItemTitle.text = it.originalTitle
             Picasso.with(holder.itemView.context)
                 .load(ApiServiceUtils.IMAGE_URL_PREFIX + it.posterPath)
                 .into(holder.view.imageView)
