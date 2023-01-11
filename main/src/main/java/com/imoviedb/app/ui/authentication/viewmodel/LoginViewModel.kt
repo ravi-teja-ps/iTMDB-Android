@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.data.di.DispatcherProvider
 import com.imoviedb.app.data.networking.utils.AuthenticationBody
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
-import com.imoviedb.app.domain.authentication.normal_user.usecase.CreateNewSessionUseCase
-import com.imoviedb.app.domain.authentication.normal_user.usecase.LoginUserUseCase
+import com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
+import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCase
 import com.imoviedb.app.ui.core.BaseViewModel
 import com.imoviedb.app.ui.core.BaseViewModel.State.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +30,7 @@ class LoginViewModel @Inject constructor(private val loginUserUseCase: LoginUser
 
     //still refine this using lambda onComplete onError to handle errors in a single place
     fun login (userName:String, password:String) {
-        _loginStatus.value = State.Loading(true)
+        _loginStatus.value = Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession(coroutineDispatcher.io).flowOn(Dispatchers.Default).collect{ savedUserTokenModel->

@@ -1,4 +1,4 @@
-package com.imoviedb.app.domain.authentication.normal_user.repository
+package com.imoviedb.app.domain.authentication.normaluser.repository
 
 import com.imoviedb.app.data.models.authentication.AccessTokenValidateModel
 import com.imoviedb.app.data.models.authentication.NewSessionModel

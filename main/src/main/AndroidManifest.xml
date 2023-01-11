@@ -16,6 +16,7 @@
 
         <activity
             android:name=".ui.core.RootActivity"
+            android:theme="@style/Theme.IMovieDB"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

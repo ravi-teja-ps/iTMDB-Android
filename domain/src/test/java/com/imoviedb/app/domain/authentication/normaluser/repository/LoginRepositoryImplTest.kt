@@ -1,4 +1,4 @@
-package com.imoviedb.app.domain.authentication.normal_user.repository
+package com.imoviedb.app.domain.authentication.normaluser.repository
 
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.networking.utils.AuthenticationBody
@@ -7,6 +7,7 @@ import com.imoviedb.app.data.storage.authentication.UserSessionEntity
 import com.imoviedb.app.data.storage.authentication.UserTokenDAO
 import com.imoviedb.app.data.storage.authentication.UserTokenEntity
 import com.imoviedb.app.domain.base.BaseDomainTestClass
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,6 +17,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import retrofit2.Response
 
+@ExperimentalCoroutinesApi
 class LoginRepositoryImplTest  : BaseDomainTestClass() {
 
     @Mock

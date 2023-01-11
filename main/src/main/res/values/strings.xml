@@ -6,7 +6,10 @@
     <string name="popular_shows_screen">Popular Shows</string>
     <string name="movie_details_header">Details</string>
     <string name="account_screen">My Account</string>
-
+    <string name="password_hint">password</string>
+    <string name="login_string">Login</string>
+    <string name="please_sign_in_to_continue">Please sign in to continue</string>
+    <string name="user_name">user name</string>
 
 
 </resources>

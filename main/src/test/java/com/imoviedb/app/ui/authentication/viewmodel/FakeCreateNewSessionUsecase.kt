@@ -1,7 +1,7 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
 import com.imoviedb.app.data.models.authentication.NewSessionModel
-import com.imoviedb.app.domain.authentication.normal_user.usecase.CreateNewSessionUseCase
+import com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

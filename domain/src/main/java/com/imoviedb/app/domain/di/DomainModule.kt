@@ -8,11 +8,9 @@ import com.imoviedb.app.domain.authentication.guestuser.repository.GuestUserAuth
 import com.imoviedb.app.domain.authentication.guestuser.repository.GuestUserAuthRepositoryImpl
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCaseImpl
-import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCase
-import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCaseImpl
-import com.imoviedb.app.domain.authentication.normal_user.repository.LoginRepository
-import com.imoviedb.app.domain.authentication.normal_user.repository.LoginRepositoryImpl
-import com.imoviedb.app.domain.authentication.normal_user.usecase.*
+import com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository
+import com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepositoryImpl
+import com.imoviedb.app.domain.authentication.normaluser.usecase.*
 import com.imoviedb.app.domain.popularshows.details.repository.PopularShowDetailsRepository
 import com.imoviedb.app.domain.popularshows.details.repository.PopularShowDetailsRepositoryImpl
 import com.imoviedb.app.domain.popularshows.details.usecase.GetPopularShowDetailsUseCase
@@ -56,9 +54,6 @@ abstract class DomainModule {
 
     @Binds
     abstract fun provideAuthenticationUseCase(authenticationUseCaseImpl : AuthenticationUseCaseImpl) : AuthenticationUseCase
-
-    @Binds
-    abstract fun provideDeleteTokenUseCase(deleteGuestTokenUseCaseImpl : DeleteGuestTokenUseCaseImpl) : DeleteGuestTokenUseCase
 
     //Login Module for User
     @Binds

@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.data.di.DispatcherProvider
 import com.imoviedb.app.data.networking.utils.ErrorCodes
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
-import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCase
 import com.imoviedb.app.ui.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
     private val authenticationUseCase: AuthenticationUseCase,
-    private val deleteGuestTokenUseCase: DeleteGuestTokenUseCase,
     private val coroutineDispatcher: DispatcherProvider
 ) : BaseViewModel() {
 
@@ -27,7 +25,7 @@ class SplashScreenViewModel @Inject constructor(
     fun loadAccessTokenWithoutSession() {
         viewModelScope.launch {
             _dataState.value = State.Loading(true)
-            deleteGuestTokenUseCase.deleteGuestToken(coroutineDispatcher.io)
+            authenticationUseCase.deleteGuestToken(coroutineDispatcher.io)
             authenticationUseCase.createTokenForSession(coroutineDispatcher.io).catch {
                 _dataState.value = State.OnError(ErrorCodes.INTERNAL)
             }.collect {

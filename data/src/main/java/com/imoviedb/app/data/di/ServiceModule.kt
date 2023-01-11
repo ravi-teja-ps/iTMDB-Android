@@ -14,7 +14,7 @@ import retrofit2.Retrofit
  */
 @InstallIn(SingletonComponent::class)
 @Module
-class ServiceModule {
+object ServiceModule {
 
     @Provides
     fun getAccountService(retrofit: Retrofit): AccountService {

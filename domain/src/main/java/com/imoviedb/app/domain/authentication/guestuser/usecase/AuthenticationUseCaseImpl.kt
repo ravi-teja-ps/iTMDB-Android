@@ -7,4 +7,7 @@ import javax.inject.Inject
 open class AuthenticationUseCaseImpl @Inject constructor(val repository: GuestUserAuthRepository) :AuthenticationUseCase {
 
     override suspend fun createTokenForSession(coroutineDispatcher:CoroutineDispatcher)  = repository.createGuestTokenForSession(coroutineDispatcher)
+
+    override suspend fun deleteGuestToken(coroutineDispatcher: CoroutineDispatcher) = repository.deletePreviousGuestToken(coroutineDispatcher)
+
 }

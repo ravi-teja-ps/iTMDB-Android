@@ -54,7 +54,7 @@ class RootActivity : BaseActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = title
         toolbar.setNavigationOnClickListener { _ ->
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

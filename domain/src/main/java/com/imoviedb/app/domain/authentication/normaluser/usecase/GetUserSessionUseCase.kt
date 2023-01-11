@@ -1,4 +1,4 @@
-package com.imoviedb.app.domain.authentication.normal_user.usecase
+package com.imoviedb.app.domain.authentication.normaluser.usecase
 
 import kotlinx.coroutines.flow.Flow
 

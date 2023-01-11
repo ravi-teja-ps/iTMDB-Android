@@ -2,7 +2,7 @@ package com.imoviedb.app.ui.account.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.domain.account.usecase.GetAccountUseCase
-import com.imoviedb.app.domain.authentication.normal_user.usecase.GetUserSessionUseCase
+import com.imoviedb.app.domain.authentication.normaluser.usecase.GetUserSessionUseCase
 import com.imoviedb.app.ui.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
