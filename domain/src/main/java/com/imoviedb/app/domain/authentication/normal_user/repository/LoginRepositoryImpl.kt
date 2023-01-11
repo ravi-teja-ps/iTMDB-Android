@@ -23,14 +23,14 @@ class LoginRepositoryImpl @Inject constructor(private val userTokenDAO: UserToke
     override suspend fun validateUserCredential(authenticationBody: AuthenticationBody) = flow {
        authenticationService.authenticateUserDetails(requestBody = authenticationBody.asMap()).body()?.let {
 
-           userTokenDAO.saveToken(UserTokenEntity().apply { //todo insert into db via mapper
+           userTokenDAO.saveToken(UserTokenEntity().apply {
                request_token = it.request_token!!
                expiresAt = it.expiresAt
                status_message = it.status_message
            })
            emit(it)
        }
-    }.flowOn(dispatcherProvider.io) //todo remove this and pass as argument in constructor
+    }.flowOn(dispatcherProvider.io)
 
 
     override suspend fun createNewSessionIDForUser(requestBody: HashMap<String,String>) = flow<NewSessionModel> {

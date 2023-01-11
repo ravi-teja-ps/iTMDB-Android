@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.imoviedb.app.R
 import com.imoviedb.app.data.models.popular.Show
 import com.imoviedb.app.data.networking.utils.ApiServiceUtils
 import com.imoviedb.app.databinding.FragmentPopularShowDetailsBinding
@@ -16,26 +17,30 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularShowDetailsFragment(override val hasBottomNavigation: Boolean = false) : BaseFragment() {
+class PopularShowDetailsFragment : BaseFragment() {
 
-    private lateinit var viewBinder :FragmentPopularShowDetailsBinding
+    override val hasBottomNavigation: Boolean = false
+    override val isDetailScreen: Boolean = true
+    override val showTitleBar: Boolean = true
+    override val titleId: Int =R.string.movie_details_header
+
+    private var _binder :FragmentPopularShowDetailsBinding? = null
+    private val binding get() = _binder!!
     private val popularShowDetailsViewModel : PopularShowDetailsViewModel by viewModels()
     private var showId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showId = arguments?.let {
-            it.getInt("showId")
-        }
+        showId = arguments?.getInt("showId")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        viewBinder= FragmentPopularShowDetailsBinding.inflate(inflater)
-        return viewBinder.root
+    ): View {
+        _binder= FragmentPopularShowDetailsBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,12 +68,21 @@ class PopularShowDetailsFragment(override val hasBottomNavigation: Boolean = fal
         }
     }
     private fun updateUiFromState(show: Show){
-        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.posterPath}").into(viewBinder.moviePoster)
-        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdrop_path}").into(viewBinder.movieBackdrop)
-        viewBinder.movieTitle.text = show.originalTitle
-        viewBinder.movieReleaseDate.text = show.releaseDate
-        viewBinder.movieOverview.text = show.overview
+        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.posterPath}").into(binding.moviePoster)
+        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdrop_path}").into(binding.movieBackdrop)
+        binding.let {
+            it.movieTitle.text = show.originalTitle
+            it.movieReleaseDate.text = show.releaseDate
+            it.movieOverview.text = show.overview
+            updateToolbarTitle(show.originalTitle)
+        }
+    }
 
+    /**
+     * Clear binder traces on fragment destroyed
+     */
+    override fun onDestroyBinding() {
+        _binder = null
     }
 
     companion object {

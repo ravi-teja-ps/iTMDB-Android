@@ -20,11 +20,18 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SplashFragment : BaseFragment() {
 
+    override val hasBottomNavigation: Boolean = false
+    override val isDetailScreen: Boolean = false
+    override val showTitleBar: Boolean = false
+    override val titleId: Int =R.string.app_name
+
     //View model for initial token
     private val splashViewModel : SplashScreenViewModel by viewModels()
 
     //view binding for XML
-    private lateinit var fragmentSplashBinding: FragmentSplashBinding
+    private var _binder: FragmentSplashBinding? = null
+    private val binding get() = _binder!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +42,8 @@ class SplashFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentSplashBinding = FragmentSplashBinding.inflate(inflater)
-        return fragmentSplashBinding.root
+        _binder = FragmentSplashBinding.inflate(inflater)
+        return binding.root
     }
 
     /** Load basic access token for further api calls  */
@@ -47,7 +54,7 @@ class SplashFragment : BaseFragment() {
                 splashViewModel.splashScreenState.collect{
                     when(it){
                         is BaseViewModel.State.Loading -> {
-                            fragmentSplashBinding.progressBar.visibility = if(it.isLoading) View.VISIBLE else View.GONE
+                            binding.progressBar.visibility = if(it.isLoading) View.VISIBLE else View.GONE
                         }
 
                         is BaseViewModel.State.OnComplete -> {
@@ -69,8 +76,12 @@ class SplashFragment : BaseFragment() {
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container,LoginScreenFragment.newInstance())?.commit()
     }
 
-    override val hasBottomNavigation: Boolean
-        get() = false
+    /**
+     * invoked on onDestroy of fragment from base class
+     */
+    override fun onDestroyBinding() {
+        _binder = null
+    }
 
     companion object {
         @JvmStatic

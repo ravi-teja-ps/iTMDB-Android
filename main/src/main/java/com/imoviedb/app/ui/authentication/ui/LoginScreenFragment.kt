@@ -25,17 +25,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginScreenFragment : BaseFragment() {
 
+    override val hasBottomNavigation: Boolean = false
+    override val isDetailScreen: Boolean = false
+    override val showTitleBar: Boolean = false
+    override val titleId: Int =R.string.login_screen
+
     private val loginViewModel: LoginViewModel by viewModels()
-    private lateinit var binder: LoginScreenBinding
+
+    //Binding goes here
+    private var _binder: LoginScreenBinding? = null
+    private val binding get() = _binder!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binder = LoginScreenBinding.inflate(inflater)
-        return binder.root
+        _binder = LoginScreenBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,18 +55,18 @@ class LoginScreenFragment : BaseFragment() {
 
         setErrorHandlersForInputs()
 
-        binder.signinBtn.setOnClickListener {
+        binding.signinBtn.setOnClickListener {
             validateAndProceedInputFields(
-                binder.emailEditField.editText?.text.toString(),
-                binder.passwordEditField.editText?.text.toString()
+                binding.emailEditField.editText?.text.toString(),
+                binding.passwordEditField.editText?.text.toString()
             ) { id, message ->
                 when (id) {
                     ERROR_INPUT_USERNAME -> {
-                        binder.emailEditField.error = message
+                        binding.emailEditField.error = message
                     }
 
                     ERROR_INPUT_PWD -> {
-                        binder.passwordEditField.error = message
+                        binding.passwordEditField.error = message
                     }
                 }
             }
@@ -73,7 +80,7 @@ class LoginScreenFragment : BaseFragment() {
         password: String,
         OnError: (id: Int, message: String) -> Unit
     ) {
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (TextUtils.isEmpty(email)) {
             OnError(ERROR_INPUT_USERNAME, ERROR_MESSAGE_USER_NAME)
             return
         } else if (TextUtils.isEmpty(password)) {
@@ -86,12 +93,12 @@ class LoginScreenFragment : BaseFragment() {
 
     //Function to reset error inputs post re-edit
     private fun setErrorHandlersForInputs() {
-        binder.emailEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binder.emailEditField.isErrorEnabled = false //reset
+        binding.emailEditField.editText?.doOnTextChanged { _, _, _, _ ->
+            binding.emailEditField.isErrorEnabled = false //reset
         }
 
-        binder.passwordEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binder.passwordEditField.isErrorEnabled = false
+        binding.passwordEditField.editText?.doOnTextChanged { _, _, _, _ ->
+            binding.passwordEditField.isErrorEnabled = false
         }
     }
 
@@ -102,7 +109,7 @@ class LoginScreenFragment : BaseFragment() {
                 loginViewModel.loginStatus.collect {
                     when (it) {
                         is Loading -> {
-                            binder.progressBarView.visibility =
+                            binding.progressBarView.visibility =
                                 if (it.isLoading) View.VISIBLE else View.GONE
                         }
 
@@ -124,12 +131,17 @@ class LoginScreenFragment : BaseFragment() {
     private fun navigateToMainFragment() {
         activity?.supportFragmentManager?.beginTransaction()?.replace(
             R.id.container,
-            PopularShowsFragment.newInstance()
+            PopularShowsFragment.newInstance(),"popular"
         )?.commit()
     }
 
-    override val hasBottomNavigation: Boolean
-        get() = false
+
+    /**
+     * Clear binder traces on fragment destroyed
+     */
+    override fun onDestroyBinding() {
+        _binder = null
+    }
 
 
     companion object {

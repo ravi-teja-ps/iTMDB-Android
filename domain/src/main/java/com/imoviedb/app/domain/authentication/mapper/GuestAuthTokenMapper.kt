@@ -1,5 +1,3 @@
-package com.imoviedb.app.data.models.authentication.mapper
-
 import com.imoviedb.app.data.models.authentication.GuestAuthCreateTokenModel
 import com.imoviedb.app.data.storage.authentication.GuestUserTokenEntity
 

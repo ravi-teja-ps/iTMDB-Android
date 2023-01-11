@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.imoviedb.app.R
 import com.imoviedb.app.data.models.account.AccountModel
 import com.imoviedb.app.databinding.FragmentAccountBinding
 import com.imoviedb.app.ui.account.viewmodel.AccountViewModel
@@ -18,19 +19,22 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AccountFragment(): BaseFragment() {
 
-    private lateinit var accountScreenBinding : FragmentAccountBinding
-    private val accountViewModel : AccountViewModel by viewModels()
+    override val hasBottomNavigation: Boolean = true
+    override val isDetailScreen: Boolean = false
+    override val showTitleBar: Boolean = true
+    override val titleId: Int =R.string.account_screen
 
-    override val hasBottomNavigation: Boolean
-        get() = true
+    private var _binder : FragmentAccountBinding? = null
+    private val binding get() = _binder!!
+    private val accountViewModel : AccountViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        accountScreenBinding = FragmentAccountBinding.inflate(inflater)
-        return accountScreenBinding.root
+        _binder = FragmentAccountBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,9 +53,16 @@ class AccountFragment(): BaseFragment() {
     }
 
     private fun updateUi(state: AccountModel) {
-        accountScreenBinding.textView.text = state.name
-        accountScreenBinding.textView2.text = state.username
-        Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatar?.gravatar?.hash).into(accountScreenBinding.profileImage)
+        binding.textView.text = state.name
+        binding.textView2.text = state.username
+        Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatar?.gravatar?.hash).into(binding.profileImage)
+    }
+
+    /**
+     * Clear binder traces on fragment destroyed
+     */
+    override fun onDestroyBinding() {
+        _binder = null
     }
 
     companion object {

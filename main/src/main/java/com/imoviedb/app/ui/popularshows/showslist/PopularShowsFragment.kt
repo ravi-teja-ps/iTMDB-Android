@@ -22,9 +22,18 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PopularShowsFragment : BaseFragment() {
+
     override val hasBottomNavigation: Boolean = true
+    override val isDetailScreen: Boolean = false
+    override val showTitleBar: Boolean = true
+    override val titleId: Int =R.string.popular_shows_screen
+
+    //view model init
     private val viewModel: PopularShowsViewModel by viewModels()
-    private lateinit var popularShowsFragmentBinding: PopularShowsFragmentBinding
+    //Binding
+    private var _binder: PopularShowsFragmentBinding? = null
+    private val binding get() = _binder!!
+
     private val popularShowsGridAdapter: PopularShowsGridAdapter =
         PopularShowsGridAdapter(::onListItemSelected)
 
@@ -33,11 +42,11 @@ class PopularShowsFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        popularShowsFragmentBinding = PopularShowsFragmentBinding.inflate(layoutInflater)
+    ): View {
+        _binder = PopularShowsFragmentBinding.inflate(layoutInflater)
         initGridViewWithData()
         showBottomNavigationWithSelectedTab()
-        return popularShowsFragmentBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +57,6 @@ class PopularShowsFragment : BaseFragment() {
                 observePopularShowData()
             }
         }
-
     }
 
     //Invoked under scope of a lifecycle of fragment and not recreated
@@ -71,7 +79,7 @@ class PopularShowsFragment : BaseFragment() {
 
     //Recycler initialize
     private fun initGridViewWithData() {
-        popularShowsFragmentBinding.popularRecyclerview.apply {
+        binding.popularRecyclerview.apply {
             layoutManager =
                 GridLayoutManager(activity, GRID_ITEMS_COUNT, GridLayoutManager.VERTICAL, false)
             adapter = popularShowsGridAdapter
@@ -86,9 +94,13 @@ class PopularShowsFragment : BaseFragment() {
         Log.v("app","$position")
     }
 
+    override fun onDestroyBinding() {
+        _binder = null
+    }
+
     companion object {
         const val GRID_ITEMS_COUNT = 2
-
+        //constructor
         @JvmStatic
         fun newInstance(): PopularShowsFragment {
             return PopularShowsFragment()

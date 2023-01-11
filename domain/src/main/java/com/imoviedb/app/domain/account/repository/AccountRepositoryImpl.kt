@@ -17,7 +17,7 @@ class AccountRepositoryImpl @Inject constructor(private val accountService: Acco
     override suspend fun getAccountInfo(sessionId : String ) =  flow {
         accountService.account(session_id = sessionId).body()?.let {
             //Ensure to delete previous data if any. Can be more ID specific
-            //Like usage of Primary key. See update works instead of delete TODO
+            //Like usage of Primary key. See update works instead of delete
             accountDAO.deleteAccount()
             accountDAO.insertAccountInfo(mapper.mapModelToEntity(it))
             emit(it)
