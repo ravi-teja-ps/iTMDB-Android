@@ -1,5 +1,6 @@
 package com.imoviedb.app.domain.authentication.models
 
+
 import com.imoviedb.app.domain.base.BaseDomainModel
 
 class GuestAuthCreateTokenDomainModel :BaseDomainModel() {
@@ -8,4 +9,5 @@ class GuestAuthCreateTokenDomainModel :BaseDomainModel() {
 
     var request_token: String? = null
 
+    var expiresAt: String? = null
 }
