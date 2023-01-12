@@ -52,8 +52,8 @@ class AccountFragment: BaseFragment() {
     }
 
     private fun updateUi(state: AccountDomainModel) {
-        binding.textView.text = state.name
-        binding.textView2.text = state.username
+        binding.userName.text = "Hello, ${state.name}"
+        binding.extraProp1.text = state.username
         Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatarHash).into(binding.profileImage)
     }
 
@@ -64,11 +64,4 @@ class AccountFragment: BaseFragment() {
         _binder = null
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance( ) : AccountFragment {
-            return  AccountFragment().apply {
-            }
-        }
-    }
 }

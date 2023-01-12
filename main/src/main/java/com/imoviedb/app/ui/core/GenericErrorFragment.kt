@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.imoviedb.app.data.networking.utils.ErrorCodeMapper
 import com.imoviedb.app.databinding.FragmentGenericErrorBinding
 
@@ -40,18 +41,13 @@ class GenericErrorFragment : Fragment() {
             errorFragmentBinding.errorDescription.text = second
             errorFragmentBinding.errorTitle.text = first
         }
+        errorFragmentBinding.retryErrorAction.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
 
     companion object {
-        private const val ERROR_CODE_TYPE = "ErrorCode"
-
-        @JvmStatic
-        fun newInstance(param1: Int) =
-            GenericErrorFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ERROR_CODE_TYPE, param1)
-                }
-            }
+        const val ERROR_CODE_TYPE = "ErrorCode"
     }
 }

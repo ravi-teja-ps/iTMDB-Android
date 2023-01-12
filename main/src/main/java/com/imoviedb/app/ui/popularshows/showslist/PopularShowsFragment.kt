@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.imoviedb.app.R
 import com.imoviedb.app.databinding.PopularShowsFragmentBinding
@@ -40,6 +41,7 @@ class PopularShowsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.getPopularShows()
 
     }
 
@@ -50,30 +52,18 @@ class PopularShowsFragment : BaseFragment() {
     ): View {
         _binder = PopularShowsFragmentBinding.inflate(layoutInflater)
         initGridViewWithData()
-        showBottomNavigationWithSelectedTab()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(!isApiExecuted) {
             viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.CREATED) {
-                    observePopularShowData()
-                    isApiExecuted = true
-                }
-            }
+                observePopularShowData()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean("isApiExecuted",isApiExecuted)
     }
 
     //Invoked under scope of a lifecycle of fragment and not recreated
     private suspend fun observePopularShowData() {
-        viewModel.getPopularShows()
 
         viewModel.data.collectLatest {
             when (it) {
@@ -100,9 +90,10 @@ class PopularShowsFragment : BaseFragment() {
 
     //A higher order expression passed as constructor param invoked on list ite clicked
     private fun onListItemSelected(position: Int, id: Int) {
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.container, PopularShowDetailsFragment.newInstance(id))
-            ?.addToBackStack(null)?.commit()
+        val bundle = Bundle().apply {
+            putInt("showId",id)
+        }
+       findNavController().navigate(R.id.action_popularShowsFragment_to_popularShowDetailsFragment,bundle)
     }
 
     override fun onDestroyBinding() {
@@ -111,10 +102,9 @@ class PopularShowsFragment : BaseFragment() {
 
     companion object {
         const val GRID_ITEMS_COUNT = 2
-        //constructor
-        @JvmStatic
-        fun newInstance(): PopularShowsFragment {
-            return PopularShowsFragment()
-        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+     }
 }

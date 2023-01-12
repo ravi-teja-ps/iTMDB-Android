@@ -1,9 +1,8 @@
-package com.imoviedb.app.data.account
+package com.imoviedb.app.data.repository.account
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
 import com.imoviedb.app.data.dto.account.mapper.AccountModelMapper
 import com.imoviedb.app.data.networking.apiservice.AccountService
-import com.imoviedb.app.data.repository.account.AccountRepositoryImpl
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
@@ -60,6 +59,4 @@ class AccountRepositoryTest : BaseDomainTestClass() {
         assertEquals(userSessionDAO.getSession().session_id,mockedSessionEntity.session_id)
 
     }
-
-
 }

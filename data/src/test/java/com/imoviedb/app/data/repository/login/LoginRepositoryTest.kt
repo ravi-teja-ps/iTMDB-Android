@@ -1,4 +1,4 @@
-package com.imoviedb.app.data.authentication.login
+package com.imoviedb.app.data.repository.login
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
 import com.imoviedb.app.data.dto.authentication.mapper.AccessTokenValidateMapper

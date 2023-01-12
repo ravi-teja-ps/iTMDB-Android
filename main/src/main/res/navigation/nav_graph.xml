@@ -9,5 +9,50 @@
         android:id="@+id/splashFragment"
         android:name="com.imoviedb.app.ui.startup.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" />
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginScreenFragment"
+            app:destination="@id/loginScreenFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginScreenFragment"
+        android:name="com.imoviedb.app.ui.authentication.ui.LoginScreenFragment"
+        android:label="LoginScreenFragment" >
+        <action
+            android:id="@+id/action_loginScreenFragment_to_popularShowsFragment"
+            app:destination="@id/popularShowsFragment"
+            app:popUpTo="@id/loginScreenFragment"
+            app:popUpToInclusive="true"
+         />
+    </fragment>
+    <fragment
+        android:id="@+id/popularShowsFragment"
+        android:name="com.imoviedb.app.ui.popularshows.showslist.PopularShowsFragment"
+        android:label="PopularShowsFragment" >
+        <action
+            android:id="@+id/action_popularShowsFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+        <action
+            android:id="@+id/action_popularShowsFragment_to_popularShowDetailsFragment"
+            app:destination="@id/popularShowDetailsFragment" />
+        <argument
+            android:name="showId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/popularShowDetailsFragment"
+        android:name="com.imoviedb.app.ui.popularshows.details.PopularShowDetailsFragment"
+        android:label="PopularShowDetailsFragment" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.imoviedb.app.ui.account.AccountFragment"
+        android:label="AccountFragment" />
+    <fragment
+        android:id="@+id/genericErrorFragment"
+        android:name="com.imoviedb.app.ui.core.GenericErrorFragment"
+        android:label="fragment_generic_error"
+        tools:layout="@layout/fragment_generic_error" />
 </navigation>

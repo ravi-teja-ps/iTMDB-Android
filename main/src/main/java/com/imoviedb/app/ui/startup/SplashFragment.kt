@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.imoviedb.app.R
 import com.imoviedb.app.databinding.FragmentSplashBinding
 import com.imoviedb.app.ui.authentication.ui.LoginScreenFragment
@@ -36,7 +37,7 @@ class SplashFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadAccessToken()
-     }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +74,7 @@ class SplashFragment : BaseFragment() {
     }
 
     private fun navigateToLoginScreen(){
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container,LoginScreenFragment.newInstance())?.commit()
+        findNavController().navigate(R.id.action_splashFragment_to_loginScreenFragment)
     }
 
     /**
@@ -82,10 +83,4 @@ class SplashFragment : BaseFragment() {
     override fun onDestroyBinding() {
         _binder = null
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = SplashFragment()
-    }
-
 }

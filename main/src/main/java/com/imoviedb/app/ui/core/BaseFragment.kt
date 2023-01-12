@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imoviedb.app.R
 
@@ -19,7 +21,7 @@ abstract class BaseFragment : Fragment() {
     abstract fun onDestroyBinding()
 
     /** show bottom navigation on selected tab if enabled in respective fragment */
-    fun showBottomNavigationWithSelectedTab(){
+    private fun showBottomNavigationWithSelectedTab(){
         (activity as? RootActivity)?.let {
             it.findViewById<BottomNavigationView>(R.id.bottomNavigation).visibility =
                 if(hasBottomNavigation) View.VISIBLE else View.GONE
@@ -28,7 +30,10 @@ abstract class BaseFragment : Fragment() {
 
     //Show a error fragment in current flow
     fun showErrorScreenWithInfo(code : Int ){
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container,GenericErrorFragment.newInstance(code) )?.commit()
+        val bundle = Bundle().apply {
+                putInt(GenericErrorFragment.ERROR_CODE_TYPE,code)
+        }
+        findNavController().navigate(R.id.genericErrorFragment,bundle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,6 +43,8 @@ abstract class BaseFragment : Fragment() {
         }else{
             hideToolBar()
         }
+
+        showBottomNavigationWithSelectedTab()
     }
 
     private fun showToolbar(){

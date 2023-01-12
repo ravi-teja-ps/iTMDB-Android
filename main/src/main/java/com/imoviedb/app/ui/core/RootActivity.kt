@@ -2,6 +2,7 @@ package com.imoviedb.app.ui.core
 
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
 import com.imoviedb.app.R
 import com.imoviedb.app.databinding.ActivityRootBinding
 import com.imoviedb.app.ui.account.AccountFragment
@@ -20,11 +21,6 @@ class RootActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         _binder = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, SplashFragment.newInstance()).commit()
-        }
-
         initBottomNavigationListener()
         initToolbar()
     }
@@ -36,16 +32,10 @@ class RootActivity : BaseActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.popular_tab -> {
-                    val popularShowsFragment = supportFragmentManager.findFragmentByTag("popular")
-                        ?: PopularShowsFragment.newInstance()
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, popularShowsFragment).addToBackStack("")
-                        .commit()
+                  findNavController(R.id.container).navigate(R.id.popularShowsFragment)
                 }
                 R.id.account_tab -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, AccountFragment.newInstance()).addToBackStack("")
-                        .commit()
+                    findNavController(R.id.container).navigate(R.id.accountFragment)
                 }
             }
             return@setOnItemSelectedListener true

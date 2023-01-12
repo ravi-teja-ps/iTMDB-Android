@@ -10,12 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.imoviedb.app.R
 import com.imoviedb.app.databinding.LoginScreenBinding
 import com.imoviedb.app.ui.authentication.viewmodel.LoginViewModel
 import com.imoviedb.app.ui.core.BaseFragment
 import com.imoviedb.app.ui.core.BaseViewModel.State.*
-import com.imoviedb.app.ui.popularshows.showslist.PopularShowsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -128,10 +128,7 @@ class LoginScreenFragment : BaseFragment() {
     }
 
     private fun navigateToMainFragment() {
-        activity?.supportFragmentManager?.beginTransaction()?.replace(
-            R.id.container,
-            PopularShowsFragment.newInstance(),"popular"
-        )?.commit()
+        findNavController().navigate(R.id.action_loginScreenFragment_to_popularShowsFragment)
     }
 
 
@@ -149,10 +146,5 @@ class LoginScreenFragment : BaseFragment() {
         const val ERROR_INPUT_PWD = 2
         const val ERROR_MESSAGE_USER_NAME = "Email Address is not valid"
         const val ERROR_MESSAGE_PASSWORD = "Password is empty"
-
-        @JvmStatic
-        fun newInstance(): LoginScreenFragment {
-            return LoginScreenFragment()
-        }
     }
 }

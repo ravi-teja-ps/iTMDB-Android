@@ -70,6 +70,7 @@ class PopularShowDomainEntityMapper @Inject constructor(){
             name = popularShowsEntity.name
             originalName = popularShowsEntity.originalName
             firstAirDate = popularShowsEntity.firstAirDate
+            insertOrder = popularShowsEntity.insertOrder
         }
     }
 }
