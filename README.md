@@ -5,7 +5,7 @@ Integrating the [TMDB 3 Open source Api](https://developers.themoviedb.org/3) in
 
 ## Key Integrations
 1. Clean Architecture with Multi module approach
-2. MVVM Architecture
+2. MVVM Architecture with Repository Pattern
 3. Kotlin first approach
 4. Hilt Dependency Injection
 5. Retrofit & GSON - Http Networking
@@ -13,10 +13,10 @@ Integrating the [TMDB 3 Open source Api](https://developers.themoviedb.org/3) in
 7. Flow(StateFlow for subscribing to local and networking Stream data)
 8. Mockito & Turbine with JUnit for Unit testing of various Clean Code layers.
 9. Paging3 for Lazy loading paged data of PopularShows list screen.
-10.RoomDB for Offline caching of Shows, and Account info. 
+10. RoomDB for Offline caching of Shows, and Account info. 
+11. Implemented Navigation AndroidX with safeArgs bundle passing across.
+
    
-
-
 ### Android App Architecture & Modules 
 
 1. Used Clean architecture layered approach segregating modules into 
@@ -42,7 +42,14 @@ Integrating the [TMDB 3 Open source Api](https://developers.themoviedb.org/3) in
 
 ## Screenshots
 
+ * Movies Grid View
+<img src="/screenshots-ui/Step2.jpg " width=40% height=40%>
 
+ * Details Screen
+<img src="/screenshots-ui/Step3.jpg " width=40% height=40%>
+
+ * Login Screen
+<img src="/screenshots-ui/Step1.jpg " width=40% height=40%>
 
  
  
