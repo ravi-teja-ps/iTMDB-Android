@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface  GuestUserAuthRepository {
 
 
-    open suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) : Flow<GuestAuthCreateTokenModel>
+    suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) : Flow<GuestAuthCreateTokenModel>
 
 
     suspend fun deletePreviousGuestToken(coroutineDispatcher: CoroutineDispatcher): Flow<Unit>

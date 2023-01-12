@@ -3,7 +3,7 @@ package com.imoviedb.app.domain.account.repository
 import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
-import com.imoviedb.app.domain.account.mapper.AccountModelMapper
+import com.imoviedb.app.data.models.account.mapper.AccountModelMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

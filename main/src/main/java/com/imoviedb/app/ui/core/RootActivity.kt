@@ -14,6 +14,8 @@ class RootActivity : BaseActivity() {
 
     private var _binder: ActivityRootBinding? = null
     private val binding get() = _binder!!
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binder = ActivityRootBinding.inflate(layoutInflater)
@@ -53,7 +55,7 @@ class RootActivity : BaseActivity() {
     private fun initToolbar() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = title
-        toolbar.setNavigationOnClickListener { _ ->
+        toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

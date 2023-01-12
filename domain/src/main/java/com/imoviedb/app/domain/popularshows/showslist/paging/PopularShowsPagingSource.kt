@@ -9,29 +9,32 @@ import java.io.IOException
 import javax.inject.Inject
 
 class PopularShowsPagingSource @Inject constructor(private var popularShowService : PopularShowService) :PagingSource<Int, Show>() {
-    private  val TMDB_STARTING_PAGE_INDEX = 1
-    private val NETWORK_PAGE_SIZE = 25
-
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Show> {
 
         return  try {
-            val pageIndex = params.key ?: TMDB_STARTING_PAGE_INDEX
+            val pageIndex = params.key ?: STARTING_PAGE_INDEX
             val response = popularShowService.popularShows(page = pageIndex)
-            val shows = response.body()!!.shows
-            val nextKey =
-                if (shows?.size == 0) {
-                    null
-                } else {
-                    // By default, initial load size = 3 * NETWORK PAGE SIZE
-                    // ensure we're not requesting duplicating items at the 2nd request
-                    pageIndex + (params.loadSize / NETWORK_PAGE_SIZE)
-                }
+            val showsResponse = response.body()?.shows
+            showsResponse?.let { shows->
+                val nextKey =
+                    if (shows.isEmpty()) {
+                        null
+                    } else {
+                        pageIndex + (params.loadSize / NETWORK_SIZE)
+                    }
+                LoadResult.Page(
+                    data = shows,
+                    prevKey = if (pageIndex == STARTING_PAGE_INDEX) null else pageIndex,
+                    nextKey = nextKey
+                )
+            }?:
             LoadResult.Page(
-                data = shows!!,
-                prevKey = if (pageIndex == TMDB_STARTING_PAGE_INDEX) null else pageIndex,
-                nextKey = nextKey
-            )
+                data = emptyList(),
+                prevKey = STARTING_PAGE_INDEX,
+                nextKey = null
+            ) ///Defaults to start page with empty data in case of response null for initial
+
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
@@ -43,12 +46,14 @@ class PopularShowsPagingSource @Inject constructor(private var popularShowServic
      * The refresh key is used for subsequent calls to PagingSource.Load after the initial load.
      */
     override fun getRefreshKey(state: PagingState<Int, Show>): Int? {
-        // We need to get the previous key (or next key if previous is null) of the page
-        // that was closest to the most recently accessed index.
-        // Anchor position is the most recently accessed index.
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
+    }
+
+    companion object{
+        const  val STARTING_PAGE_INDEX = 1
+        const val NETWORK_SIZE = 25
     }
 }

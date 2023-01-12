@@ -4,7 +4,7 @@ import com.imoviedb.app.domain.authentication.guestuser.repository.GuestUserAuth
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-open class AuthenticationUseCaseImpl @Inject constructor(val repository: GuestUserAuthRepository) :AuthenticationUseCase {
+class AuthenticationUseCaseImpl @Inject constructor(val repository: GuestUserAuthRepository) :AuthenticationUseCase {
 
     override suspend fun createTokenForSession(coroutineDispatcher:CoroutineDispatcher)  = repository.createGuestTokenForSession(coroutineDispatcher)
 

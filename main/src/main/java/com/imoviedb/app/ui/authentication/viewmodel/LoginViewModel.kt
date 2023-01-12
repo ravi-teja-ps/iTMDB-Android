@@ -3,6 +3,7 @@ package com.imoviedb.app.ui.authentication.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.data.di.DispatcherProvider
 import com.imoviedb.app.data.networking.utils.AuthenticationBody
+import com.imoviedb.app.data.networking.utils.ErrorCodes
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCase
@@ -19,28 +20,35 @@ import javax.inject.Inject
  * login screen view model to execute a series of steps to authenticate user
  */
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUserUseCase: LoginUserUseCase,
-                                         private val createNewSessionUseCase: CreateNewSessionUseCase,
-                                         private val guestTokenUseCase : AuthenticationUseCase,
-                                         private val coroutineDispatcher: DispatcherProvider
+class LoginViewModel @Inject constructor(
+    private val loginUserUseCase: LoginUserUseCase,
+    private val createNewSessionUseCase: CreateNewSessionUseCase,
+    private val guestTokenUseCase: AuthenticationUseCase,
+    private val coroutineDispatcher: DispatcherProvider
 ) : BaseViewModel() {
 
     private val _loginStatus = MutableStateFlow<State>(Loading(false))
     val loginStatus = _loginStatus
 
     //still refine this using lambda onComplete onError to handle errors in a single place
-    fun login (userName:String, password:String) {
+    fun login(userName: String, password: String) {
         _loginStatus.value = Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
-            guestTokenUseCase.createTokenForSession(coroutineDispatcher.io).flowOn(Dispatchers.Default).collect{ savedUserTokenModel->
+            guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
+                .flowOn(Dispatchers.Default).collect { savedUserTokenModel ->
                 //Step 1  authenticate user name password of user for right accounts only
-                if(savedUserTokenModel.success ==true && savedUserTokenModel.request_token!=null){
-                    val authenticationBody = AuthenticationBody(userName,password, savedUserTokenModel.request_token!!)
-                    //Step 2 validate the received access_token for a new session_id and save it across
-                    validateUserCredential(authenticationBody)
-                }else{
-                    _loginStatus.value = OnError(savedUserTokenModel.status_code!!.toInt())
+                if (savedUserTokenModel.success == true) {
+                    savedUserTokenModel.request_token?.let {
+                        //Step 2 validate the received access_token for a new session_id and save it across
+                        val authenticationBody = AuthenticationBody(userName, password, it)
+                        validateUserCredential(authenticationBody)
+                    }
+                } else {
+                    _loginStatus.value =
+                        savedUserTokenModel.status_code?.let { OnError(it.toInt()) } ?: OnError(
+                            ErrorCodes.INTERNAL
+                        )
                 }
             }
         }
@@ -51,14 +59,17 @@ class LoginViewModel @Inject constructor(private val loginUserUseCase: LoginUser
      */
     private suspend fun validateUserCredential(authenticationBody: AuthenticationBody) {
         loginUserUseCase.validateUserCredential(authenticationBody).collect { accessTokenModel ->
-            if ( accessTokenModel.success == true && accessTokenModel.request_token != null) {
-                //Step3 use the sessionId and get a account ID and account data for future
-                val accessTokenAsMapBody = HashMap<String, String>().apply {
-                    put("request_token", accessTokenModel.request_token!!)
+            if (accessTokenModel.success == true) {
+                accessTokenModel.request_token?.let {
+                    //Step3 use the sessionId and get a account ID and account data for future
+                    val accessTokenAsMapBody = HashMap<String, String>().apply {
+                        put("request_token", it)
+                    }
+                    createNewSessionPostAuthentication(accessTokenAsMapBody)
                 }
-                createNewSessionPostAuthentication(accessTokenAsMapBody)
             } else {
-                _loginStatus.value = OnError(accessTokenModel.status_code!!.toInt())
+                _loginStatus.value = accessTokenModel.status_code?.let { OnError(it.toInt()) }
+                    ?: OnError(ErrorCodes.INTERNAL)
             }
         }
     }
@@ -73,9 +84,10 @@ class LoginViewModel @Inject constructor(private val loginUserUseCase: LoginUser
                 _loginStatus.value = OnComplete(newSessionModel)
 
             } else {
-                _loginStatus.value = OnError(newSessionModel.status_code!!.toInt())
+                _loginStatus.value = newSessionModel.status_code?.let {
+                    OnError(it.toInt())
+                } ?: OnError(ErrorCodes.INTERNAL)
             }
         }
     }
-
 }

@@ -12,6 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/Widget.MaterialComponents.Toolbar"
         android:background="?attr/colorPrimary"
+        app:titleTextColor="@android:color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_width="match_parent"

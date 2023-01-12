@@ -1,4 +1,4 @@
-package com.imoviedb.app.domain.account.mapper
+package com.imoviedb.app.data.models.account.mapper
 
 import com.imoviedb.app.data.models.account.AccountModel
 import com.imoviedb.app.data.models.account.Avatar

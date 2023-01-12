@@ -11,6 +11,10 @@ class FakeAuthenticationUseCase : AuthenticationUseCase {
        return flow
     }
 
+    override suspend fun deleteGuestToken(coroutineDispatcher: CoroutineDispatcher): Flow<Unit> {
+         return MutableStateFlow(Unit)
+    }
+
+
     private val flow = MutableStateFlow(GuestAuthCreateTokenModel())
-    suspend fun emit(value: GuestAuthCreateTokenModel) = flow.emit(value)
 }

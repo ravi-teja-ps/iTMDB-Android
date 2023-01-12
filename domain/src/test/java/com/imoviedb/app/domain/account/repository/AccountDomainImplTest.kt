@@ -4,8 +4,9 @@ import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
-import com.imoviedb.app.domain.account.mapper.AccountModelMapper
+import com.imoviedb.app.data.models.account.mapper.AccountModelMapper
 import com.imoviedb.app.domain.base.BaseDomainTestClass
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,6 +14,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import retrofit2.Response
 
+@ExperimentalCoroutinesApi
 class AccountDomainImplTest : BaseDomainTestClass() {
 
     @Mock
