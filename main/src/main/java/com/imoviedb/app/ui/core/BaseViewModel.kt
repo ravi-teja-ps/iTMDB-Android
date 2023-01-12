@@ -2,8 +2,8 @@ package com.imoviedb.app.ui.core
 
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
-import com.imoviedb.app.data.models.BaseResponseModel
-import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
+import com.imoviedb.app.domain.base.BaseDomainModel
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 
 open class BaseViewModel : ViewModel() {
 
@@ -14,10 +14,10 @@ open class BaseViewModel : ViewModel() {
 
         data class Loading(var isLoading: Boolean) : State()
 
-        data class OnComplete(var completionResult: BaseResponseModel) : State()
+        data class OnComplete(var completionResult: BaseDomainModel) : State()
 
         //Only for Paging3 screens
-        data class OnCompletePagedData(val pagedData: PagingData<ShowEntityModel>) : State()
+        data class OnCompletePagedData(val pagedData: PagingData<ShowDomainModel>) : State()
 
         //Refer to ErrorCode.kt class for error codes handled
         data class OnError(var errorCode: Int) : State()

@@ -3,7 +3,7 @@ package com.imoviedb.app.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.imoviedb.app.data.concurrencyutils.TestCoroutineRule
 import com.imoviedb.app.data.concurrencyutils.TestDispatcherProvider
-import com.imoviedb.app.data.di.DispatcherProvider
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import org.junit.Before
 
 import org.junit.Rule

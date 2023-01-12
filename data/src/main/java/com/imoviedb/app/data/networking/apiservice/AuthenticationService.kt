@@ -1,8 +1,8 @@
 package com.imoviedb.app.data.networking.apiservice
 
-import com.imoviedb.app.data.models.authentication.AccessTokenValidateModel
-import com.imoviedb.app.data.models.authentication.GuestAuthCreateTokenModel
-import com.imoviedb.app.data.models.authentication.NewSessionModel
+import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
+import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
+import com.imoviedb.app.data.dto.authentication.NewSessionDto
 
 import com.imoviedb.app.data.networking.utils.ApiServiceUtils
 import retrofit2.Response
@@ -20,17 +20,17 @@ interface AuthenticationService {
     suspend fun authenticateUserDetails(
         @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
         @Body requestBody: HashMap<String, String>
-    ): Response<AccessTokenValidateModel>
+    ): Response<AccessTokenValidateDto>
 
 
     @GET("authentication/token/new")
     suspend fun createApiToken(@Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3):
-            Response<GuestAuthCreateTokenModel>
+            Response<GuestAuthCreateTokenDto>
 
 
     @POST("authentication/session/new")
     suspend fun createSessionID(
         @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
         @Body requestBody: HashMap<String, String>
-    ): Response<NewSessionModel>
+    ): Response<NewSessionDto>
 }

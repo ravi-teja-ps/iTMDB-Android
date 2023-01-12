@@ -1,15 +1,15 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
-import com.imoviedb.app.data.models.authentication.AccessTokenValidateModel
-import com.imoviedb.app.data.networking.utils.AuthenticationBody
+import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
+import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeLoginUserUseCase : LoginUserUseCase {
-    override suspend fun validateUserCredential(authenticationBody: AuthenticationBody): Flow<AccessTokenValidateModel> =
+    override suspend fun validateUserCredential(authenticationBody: AuthenticationBody): Flow<AccessTokenValidateDto> =
         flow
 
-    private val flow = MutableStateFlow(AccessTokenValidateModel())
+    private val flow = MutableStateFlow(AccessTokenValidateDto())
     //suspend fun emit(value: AccessTokenValidateModel) = flow.emit(value)
 }

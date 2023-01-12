@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.imoviedb.app.R
-import com.imoviedb.app.data.models.popular.Show
 import com.imoviedb.app.data.networking.utils.ApiServiceUtils
 import com.imoviedb.app.databinding.FragmentPopularShowDetailsBinding
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.imoviedb.app.ui.core.BaseFragment
 import com.imoviedb.app.ui.core.BaseViewModel
 import com.imoviedb.app.ui.popularshows.details.viewmodel.PopularShowDetailsViewModel
@@ -58,7 +58,7 @@ class PopularShowDetailsFragment : BaseFragment() {
 
                         }
                         is BaseViewModel.State.OnComplete -> {
-                            updateUiFromState(it.completionResult as Show)
+                            updateUiFromState(it.completionResult as ShowDomainModel)
                         }
                         is BaseViewModel.State.OnCompletePagedData -> {}
                         is BaseViewModel.State.OnError -> {showErrorScreenWithInfo(code = it.errorCode)}
@@ -67,9 +67,9 @@ class PopularShowDetailsFragment : BaseFragment() {
             }
         }
     }
-    private fun updateUiFromState(show: Show){
+    private fun updateUiFromState(show: ShowDomainModel){
         Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.posterPath}").into(binding.moviePoster)
-        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdrop_path}").into(binding.movieBackdrop)
+        Picasso.with(context).load("${ApiServiceUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdropPath}").into(binding.movieBackdrop)
         binding.let {
             it.movieTitle.text = show.originalTitle
             it.movieReleaseDate.text = show.releaseDate

@@ -1,6 +1,5 @@
 package com.imoviedb.app.data.networking.utils
 
-import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

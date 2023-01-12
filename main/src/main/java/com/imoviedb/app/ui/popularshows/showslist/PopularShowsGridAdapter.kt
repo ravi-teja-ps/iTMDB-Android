@@ -6,12 +6,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.imoviedb.app.data.networking.utils.ApiServiceUtils
-import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
 import com.imoviedb.app.databinding.PopularMoviesGridItemBinding
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.squareup.picasso.Picasso
 
 class PopularShowsGridAdapter(private val onListItemSelected: (position: Int, id: Int) -> Unit) :
-    PagingDataAdapter<ShowEntityModel, PopularShowsGridAdapter.ShowsViewHolder>(ShowsComparatorDiffUtils) {
+    PagingDataAdapter<ShowDomainModel, PopularShowsGridAdapter.ShowsViewHolder>(ShowsComparatorDiffUtils) {
 
     override fun onBindViewHolder(holder: ShowsViewHolder, position: Int) {
         getItem(position)?.let {
@@ -41,18 +41,18 @@ class PopularShowsGridAdapter(private val onListItemSelected: (position: Int, id
     }
 
     //Dif utils comparator for updating or using existing item
-    object ShowsComparatorDiffUtils : DiffUtil.ItemCallback<ShowEntityModel>() {
+    object ShowsComparatorDiffUtils : DiffUtil.ItemCallback<ShowDomainModel>() {
         override fun areItemsTheSame(
-            oldItem: ShowEntityModel,
-            newItem: ShowEntityModel
+            oldItem: ShowDomainModel,
+            newItem: ShowDomainModel
         ): Boolean {
             // Id is unique.
             return oldItem.insertOrder == newItem.insertOrder
         }
 
         override fun areContentsTheSame(
-            oldItem: ShowEntityModel,
-            newItem: ShowEntityModel
+            oldItem: ShowDomainModel,
+            newItem: ShowDomainModel
         ): Boolean {
             return oldItem == newItem
         }

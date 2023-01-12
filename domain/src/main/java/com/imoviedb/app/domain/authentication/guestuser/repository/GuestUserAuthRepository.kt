@@ -1,13 +1,13 @@
 package com.imoviedb.app.domain.authentication.guestuser.repository
 
-import com.imoviedb.app.data.models.authentication.GuestAuthCreateTokenModel
+import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 interface  GuestUserAuthRepository {
 
 
-    suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) : Flow<GuestAuthCreateTokenModel>
+    suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) : Flow<GuestAuthCreateTokenDomainModel>
 
 
     suspend fun deletePreviousGuestToken(coroutineDispatcher: CoroutineDispatcher): Flow<Unit>

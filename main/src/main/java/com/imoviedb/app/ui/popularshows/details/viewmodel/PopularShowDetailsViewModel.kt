@@ -1,7 +1,7 @@
 package com.imoviedb.app.ui.popularshows.details.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.imoviedb.app.data.di.DispatcherProvider
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import com.imoviedb.app.data.networking.utils.ErrorCodes
 import com.imoviedb.app.domain.popularshows.details.usecase.GetPopularShowDetailsUseCase
 import com.imoviedb.app.ui.core.BaseViewModel
@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularShowDetailsViewModel @Inject constructor(private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase,
-                                                      private val dispatcherProvider: DispatcherProvider) :
+                                                      private val dispatcherProvider: DispatcherProvider
+) :
     BaseViewModel() {
     private val _data = MutableStateFlow<State>(State.Loading(true))
     val data = _data

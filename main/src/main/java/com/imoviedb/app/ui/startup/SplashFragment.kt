@@ -41,7 +41,7 @@ class SplashFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binder = FragmentSplashBinding.inflate(inflater)
         return binding.root
     }

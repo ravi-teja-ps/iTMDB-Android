@@ -20,8 +20,8 @@ class AccountViewModel @Inject constructor(private val accountUseCase: GetAccoun
 
     fun getAccountData( ){
         viewModelScope.launch {
-            getUserSessionUseCase.getUserSession().collect{
-                accountUseCase.getAccountInfo(it).catch {
+            getUserSessionUseCase.getUserSession().collect{ sessionId->
+                accountUseCase.getAccountInfo(sessionId).catch {
                     //catch for errors
                 }.collect{
                     _dataState.value = State.OnComplete(it)

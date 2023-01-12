@@ -26,7 +26,7 @@ class GenericErrorFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         errorFragmentBinding = FragmentGenericErrorBinding.inflate(inflater)
         return errorFragmentBinding.root

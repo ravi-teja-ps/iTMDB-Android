@@ -14,7 +14,7 @@ class GuestUserTokenEntity {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "request_token")
-    var request_token: String =""
+    var requestToken: String =""
 
     @ColumnInfo(name ="expires_at")
     var expiresAt: String? = null

@@ -2,7 +2,6 @@ package com.imoviedb.app.ui.authentication.ui
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ import com.imoviedb.app.ui.popularshows.showslist.PopularShowsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Login screen fragment to authenticate tmdb user
+ * Login screen fragment to authenticate  user
  */
 @AndroidEntryPoint
 class LoginScreenFragment : BaseFragment() {
@@ -40,7 +39,7 @@ class LoginScreenFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binder = LoginScreenBinding.inflate(inflater,container,false)
         return binding.root
     }

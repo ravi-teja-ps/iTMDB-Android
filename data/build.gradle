@@ -47,6 +47,7 @@ dependencies {
 
     //Core Android
     implementation coreAndroidLibs.coreKTX
+    implementation project(path: ':domain')
 
     //testing
     testImplementation junitTestLibs.junit
@@ -83,5 +84,6 @@ dependencies {
     //Paging
     implementation pagingLib.pagingRuntime
 
+    implementation project(path: ':domain')
 
 }

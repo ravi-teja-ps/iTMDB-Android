@@ -1,15 +1,15 @@
 package com.imoviedb.app.domain.authentication.normaluser.repository
 
-import com.imoviedb.app.data.models.authentication.AccessTokenValidateModel
-import com.imoviedb.app.data.models.authentication.NewSessionModel
-import com.imoviedb.app.data.networking.utils.AuthenticationBody
+import com.imoviedb.app.domain.account.model.AuthenticationBody
+import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
+import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import kotlinx.coroutines.flow.Flow
 
 
 interface LoginRepository  {
 
-    suspend fun validateUserCredential(authenticationBody: AuthenticationBody) : Flow<AccessTokenValidateModel>
+    suspend fun validateUserCredential(authenticationBody: AuthenticationBody) : Flow<AccessTokenValidateDomainModel>
 
-    suspend fun createNewSessionIDForUser(requestBody: HashMap<String,String>) : Flow<NewSessionModel>
+    suspend fun createNewSessionIDForUser(requestBody: HashMap<String,String>) : Flow<NewSessionDomainModel>
 
 }

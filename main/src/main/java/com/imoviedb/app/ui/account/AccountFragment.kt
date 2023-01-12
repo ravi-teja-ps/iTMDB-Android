@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.imoviedb.app.R
-import com.imoviedb.app.data.models.account.AccountModel
 import com.imoviedb.app.databinding.FragmentAccountBinding
+import com.imoviedb.app.domain.account.model.AccountDomainModel
 import com.imoviedb.app.ui.account.viewmodel.AccountViewModel
-import com.imoviedb.app.ui.core.BaseViewModel.State.*
-
 import com.imoviedb.app.ui.core.BaseFragment
+import com.imoviedb.app.ui.core.BaseViewModel.State.*
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AccountFragment(): BaseFragment() {
+class AccountFragment: BaseFragment() {
 
     override val hasBottomNavigation: Boolean = true
     override val isDetailScreen: Boolean = false
@@ -32,7 +31,7 @@ class AccountFragment(): BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binder = FragmentAccountBinding.inflate(inflater)
         return binding.root
     }
@@ -44,7 +43,7 @@ class AccountFragment(): BaseFragment() {
             accountViewModel.dataState.collect{
                 when(it){
                     is Loading -> { }
-                    is OnComplete ->  { updateUi(it.completionResult as AccountModel) }
+                    is OnComplete ->  { updateUi(it.completionResult as AccountDomainModel) }
                     is OnError ->  { }
                     is OnCompletePagedData -> {}
                 }
@@ -52,10 +51,10 @@ class AccountFragment(): BaseFragment() {
         }
     }
 
-    private fun updateUi(state: AccountModel) {
+    private fun updateUi(state: AccountDomainModel) {
         binding.textView.text = state.name
         binding.textView2.text = state.username
-        Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatar?.gravatar?.hash).into(binding.profileImage)
+        Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatarHash).into(binding.profileImage)
     }
 
     /**

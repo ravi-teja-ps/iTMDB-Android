@@ -1,4 +1,4 @@
-package com.imoviedb.app.data.di
+package com.imoviedb.app.data.networking.utils
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

@@ -1,9 +1,8 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.imoviedb.app.data.di.DispatcherProvider
-import com.imoviedb.app.data.networking.utils.AuthenticationBody
-import com.imoviedb.app.data.networking.utils.ErrorCodes
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
+import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCase
@@ -45,10 +44,7 @@ class LoginViewModel @Inject constructor(
                         validateUserCredential(authenticationBody)
                     }
                 } else {
-                    _loginStatus.value =
-                        savedUserTokenModel.status_code?.let { OnError(it.toInt()) } ?: OnError(
-                            ErrorCodes.INTERNAL
-                        )
+                    _loginStatus.value =OnError(savedUserTokenModel.statusCode)
                 }
             }
         }
@@ -60,7 +56,7 @@ class LoginViewModel @Inject constructor(
     private suspend fun validateUserCredential(authenticationBody: AuthenticationBody) {
         loginUserUseCase.validateUserCredential(authenticationBody).collect { accessTokenModel ->
             if (accessTokenModel.success == true) {
-                accessTokenModel.request_token?.let {
+                accessTokenModel.requestToken?.let {
                     //Step3 use the sessionId and get a account ID and account data for future
                     val accessTokenAsMapBody = HashMap<String, String>().apply {
                         put("request_token", it)
@@ -68,8 +64,7 @@ class LoginViewModel @Inject constructor(
                     createNewSessionPostAuthentication(accessTokenAsMapBody)
                 }
             } else {
-                _loginStatus.value = accessTokenModel.status_code?.let { OnError(it.toInt()) }
-                    ?: OnError(ErrorCodes.INTERNAL)
+                _loginStatus.value = OnError(accessTokenModel.statusCode)
             }
         }
     }
@@ -79,14 +74,12 @@ class LoginViewModel @Inject constructor(
      */
     private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>) {
         createNewSessionUseCase.createNewSession(accessTokenAsMapBody).collect { newSessionModel ->
-            if (newSessionModel.success == true && newSessionModel.session_id != null) {
+            if (newSessionModel.success == true && newSessionModel.sessionId != null) {
                 _loginStatus.value = Loading(false)
                 _loginStatus.value = OnComplete(newSessionModel)
 
             } else {
-                _loginStatus.value = newSessionModel.status_code?.let {
-                    OnError(it.toInt())
-                } ?: OnError(ErrorCodes.INTERNAL)
+                _loginStatus.value = OnError(newSessionModel.statusCode)
             }
         }
     }

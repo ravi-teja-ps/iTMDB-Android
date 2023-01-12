@@ -1,7 +1,7 @@
 package com.imoviedb.app.ui.startup.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.imoviedb.app.data.di.DispatcherProvider
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import com.imoviedb.app.data.networking.utils.ErrorCodes
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
 import com.imoviedb.app.ui.core.BaseViewModel

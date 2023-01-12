@@ -1,6 +1,6 @@
 package com.imoviedb.app.data.networking.apiservice
 
-import com.imoviedb.app.data.models.popular.PopularShowsModel
+import com.imoviedb.app.data.dto.popular.PopularShowsDto
 import com.imoviedb.app.data.networking.utils.ApiServiceUtils
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,6 +16,6 @@ interface PopularShowService {
     suspend fun popularShows(@Path("media_type") mediaType:String = "all",
                              @Path("time_window") timeWindow:String = "day",
                              @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
-                             @Query("page") page : Int) : Response<PopularShowsModel>
+                             @Query("page") page : Int) : Response<PopularShowsDto>
 
 }

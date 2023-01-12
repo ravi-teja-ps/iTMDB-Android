@@ -1,10 +1,10 @@
 package com.imoviedb.app.domain.popularshows.details.repository
 
-import com.imoviedb.app.data.models.popular.Show
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 interface PopularShowDetailsRepository{
 
-    suspend fun getPopularShowDetails(id : Int, dispatcher: CoroutineDispatcher,): Flow<Show>
+    suspend fun getPopularShowDetails(id : Int, dispatcher: CoroutineDispatcher): Flow<ShowDomainModel>
 }

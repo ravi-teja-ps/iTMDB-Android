@@ -4,7 +4,8 @@ import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
-import com.imoviedb.app.data.models.account.mapper.AccountModelMapper
+import com.imoviedb.app.data.dto.account.mapper.AccountModelMapper
+import com.imoviedb.app.data.repository.account.AccountRepositoryImpl
 import com.imoviedb.app.domain.base.BaseDomainTestClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

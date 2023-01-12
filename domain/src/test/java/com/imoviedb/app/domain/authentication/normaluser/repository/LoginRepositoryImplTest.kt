@@ -1,7 +1,8 @@
 package com.imoviedb.app.domain.authentication.normaluser.repository
 
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
-import com.imoviedb.app.data.networking.utils.AuthenticationBody
+import com.imoviedb.app.domain.account.model.AuthenticationBody
+import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
 import com.imoviedb.app.data.storage.authentication.UserTokenDAO
@@ -41,7 +42,7 @@ class LoginRepositoryImplTest  : BaseDomainTestClass() {
     fun validateUserCredential() {
         runTest {
 
-            val mockInputData = AuthenticationBody("a","b","iAz123kaa")
+            val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val userTokenEntityMock = mock(Response::class.java)
             loginRepository.validateUserCredential(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService).authenticateUserDetails(requestBody = mockInputData.asMap())
@@ -56,7 +57,7 @@ class LoginRepositoryImplTest  : BaseDomainTestClass() {
     fun validateUserTokenSavedToDB_func_invoked() {
         runTest {
 
-            val mockInputData = AuthenticationBody("a","b","iAz123kaa")
+            val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val mockedUserTokenEntity = mock(UserTokenEntity::class.java)
             loginRepository.validateUserCredential(mockInputData)
             userTokenDAO.saveToken(mockedUserTokenEntity)

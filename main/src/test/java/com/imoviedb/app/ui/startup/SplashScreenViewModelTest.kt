@@ -1,8 +1,6 @@
 package com.imoviedb.app.ui.startup
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.imoviedb.app.data.di.DispatcherProvider
-import com.imoviedb.app.data.models.authentication.GuestAuthCreateTokenModel
+import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.core.BaseViewModel
 import com.imoviedb.app.ui.startup.viewmodel.SplashScreenViewModel
@@ -10,14 +8,10 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -57,7 +51,7 @@ class SplashScreenViewModelTest : BaseTestClass()  {
     fun splashScreenViewModel_loadAccessTokenWithoutSession_stateFlow_result_test() {
         runTest {
             splashScreenViewModel = SplashScreenViewModel(fakeAuthenticationUseCase,dispatcherProvider)
-            val mockEmittingModel = GuestAuthCreateTokenModel()
+            val mockEmittingModel = GuestAuthCreateTokenDto()
             doReturn(flowOf(mockEmittingModel)).`when`(fakeAuthenticationUseCase).createTokenForSession(dispatcherProvider.io)
 
             splashScreenViewModel.loadAccessTokenWithoutSession()

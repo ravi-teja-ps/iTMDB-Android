@@ -71,6 +71,5 @@ dependencies {
     implementation pagingLib.pagingRuntime
 
 
-    implementation project(path: ':data')
 
 }

@@ -7,6 +7,5 @@ import javax.inject.Inject
 class GetPopularShowDetailsUseCaseImpl @Inject
 constructor(private val popularShowDetailsRepository: PopularShowDetailsRepository):GetPopularShowDetailsUseCase {
     override suspend fun getPopularShowDetails(id: Int, dispatcher: CoroutineDispatcher) =
-
         popularShowDetailsRepository.getPopularShowDetails(id, dispatcher)
 }

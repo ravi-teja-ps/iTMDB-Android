@@ -1,5 +1,7 @@
 package com.imoviedb.app.data.di
 
+import com.imoviedb.app.data.networking.utils.DefaultDispatcherProvider
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

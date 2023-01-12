@@ -1,9 +1,9 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
-import com.imoviedb.app.data.models.authentication.AccessTokenValidateModel
-import com.imoviedb.app.data.models.authentication.GuestAuthCreateTokenModel
-import com.imoviedb.app.data.models.authentication.NewSessionModel
-import com.imoviedb.app.data.networking.utils.AuthenticationBody
+import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
+import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
+import com.imoviedb.app.data.dto.authentication.NewSessionDto
+import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.core.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,8 +64,8 @@ class LoginViewModelTest : BaseTestClass() {
     fun loginViewModelLogin_validateCredentials_function(){
         runTest {
 
-            val authenticationBody = AuthenticationBody("","","")
-            doReturn(flowOf(AccessTokenValidateModel())).`when`(fakeLoginUserUseCase)
+            val authenticationBody = AuthenticationBody("", "", "")
+            doReturn(flowOf(AccessTokenValidateDto())).`when`(fakeLoginUserUseCase)
                 .validateUserCredential(authenticationBody)
 
             fakeLoginUserUseCase.validateUserCredential(authenticationBody)
@@ -78,7 +78,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
 
             val mockInput = HashMap<String,String>().apply { put("","") }
-            val mockOutPutModel = NewSessionModel()
+            val mockOutPutModel = NewSessionDto()
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
                 .createNewSession(mockInput)
 
@@ -94,7 +94,7 @@ class LoginViewModelTest : BaseTestClass() {
     fun loginViewModelLogin_createTokenForSessionReturnType(){
         runTest {
 
-            val mockedInput = mock(GuestAuthCreateTokenModel::class.java)
+            val mockedInput = mock(GuestAuthCreateTokenDto::class.java)
             doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase)
                 .createTokenForSession(dispatcherProvider.io)
 

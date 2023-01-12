@@ -2,7 +2,7 @@ package com.imoviedb.app.ui.popularshows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
-import com.imoviedb.app.data.di.DispatcherProvider
+import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
 import com.imoviedb.app.ui.core.BaseViewModel
 import com.imoviedb.app.ui.popularshows.showslist.viewmodel.PopularShowsViewModel

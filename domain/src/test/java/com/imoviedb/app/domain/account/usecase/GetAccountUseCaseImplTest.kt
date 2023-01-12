@@ -1,6 +1,6 @@
 package com.imoviedb.app.domain.account.usecase
 
-import com.imoviedb.app.data.models.account.AccountModel
+import com.imoviedb.app.data.dto.account.AccountDto
 import com.imoviedb.app.domain.base.BaseDomainTestClass
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -27,7 +27,7 @@ class GetAccountUseCaseImplTest :BaseDomainTestClass(){
     fun `test getAccountUseCase for given sessionId should fetch account info`() {
         runTest {
             val mockSEssionId = "Z828k11kakaj"
-            val mockAccountModel = mock(AccountModel::class.java)
+            val mockAccountModel = mock(AccountDto::class.java)
             doReturn(flowOf(mockAccountModel)).`when`(fakeGetAccountUseCaseRepository).getAccountInfo(sessionId = mockSEssionId)
 
             getAccountUseCase.getAccountInfo(mockSEssionId).collect{
