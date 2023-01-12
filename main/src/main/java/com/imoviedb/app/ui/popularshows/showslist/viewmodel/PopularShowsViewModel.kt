@@ -23,7 +23,6 @@ class PopularShowsViewModel @Inject constructor(
     fun getPopularShows() {
         viewModelScope.launch {
             popularShowsUseCase.fetchPopularShows().cachedIn(this).collectLatest {
-
                 _data.value = State.OnCompletePagedData(it)
             }
         }

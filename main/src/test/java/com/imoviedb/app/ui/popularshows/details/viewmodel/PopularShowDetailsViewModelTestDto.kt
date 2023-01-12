@@ -3,6 +3,7 @@ package com.imoviedb.app.ui.popularshows.details.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.imoviedb.app.data.networking.utils.DispatcherProvider
 import com.imoviedb.app.data.dto.popular.ShowDto
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.imoviedb.app.ui.core.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -66,7 +67,7 @@ class PopularShowDetailsViewModelTestDto {
     fun popularShowsDetailsViewModel_getShowDetailsFromDB() {
         runTest {
             var mockAccountId = 100
-            var mockShowObjectDto = mock(ShowDto::class.java)
+            var mockShowObjectDto = mock(ShowDomainModel::class.java)
             Mockito.doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
                 .getPopularShowDetails(mockAccountId, dispatcherProvider.io)
 

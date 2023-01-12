@@ -27,6 +27,7 @@ class PopularShowsFragment : BaseFragment() {
     override val isDetailScreen: Boolean = false
     override val showTitleBar: Boolean = true
     override val titleId: Int =R.string.popular_shows_screen
+    private var isApiExecuted = false
 
     //view model init
     private val viewModel: PopularShowsViewModel by viewModels()
@@ -37,6 +38,10 @@ class PopularShowsFragment : BaseFragment() {
     private val popularShowsGridAdapter: PopularShowsGridAdapter =
         PopularShowsGridAdapter(::onListItemSelected)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +56,19 @@ class PopularShowsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                observePopularShowData()
+        if(!isApiExecuted) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.CREATED) {
+                    observePopularShowData()
+                    isApiExecuted = true
+                }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isApiExecuted",isApiExecuted)
     }
 
     //Invoked under scope of a lifecycle of fragment and not recreated
@@ -91,7 +103,6 @@ class PopularShowsFragment : BaseFragment() {
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.container, PopularShowDetailsFragment.newInstance(id))
             ?.addToBackStack(null)?.commit()
-        Log.v("app","$position")
     }
 
     override fun onDestroyBinding() {

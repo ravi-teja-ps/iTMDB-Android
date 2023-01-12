@@ -1,5 +1,8 @@
-package com.imoviedb.app.domain.authentication.normaluser.repository
+package com.imoviedb.app.data.authentication.login
 
+import com.imoviedb.app.data.base.BaseDomainTestClass
+import com.imoviedb.app.data.dto.authentication.mapper.AccessTokenValidateMapper
+import com.imoviedb.app.data.dto.authentication.mapper.NewSessionMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
@@ -7,7 +10,7 @@ import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
 import com.imoviedb.app.data.storage.authentication.UserTokenDAO
 import com.imoviedb.app.data.storage.authentication.UserTokenEntity
-import com.imoviedb.app.domain.base.BaseDomainTestClass
+import com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -19,7 +22,7 @@ import org.mockito.Mockito.verify
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class LoginRepositoryImplTest  : BaseDomainTestClass() {
+class LoginRepositoryTest  : BaseDomainTestClass() {
 
     @Mock
     private lateinit var userTokenDAO: UserTokenDAO
@@ -31,10 +34,16 @@ class LoginRepositoryImplTest  : BaseDomainTestClass() {
     @Mock
     private lateinit var userSessionDAO: UserSessionDAO
 
+    @Mock
+    private lateinit var accessTokenValidateMapper: AccessTokenValidateMapper
+
+    @Mock
+    private lateinit var sessionMapper: NewSessionMapper
+
     private lateinit var loginRepository: LoginRepository
 
     override fun onPostSetup() {
-        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,dispatcherProvider)
+        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,dispatcherProvider,accessTokenValidateMapper,sessionMapper)
     }
 
 

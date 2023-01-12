@@ -1,4 +1,4 @@
-package com.imoviedb.app.domain.base
+package com.imoviedb.app.data.base
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.imoviedb.app.data.concurrencyutils.TestCoroutineRule

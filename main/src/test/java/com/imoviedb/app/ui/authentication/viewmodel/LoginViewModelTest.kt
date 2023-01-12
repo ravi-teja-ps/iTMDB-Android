@@ -2,8 +2,9 @@ package com.imoviedb.app.ui.authentication.viewmodel
 
 import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
 import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
-import com.imoviedb.app.data.dto.authentication.NewSessionDto
 import com.imoviedb.app.domain.account.model.AuthenticationBody
+import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
+import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.core.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -78,7 +79,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
 
             val mockInput = HashMap<String,String>().apply { put("","") }
-            val mockOutPutModel = NewSessionDto()
+            val mockOutPutModel = NewSessionDomainModel()
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
                 .createNewSession(mockInput)
 
@@ -94,7 +95,7 @@ class LoginViewModelTest : BaseTestClass() {
     fun loginViewModelLogin_createTokenForSessionReturnType(){
         runTest {
 
-            val mockedInput = mock(GuestAuthCreateTokenDto::class.java)
+            val mockedInput = mock(GuestAuthCreateTokenDomainModel::class.java)
             doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase)
                 .createTokenForSession(dispatcherProvider.io)
 

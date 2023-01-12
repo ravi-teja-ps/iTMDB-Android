@@ -1,6 +1,6 @@
 package com.imoviedb.app.ui.startup
 
-import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
+import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.core.BaseViewModel
 import com.imoviedb.app.ui.startup.viewmodel.SplashScreenViewModel
@@ -51,7 +51,7 @@ class SplashScreenViewModelTest : BaseTestClass()  {
     fun splashScreenViewModel_loadAccessTokenWithoutSession_stateFlow_result_test() {
         runTest {
             splashScreenViewModel = SplashScreenViewModel(fakeAuthenticationUseCase,dispatcherProvider)
-            val mockEmittingModel = GuestAuthCreateTokenDto()
+            val mockEmittingModel = GuestAuthCreateTokenDomainModel()
             doReturn(flowOf(mockEmittingModel)).`when`(fakeAuthenticationUseCase).createTokenForSession(dispatcherProvider.io)
 
             splashScreenViewModel.loadAccessTokenWithoutSession()
