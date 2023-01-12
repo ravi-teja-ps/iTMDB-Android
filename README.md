@@ -42,9 +42,6 @@ Integrating the [TMDB 3 Open source Api](https://developers.themoviedb.org/3) in
 
 ## Screenshots
 
-<img src="/screenshots-ui/Step1.jpg " width=40% height=40%>
-<img src="/screenshots-ui/Step2.jpg " width=40% height=40%>
-<img src="/screenshots-ui/Step3.jpg " width=40% height=40%>
 
 
  
