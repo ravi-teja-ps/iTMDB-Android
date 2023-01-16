@@ -14,3 +14,9 @@
 .cxx
 local.properties
 /.idea/
+/data/build
+/domain/build
+/presentation/build
+/core/build
+/data/schemas/com.imoviedb.app.data.storage.AppDatabase/1.json
+
