@@ -14,6 +14,7 @@ import com.imoviedb.app.presentation.ui.base.BaseFragment
 import com.imoviedb.app.presentation.ui.base.State
 
 import com.imoviedb.app.presentation.ui.popularshows.details.viewmodel.PopularShowDetailsViewModel
+import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import com.imoviedb.app.presentation.ui.utils.UrlUtils
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +34,7 @@ class PopularShowDetailsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showId = arguments?.getInt("showId")
+        showId = arguments?.getInt(KeyUtils.SHOW_ID_KEY)
     }
 
     override fun onCreateView(

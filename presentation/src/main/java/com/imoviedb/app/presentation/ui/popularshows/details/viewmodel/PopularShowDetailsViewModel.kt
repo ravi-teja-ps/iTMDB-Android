@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PopularShowDetailsViewModel @Inject constructor(private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase,
-                                                      private val dispatcherProvider: DispatcherProvider
-) :
-    BaseViewModel() {
+class PopularShowDetailsViewModel @Inject constructor(
+    private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase,
+    private val dispatcherProvider: DispatcherProvider
+) : BaseViewModel() {
     private val _data = MutableStateFlow<State>(
-        com.imoviedb.app.presentation.ui.base.State.Loading(
+        State.Loading(
             true
         )
     )
@@ -30,11 +30,11 @@ class PopularShowDetailsViewModel @Inject constructor(private val getPopularShow
      */
     fun getShowDetailsFromDB(id: Int) {
         viewModelScope.launch {
-            getPopularShowDetailsUseCase.getPopularShowDetails(id,dispatcherProvider.default).catch {
-                data.value =
-                    com.imoviedb.app.presentation.ui.base.State.OnError(ErrorCodes.INTERNAL)
-            }.collectLatest {
-                data.value = com.imoviedb.app.presentation.ui.base.State.OnComplete(it)
+            getPopularShowDetailsUseCase.getPopularShowDetails(id, dispatcherProvider.default)
+                .catch {
+                    data.value = State.OnError(ErrorCodes.INTERNAL)
+                }.collectLatest {
+                data.value = State.OnComplete(it)
             }
         }
     }

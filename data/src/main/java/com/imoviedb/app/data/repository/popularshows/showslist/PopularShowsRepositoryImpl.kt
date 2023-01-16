@@ -1,7 +1,7 @@
 package com.imoviedb.app.data.repository.popularshows.showslist
 
 import androidx.paging.*
-import com.imoviedb.app.data.dto.popular.mapper.PopularShowDomainEntityMapper
+import com.imoviedb.app.data.dto.popular.mapper.PopularShowEntityModelMapper
 import com.imoviedb.app.data.repository.popularshows.showslist.paging.PopularShowsRemoteMediator
 import com.imoviedb.app.data.storage.popularshows.PopularShowsDao
 import com.imoviedb.app.domain.popularshows.showslist.repository.PopularShowsRepository
@@ -14,7 +14,7 @@ class PopularShowsRepositoryImpl @OptIn(ExperimentalPagingApi::class)
 @Inject constructor(
     private val remoteMediator: PopularShowsRemoteMediator,
     private val popularShowsDao: PopularShowsDao,
-    private val mapper: PopularShowDomainEntityMapper
+    private val mapper: PopularShowEntityModelMapper
 ): PopularShowsRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -23,7 +23,7 @@ class PopularShowsRepositoryImpl @OptIn(ExperimentalPagingApi::class)
             popularShowsDao.pagingSource()
         })  .flow.map {
             it.map {entity->
-                mapper.convertEntityToModel(entity)
+                mapper.map(entity)
             }
         }.flowOn(coroutineDispatcher)
 

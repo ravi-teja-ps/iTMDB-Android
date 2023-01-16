@@ -36,11 +36,9 @@ class LoginScreenFragment : BaseFragment() {
     private val binding get() = _binder!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binder = LoginScreenBinding.inflate(inflater,container,false)
+        _binder = LoginScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -75,9 +73,7 @@ class LoginScreenFragment : BaseFragment() {
 
     //Check for input validity
     private fun validateAndProceedInputFields(
-        email: String,
-        password: String,
-        OnError: (id: Int, message: String) -> Unit
+        email: String, password: String, OnError: (id: Int, message: String) -> Unit
     ) {
         if (TextUtils.isEmpty(email)) {
             OnError(ERROR_INPUT_USERNAME, ERROR_MESSAGE_USER_NAME)
@@ -117,7 +113,7 @@ class LoginScreenFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode,it.errorMessage)
+                            showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                         }
 
                         is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result
@@ -140,8 +136,7 @@ class LoginScreenFragment : BaseFragment() {
     }
 
 
-    companion object {
-        //
+    private companion object {
         const val ERROR_INPUT_USERNAME = 1
         const val ERROR_INPUT_PWD = 2
         const val ERROR_MESSAGE_USER_NAME = "Email Address is not valid"

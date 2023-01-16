@@ -16,7 +16,4 @@ class GuestAuthCreateTokenDto : BaseResponseDto(){
     @SerializedName("expires_at")
     @Expose
     var expiresAt: String? = null
-
-
-
 }

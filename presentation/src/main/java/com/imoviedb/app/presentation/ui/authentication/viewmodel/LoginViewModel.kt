@@ -9,6 +9,7 @@ import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCas
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
 import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -42,58 +43,63 @@ class LoginViewModel @Inject constructor(
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
                 .flowOn(Dispatchers.Default).collect { savedUserTokenModel ->
-                //Step 1  authenticate user name password of user for right accounts only
-                if (savedUserTokenModel.success == true) {
-                    savedUserTokenModel.request_token?.let {
-                        //Step 2 validate the received access_token for a new session_id and save it across
-                        val authenticationBody = AuthenticationBody(userName, password, it)
-                        validateUserCredential(authenticationBody, coroutineDispatcher = coroutineDispatcher.io)
+                    //Step 1  authenticate user name password of user for right accounts only
+                    if (savedUserTokenModel.success == true) {
+                        savedUserTokenModel.request_token?.let {
+                            //Step 2 validate the received access_token for a new session_id and save it across
+                            val authenticationBody = AuthenticationBody(userName, password, it)
+                            validateUserCredential(
+                                authenticationBody, coroutineDispatcher = coroutineDispatcher.io
+                            )
+                        }
+                    } else {
+                        _loginStatus.value = State.OnError(savedUserTokenModel.statusCode)
+                        _loginStatus.value = State.Loading(false)
                     }
-                } else {
-                    _loginStatus.value =
-                        State.OnError(savedUserTokenModel.statusCode)
-                    _loginStatus.value = State.Loading(false)
-
                 }
-            }
         }
     }
 
     /**
      * validate a user credentials if api is asking for a encoding then use base64
      */
-    private suspend fun validateUserCredential(authenticationBody: AuthenticationBody,coroutineDispatcher: CoroutineDispatcher) {
-        loginUserUseCase.validateUserCredential(authenticationBody,coroutineDispatcher).collect { accessTokenModel ->
-            if (accessTokenModel.success == true) {
-                accessTokenModel.requestToken?.let {
-                    //Step3 use the sessionId and get a account ID and account data for future
-                    val accessTokenAsMapBody = HashMap<String, String>().apply {
-                        put("request_token", it)
+    private suspend fun validateUserCredential(
+        authenticationBody: AuthenticationBody, coroutineDispatcher: CoroutineDispatcher
+    ) {
+        loginUserUseCase.validateUserCredential(authenticationBody, coroutineDispatcher)
+            .collect { accessTokenModel ->
+                if (accessTokenModel.success == true) {
+                    accessTokenModel.requestToken?.let {
+                        //Step3 use the sessionId and get a account ID and account data for future
+                        val accessTokenAsMapBody = HashMap<String, String>().apply {
+                            put(KeyUtils.REQUEST_TOKEN_KEY, it)
+                        }
+                        createNewSessionPostAuthentication(
+                            accessTokenAsMapBody, coroutineDispatcher
+                        )
                     }
-                    createNewSessionPostAuthentication(accessTokenAsMapBody,coroutineDispatcher)
+                } else {
+                    _loginStatus.value = State.OnError(accessTokenModel.statusCode)
+                    _loginStatus.value = State.Loading(false)
                 }
-            } else {
-                _loginStatus.value =
-                    State.OnError(accessTokenModel.statusCode)
-                _loginStatus.value = State.Loading(false)
             }
-        }
     }
 
     /**
      * Create a session using the obtained access token here
      */
-    private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>,coroutineDispatcher: CoroutineDispatcher) {
-        createNewSessionUseCase.createNewSession(accessTokenAsMapBody,coroutineDispatcher).collect { newSessionModel ->
-            if (newSessionModel.success == true && newSessionModel.sessionId != null) {
-                _loginStatus.value =
-                    State.OnComplete(newSessionModel)
+    private suspend fun createNewSessionPostAuthentication(
+        accessTokenAsMapBody: HashMap<String, String>, coroutineDispatcher: CoroutineDispatcher
+    ) {
+        createNewSessionUseCase.createNewSession(accessTokenAsMapBody, coroutineDispatcher)
+            .collect { newSessionModel ->
+                if (newSessionModel.success == true && newSessionModel.sessionId != null) {
+                    _loginStatus.value = State.OnComplete(newSessionModel)
 
-            } else {
-                _loginStatus.value =
-                    State.OnError(newSessionModel.statusCode)
+                } else {
+                    _loginStatus.value = State.OnError(newSessionModel.statusCode)
+                }
             }
-        }
         _loginStatus.value = State.Loading(false)
     }
 }

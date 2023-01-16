@@ -20,11 +20,13 @@ abstract class BaseTestClass {
 
     lateinit var dispatcherProvider: TestDispatcherProvider
 
-    @Before
-    abstract fun setup()
 
+    abstract fun postSetup()
+
+    @Before
     fun initTestWithPrerequisites(){
         dispatcherProvider = TestDispatcherProvider()
         MockitoAnnotations.initMocks(this)
+        postSetup()
     }
 }

@@ -28,9 +28,9 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
     private lateinit var fakePopularShowDetailsUseCase: FakePopularShowDetailsUseCase
 
     @Before
-    override fun setup(){
-        initTestWithPrerequisites()
-        popularShowDetailsViewModel = PopularShowDetailsViewModel(fakePopularShowDetailsUseCase,dispatcherProvider)
+    override fun postSetup() {
+        popularShowDetailsViewModel =
+            PopularShowDetailsViewModel(fakePopularShowDetailsUseCase, dispatcherProvider)
     }
 
 
@@ -45,7 +45,10 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
         runTest {
             val mockAccountId = 100
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
-            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(mockAccountId,dispatcherProvider.default)
+            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(
+                mockAccountId,
+                dispatcherProvider.default
+            )
         }
     }
 
@@ -60,8 +63,7 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
             Assert.assertEquals(
-                popularShowDetailsViewModel.data.value,
-                State.OnComplete(mockShowObjectDto)
+                popularShowDetailsViewModel.data.value, State.OnComplete(mockShowObjectDto)
             )
         }
 

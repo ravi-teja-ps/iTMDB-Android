@@ -8,13 +8,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeAuthenticationUseCase : AuthenticationUseCase {
     override suspend fun createTokenForSession(coroutineDispatcher: CoroutineDispatcher): Flow<GuestAuthCreateTokenDomainModel> {
-       return flow
+        return flow
     }
 
     override suspend fun deleteGuestToken(coroutineDispatcher: CoroutineDispatcher): Flow<Unit> {
-         return MutableStateFlow(Unit)
+        return MutableStateFlow(Unit)
     }
-
 
     private val flow = MutableStateFlow(GuestAuthCreateTokenDomainModel())
 }

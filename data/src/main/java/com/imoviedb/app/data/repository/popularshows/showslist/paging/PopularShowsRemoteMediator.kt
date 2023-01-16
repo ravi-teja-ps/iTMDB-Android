@@ -6,6 +6,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.imoviedb.app.data.dto.popular.ShowDto
 import com.imoviedb.app.data.dto.popular.mapper.PopularShowDomainEntityMapper
+import com.imoviedb.app.data.dto.popular.mapper.PopularShowDtoDomainMapper
 import com.imoviedb.app.data.networking.apiservice.PopularShowService
 import com.imoviedb.app.data.storage.popularshows.PopularShowsDao
 import com.imoviedb.app.data.storage.popularshows.RemoteKey
@@ -22,7 +23,9 @@ class PopularShowsRemoteMediator @Inject constructor(
     private val popularShowsDao: PopularShowsDao,
     private val remoteKeyDao: RemoteKeyDao,
     private val dbTransaction: DBTransactionHandler,
-    private val popularShowDomainEntityMapper: PopularShowDomainEntityMapper
+    private val popularShowDomainEntityMapper: PopularShowDomainEntityMapper,
+    private val popularShowDtoDomainMapper: PopularShowDtoDomainMapper
+
 ) : RemoteMediator<Int, ShowEntityModel>() {
     override suspend fun load(
         loadType: LoadType,
@@ -58,9 +61,9 @@ class PopularShowsRemoteMediator @Inject constructor(
                             )
                             val popularShowEntityList = mutableListOf<ShowEntityModel>()
                             response.body()?.shows?.map {show: ShowDto ->
-                                val domainModel = popularShowDomainEntityMapper.convertDtoToDomainModel(show)
+                                val domainModel = popularShowDtoDomainMapper.map(show)
                                 popularShowEntityList.add(
-                                    popularShowDomainEntityMapper.convertModelToDbEntity(domainModel)
+                                    popularShowDomainEntityMapper.map(domainModel)
                                 )
                             }
                             popularShowsDao.insertAll(popularShowEntityList)

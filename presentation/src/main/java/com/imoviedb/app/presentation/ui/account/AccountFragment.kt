@@ -12,25 +12,24 @@ import com.imoviedb.app.presentation.databinding.FragmentAccountBinding
 import com.imoviedb.app.presentation.ui.account.viewmodel.AccountViewModel
 import com.imoviedb.app.presentation.ui.base.BaseFragment
 import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.utils.UrlUtils
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AccountFragment: BaseFragment() {
+class AccountFragment : BaseFragment() {
 
     override val hasBottomNavigation: Boolean = true
     override val isDetailScreen: Boolean = false
     override val showTitleBar: Boolean = true
     override val titleId: Int = R.string.account_screen
 
-    private var _binder : FragmentAccountBinding? = null
+    private var _binder: FragmentAccountBinding? = null
     private val binding get() = _binder!!
-    private val accountViewModel : AccountViewModel by viewModels()
+    private val accountViewModel: AccountViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binder = FragmentAccountBinding.inflate(inflater)
         return binding.root
@@ -40,12 +39,14 @@ class AccountFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
             accountViewModel.getAccountData()
-            accountViewModel.dataState.collect{
-                when(it){
-                    is State.Loading -> { }
-                    is State.OnComplete ->  { updateUi(it.completionResult as AccountDomainModel) }
-                    is State.OnError ->  {
-                        showErrorScreenWithInfo(it.errorCode,it.errorMessage)
+            accountViewModel.dataState.collect {
+                when (it) {
+                    is State.Loading -> {}
+                    is State.OnComplete -> {
+                        updateUi(it.completionResult as AccountDomainModel)
+                    }
+                    is State.OnError -> {
+                        showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                     }
                     is State.OnCompletePagedData -> {}
                 }
@@ -54,9 +55,10 @@ class AccountFragment: BaseFragment() {
     }
 
     private fun updateUi(state: AccountDomainModel) {
-        binding.userName.text = "Hello, ${state.name}"
+        binding.userName.text = state.name
         binding.extraProp1.text = state.username
-        Picasso.with(context).load("http://www.gravatar.com/avatar/" +state.avatarHash).into(binding.profileImage)
+        Picasso.with(context).load(UrlUtils.GRAVATAR_URL_PREFIX + state.avatarHash)
+            .into(binding.profileImage)
     }
 
     /**

@@ -13,6 +13,7 @@ import com.imoviedb.app.presentation.databinding.PopularShowsFragmentBinding
 import com.imoviedb.app.presentation.ui.base.BaseFragment
 import com.imoviedb.app.presentation.ui.base.State
 import com.imoviedb.app.presentation.ui.popularshows.showslist.viewmodel.PopularShowsViewModel
+import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ class PopularShowsFragment : BaseFragment() {
 
     //view model init
     private val viewModel: PopularShowsViewModel by viewModels()
+
     //Binding
     private var _binder: PopularShowsFragmentBinding? = null
     private val binding get() = _binder!!
@@ -41,9 +43,7 @@ class PopularShowsFragment : BaseFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binder = PopularShowsFragmentBinding.inflate(layoutInflater)
         initGridViewWithData()
@@ -52,8 +52,8 @@ class PopularShowsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            viewLifecycleOwner.lifecycleScope.launch {
-                observePopularShowData()
+        viewLifecycleOwner.lifecycleScope.launch {
+            observePopularShowData()
         }
     }
 
@@ -62,12 +62,14 @@ class PopularShowsFragment : BaseFragment() {
 
         viewModel.data.collectLatest {
             when (it) {
-                is State.Loading -> { }//Ignoring loading par as lazy loading shows items upfront
+                is State.Loading -> {}//Ignoring loading par as lazy loading shows items upfront
                 is State.OnCompletePagedData -> {
                     popularShowsGridAdapter.submitData(it.pagedData)
                 }
 
-                is State.OnError -> { showErrorScreenWithInfo(code = it.errorCode,it.errorMessage)}
+                is State.OnError -> {
+                    showErrorScreenWithInfo(code = it.errorCode, it.errorMessage)
+                }
 
                 is State.OnComplete -> {} //non functional callback for paging3 screen
             }
@@ -86,20 +88,18 @@ class PopularShowsFragment : BaseFragment() {
     //A higher order expression passed as constructor param invoked on list ite clicked
     private fun onListItemSelected(id: Int) {
         val bundle = Bundle().apply {
-            putInt("showId",id)
+            putInt(KeyUtils.SHOW_ID_KEY, id)
         }
-       findNavController().navigate(R.id.action_popularShowsFragment_to_popularShowDetailsFragment,bundle)
+        findNavController().navigate(
+            R.id.action_popularShowsFragment_to_popularShowDetailsFragment, bundle
+        )
     }
 
     override fun onDestroyBinding() {
         _binder = null
     }
 
-    companion object {
+    private companion object {
         const val GRID_ITEMS_COUNT = 2
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-     }
 }

@@ -19,8 +19,7 @@ class PopularShowsGridAdapter(private val onListItemSelected: (id: Int) -> Unit)
     override fun onBindViewHolder(holder: ShowsViewHolder, position: Int) {
         getItem(position)?.let {
             holder.view.root.tag = it.id
-            Picasso.with(holder.itemView.context)
-                .load(UrlUtils.IMAGE_URL_PREFIX + it.posterPath)
+            Picasso.with(holder.itemView.context).load(UrlUtils.IMAGE_URL_PREFIX + it.posterPath)
                 .into(holder.view.imageView)
         }
     }
@@ -32,10 +31,8 @@ class PopularShowsGridAdapter(private val onListItemSelected: (id: Int) -> Unit)
     }
 
     class ShowsViewHolder(
-        val view: PopularMoviesGridItemBinding, val onListItemSelected:
-            (id: Int) -> Unit
-    ) :
-        RecyclerView.ViewHolder(view.root) {
+        val view: PopularMoviesGridItemBinding, val onListItemSelected: (id: Int) -> Unit
+    ) : RecyclerView.ViewHolder(view.root) {
         init {
             view.root.setOnClickListener {
                 onListItemSelected(it.tag as Int)
@@ -46,8 +43,7 @@ class PopularShowsGridAdapter(private val onListItemSelected: (id: Int) -> Unit)
     //Dif utils comparator for updating or using existing item
     object ShowsComparatorDiffUtils : DiffUtil.ItemCallback<ShowDomainModel>() {
         override fun areItemsTheSame(
-            oldItem: ShowDomainModel,
-            newItem: ShowDomainModel
+            oldItem: ShowDomainModel, newItem: ShowDomainModel
         ): Boolean {
             // Id is unique.
             return oldItem.insertOrder == newItem.insertOrder
@@ -55,8 +51,7 @@ class PopularShowsGridAdapter(private val onListItemSelected: (id: Int) -> Unit)
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(
-            oldItem: ShowDomainModel,
-            newItem: ShowDomainModel
+            oldItem: ShowDomainModel, newItem: ShowDomainModel
         ): Boolean {
             return oldItem == newItem
         }
