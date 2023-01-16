@@ -33,8 +33,6 @@ android {
 }
 
 dependencies {
-    //Core Android
-    implementation coreAndroidLibs.coreKTX
 
     //testing
     testImplementation junitTestLibs.junit
@@ -51,25 +49,14 @@ dependencies {
     implementation dependencyInjectionLibs.hilt
     kapt dependencyInjectionLibs.hiltCompiler
 
-    //Networking
-    implementation networkLibs.retrofit
-    implementation networkLibs.gsonConvertor
-    implementation networkLibs.okHTTPLogInterceptor
+
 
     //Concurrency
     implementation coroutinesLibs.coroutineCore
     implementation coroutinesLibs.coroutineAndroid
     testImplementation coroutinesLibs.coroutineTest
 
-    //local storage
-    implementation localStorageLib.roomKtx
-    implementation localStorageLib.roomRuntime
-    kapt    localStorageLib.roomCompiler
-    implementation localStorageLib.roomPaging
 
     //Paging
     implementation pagingLib.pagingRuntime
-
-
-
 }

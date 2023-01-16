@@ -2,7 +2,7 @@ package com.imoviedb.app.data.dto.account
 
 import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
-import com.imoviedb.app.data.dto.BaseResponseDto
+import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class AccountDto : BaseResponseDto() {
     @SerializedName("avatar")

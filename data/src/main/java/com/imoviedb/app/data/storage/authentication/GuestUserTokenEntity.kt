@@ -20,7 +20,7 @@ class GuestUserTokenEntity {
     var expiresAt: String? = null
 
     @ColumnInfo(name ="status_code")
-    var status_code: String? = null
+    var status_code: Int = -1
 
     @ColumnInfo(name ="status_message")
     var status_message: String? = null

@@ -1,7 +1,7 @@
 package com.imoviedb.app.data.repository.account
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
-import com.imoviedb.app.data.dto.account.mapper.AccountModelMapper
+import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
 import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
@@ -26,7 +26,7 @@ class AccountRepositoryTest : BaseDomainTestClass() {
     private lateinit var accountDAO: AccountDAO
 
     @Mock
-    private lateinit var mapper: AccountModelMapper
+    private lateinit var mapper: AccountDtoModelMapper
 
     @Mock
     private lateinit var userSessionDAO: UserSessionDAO

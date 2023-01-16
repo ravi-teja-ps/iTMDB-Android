@@ -13,7 +13,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "IMovieDB"
-include ':main'
+include ':core'
 
 include ':data'
 include ':domain'
+include ':presentation'
