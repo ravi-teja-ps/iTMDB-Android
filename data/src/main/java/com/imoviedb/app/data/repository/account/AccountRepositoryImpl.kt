@@ -1,7 +1,9 @@
 package com.imoviedb.app.data.repository.account
 
+import com.imoviedb.app.data.dto.ErrorResponseDto
 import com.imoviedb.app.data.dto.account.mapper.AccountModelMapper
 import com.imoviedb.app.data.networking.apiservice.AccountService
+import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +18,21 @@ class AccountRepositoryImpl @Inject constructor(private val accountService: Acco
 ) : com.imoviedb.app.domain.account.repository.AccountRepository {
 
     override suspend fun getAccountInfo(sessionId : String ) =  flow {
-        accountService.account(session_id = sessionId).body()?.let {
-            //Ensure to delete previous data if any. Can be more ID specific
-            //Like usage of Primary key. See update works instead of delete
-            accountDAO.deleteAccount()
-            val domainModel = mapper.mapDtoToDomainModel(it)
-            accountDAO.insertAccountInfo(mapper.mapModelToEntity(domainModel))
-            emit(domainModel)
+
+        val response = accountService.account(session_id = sessionId)
+        if(response.isSuccessful && response.body()!= null){
+            response.body()?.let {
+                //Ensure to delete previous data if any. Can be more ID specific
+                //Like usage of Primary key. See update works instead of delete
+                accountDAO.deleteAccount()
+                val domainModel = mapper.mapDtoToDomainModel(it)
+                accountDAO.insertAccountInfo(mapper.mapModelToEntity(domainModel))
+                emit(domainModel)
+            }
+        }
+        else {
+            val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
+            emit(mapper.convertErrorDtoToModel(errorModel))
         }
     }.flowOn(Dispatchers.IO)
 

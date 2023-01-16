@@ -67,7 +67,7 @@ class PopularShowsFragment : BaseFragment() {
                     popularShowsGridAdapter.submitData(it.pagedData)
                 }
 
-                is State.OnError -> { showErrorScreenWithInfo(code = it.errorCode)}
+                is State.OnError -> { showErrorScreenWithInfo(code = it.errorCode,it.errorMessage)}
 
                 is State.OnComplete -> {} //non functional callback for paging3 screen
             }

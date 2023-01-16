@@ -1,5 +1,6 @@
 package com.imoviedb.app.data.dto.authentication.mapper
 
+import com.imoviedb.app.data.dto.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.NewSessionDto
 import com.imoviedb.app.data.storage.authentication.UserSessionEntity
 import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
@@ -11,7 +12,7 @@ class NewSessionMapper @Inject constructor(){
         return  NewSessionDomainModel().apply {
             sessionId = newSessionDto.sessionId
             success = newSessionDto.success
-            statusCode = newSessionDto.statusCode?.toInt() ?: -1
+            statusCode = newSessionDto.statusCode
             statusMessage = newSessionDto.statusMessage
         }
     }
@@ -20,8 +21,16 @@ class NewSessionMapper @Inject constructor(){
         return  UserSessionEntity().apply {
             session_id = domainModel.sessionId ?: ""
             success = domainModel.success
-            status_code = domainModel.statusCode.toString()
+            status_code = domainModel.statusCode
             status_message = domainModel.statusMessage
+        }
+    }
+
+    fun errorDtoToModel(errorDto: ErrorResponseDto): NewSessionDomainModel{
+        return  NewSessionDomainModel().apply {
+            success = errorDto.success
+            statusCode = errorDto.statusCode
+            statusMessage = errorDto.statusMessage
         }
     }
 }

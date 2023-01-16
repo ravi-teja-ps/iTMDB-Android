@@ -17,6 +17,5 @@ class AccountDomainModel : BaseDomainModel() {
     var includeAdult: Boolean? = null
 
     var username: String? = null
-
 }
 

@@ -29,9 +29,12 @@ abstract class BaseFragment : Fragment() {
     }
 
     //Show a error fragment in current flow
-    fun showErrorScreenWithInfo(code : Int ){
+    fun showErrorScreenWithInfo(code : Int , message: String?){
         val bundle = Bundle().apply {
-                putInt(GenericErrorFragment.ERROR_CODE_TYPE,code)
+            if(message != null){
+                putString(GenericErrorFragment.ERROR_MESG_KEY,message)
+            }
+            putInt(GenericErrorFragment.ERROR_CODE_TYPE,code)
         }
         findNavController().navigate(R.id.genericErrorFragment,bundle)
     }

@@ -32,12 +32,14 @@ class SplashScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _dataState.value = State.Loading(true)
             authenticationUseCase.deleteGuestToken(coroutineDispatcher.io)
-            authenticationUseCase.createTokenForSession(coroutineDispatcher.io).catch {
-                _dataState.value =
-                    State.OnError(ErrorCodes.INTERNAL)
-            }.collect {
-                _dataState.value = State.OnComplete(it)
+            authenticationUseCase.createTokenForSession(coroutineDispatcher.io).collect {
+                if(it.success == true){
+                    _dataState.value = State.OnComplete(it)
+                }else{
+                    _dataState.value = State.OnError(it.statusCode, it.statusMessage)
+                }
             }
+            _dataState.value = State.Loading(false)
         }
     }
 }

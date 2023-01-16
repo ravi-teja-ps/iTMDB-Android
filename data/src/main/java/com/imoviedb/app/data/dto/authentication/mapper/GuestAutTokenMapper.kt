@@ -1,5 +1,6 @@
 package com.imoviedb.app.data.dto.authentication.mapper
 
+import com.imoviedb.app.data.dto.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.GuestAuthCreateTokenDto
 import com.imoviedb.app.data.storage.authentication.GuestUserTokenEntity
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
@@ -11,7 +12,7 @@ class GuestAutTokenMapper @Inject constructor(){
         return GuestAuthCreateTokenDomainModel().apply {
             request_token = input.requestToken
             expiresAt = input.expiresAt
-            statusCode = input.statusCode?.toInt() ?: -1
+            statusCode = input.statusCode
             success = input.success
             statusMessage = input.statusMessage
         }
@@ -21,9 +22,17 @@ class GuestAutTokenMapper @Inject constructor(){
         return GuestUserTokenEntity().apply {
             requestToken = model.request_token ?: ""
             expiresAt = model.expiresAt
-            status_code = model.statusCode.toString()
+            status_code = model.statusCode
             success = model.success
             status_message = model.statusMessage
+        }
+    }
+
+    fun convertErrorDtoToModel(input: ErrorResponseDto): GuestAuthCreateTokenDomainModel {
+        return GuestAuthCreateTokenDomainModel().apply {
+            statusCode = input.statusCode
+            success =   input.success
+            statusMessage = input.statusMessage
         }
     }
 }

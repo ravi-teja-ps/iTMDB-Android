@@ -62,7 +62,7 @@ class SplashFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode)
+                            showErrorScreenWithInfo(it.errorCode,it.errorMessage)
                         }
 
                         is State.OnCompletePagedData -> {  }

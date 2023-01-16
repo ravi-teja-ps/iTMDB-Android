@@ -117,7 +117,7 @@ class LoginScreenFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode)
+                            showErrorScreenWithInfo(it.errorCode,it.errorMessage)
                         }
 
                         is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result

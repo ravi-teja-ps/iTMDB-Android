@@ -1,7 +1,9 @@
 package com.imoviedb.app.data.repository.authentication.guestuser
 
+import com.imoviedb.app.data.dto.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.mapper.GuestAutTokenMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
+import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.authentication.GuestUserTokenDAO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -17,18 +19,24 @@ class GuestUserAuthRepositoryImpl @Inject constructor(private val authentication
 
     override suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) = flow {
 
-        val authenticationCreateTokenModel = authenticationService.createApiToken().body()
-        authenticationCreateTokenModel?.let {
-            //Store data token in local storage
-            val domainModel = guestAutTokenMapper.convertDtoToModel(it)
-            guestUserTokenDAO.saveToken(guestAutTokenMapper.convertModelToEntity(domainModel))
-            //send data to UI and view model
-            emit(domainModel)
+        val response = authenticationService.createApiToken()
+        if(response.isSuccessful) {
+           response.body()?.let {
+                //Store data token in local storage
+                val domainModel = guestAutTokenMapper.convertDtoToModel(it)
+                guestUserTokenDAO.saveToken(guestAutTokenMapper.convertModelToEntity(domainModel))
+                //send data to UI and view model
+                emit(domainModel)
+            }
+        }
+        else{ //error case handling, can enhance this to  emit<errorModel extends BaseModel>
+           val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
+           emit(guestAutTokenMapper.convertErrorDtoToModel(errorModel))
         }
     }.flowOn(coroutineDispatcher)
 
 
     override suspend fun deletePreviousGuestToken(coroutineDispatcher: CoroutineDispatcher) = flow<Unit> {
-        guestUserTokenDAO.removeToken()
+       guestUserTokenDAO.removeToken()
     }.flowOn(coroutineDispatcher)
 }

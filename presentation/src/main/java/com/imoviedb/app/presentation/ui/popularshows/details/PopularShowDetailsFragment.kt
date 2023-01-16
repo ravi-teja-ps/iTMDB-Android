@@ -63,7 +63,7 @@ class PopularShowDetailsFragment : BaseFragment() {
                             updateUiFromState(it.completionResult as ShowDomainModel)
                         }
                         is State.OnCompletePagedData -> {}
-                        is State.OnError -> {showErrorScreenWithInfo(code = it.errorCode)}
+                        is State.OnError -> {showErrorScreenWithInfo(code = it.errorCode,it.errorMessage)}
                     }
                 }
             }

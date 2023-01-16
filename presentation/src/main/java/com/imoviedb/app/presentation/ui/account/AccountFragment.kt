@@ -44,7 +44,9 @@ class AccountFragment: BaseFragment() {
                 when(it){
                     is State.Loading -> { }
                     is State.OnComplete ->  { updateUi(it.completionResult as AccountDomainModel) }
-                    is State.OnError ->  { }
+                    is State.OnError ->  {
+                        showErrorScreenWithInfo(it.errorCode,it.errorMessage)
+                    }
                     is State.OnCompletePagedData -> {}
                 }
             }

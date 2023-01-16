@@ -13,6 +13,6 @@ sealed class State {
     data class OnCompletePagedData(val pagedData: PagingData<ShowDomainModel>) : State()
 
     //Refer to ErrorCode.kt class for error codes handled
-    data class OnError(var errorCode: Int) : State()
+    data class OnError(var errorCode: Int,var errorMessage:String?= null) : State()
 
 }

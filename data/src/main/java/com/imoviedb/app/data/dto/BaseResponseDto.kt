@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 abstract class BaseResponseDto {
     @SerializedName("status_code")
     @Expose
-    var statusCode: String? = null
+    var statusCode: Int = -1
 
     @SerializedName("status_message")
     @Expose

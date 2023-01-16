@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _loginStatus = MutableStateFlow<State>(
-        com.imoviedb.app.presentation.ui.base.State.Loading(
+        State.Loading(
             false
         )
     )
@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(
 
     //still refine this using lambda onComplete onError to handle errors in a single place
     fun login(userName: String, password: String) {
-        _loginStatus.value = com.imoviedb.app.presentation.ui.base.State.Loading(true)
+        _loginStatus.value = State.Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
@@ -51,7 +51,9 @@ class LoginViewModel @Inject constructor(
                     }
                 } else {
                     _loginStatus.value =
-                        com.imoviedb.app.presentation.ui.base.State.OnError(savedUserTokenModel.statusCode)
+                        State.OnError(savedUserTokenModel.statusCode)
+                    _loginStatus.value = State.Loading(false)
+
                 }
             }
         }
@@ -72,7 +74,8 @@ class LoginViewModel @Inject constructor(
                 }
             } else {
                 _loginStatus.value =
-                    com.imoviedb.app.presentation.ui.base.State.OnError(accessTokenModel.statusCode)
+                    State.OnError(accessTokenModel.statusCode)
+                _loginStatus.value = State.Loading(false)
             }
         }
     }
@@ -83,14 +86,14 @@ class LoginViewModel @Inject constructor(
     private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>,coroutineDispatcher: CoroutineDispatcher) {
         createNewSessionUseCase.createNewSession(accessTokenAsMapBody,coroutineDispatcher).collect { newSessionModel ->
             if (newSessionModel.success == true && newSessionModel.sessionId != null) {
-                _loginStatus.value = com.imoviedb.app.presentation.ui.base.State.Loading(false)
                 _loginStatus.value =
-                    com.imoviedb.app.presentation.ui.base.State.OnComplete(newSessionModel)
+                    State.OnComplete(newSessionModel)
 
             } else {
                 _loginStatus.value =
-                    com.imoviedb.app.presentation.ui.base.State.OnError(newSessionModel.statusCode)
+                    State.OnError(newSessionModel.statusCode)
             }
         }
+        _loginStatus.value = State.Loading(false)
     }
 }

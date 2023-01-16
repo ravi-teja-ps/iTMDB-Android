@@ -1,5 +1,6 @@
 package com.imoviedb.app.data.dto.authentication.mapper
 
+import com.imoviedb.app.data.dto.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
 import com.imoviedb.app.data.storage.authentication.UserTokenEntity
 import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
@@ -19,6 +20,14 @@ class AccessTokenValidateMapper @Inject constructor() {
             success = accessTokenValidateModel.success
             request_token =accessTokenValidateModel.requestToken?:""
             expiresAt = accessTokenValidateModel.expiresAt
+        }
+    }
+
+    fun mapErrorDtoToModel(errorDto: ErrorResponseDto): AccessTokenValidateDomainModel {
+        return AccessTokenValidateDomainModel().apply {
+            success = errorDto.success
+            statusMessage = errorDto.statusMessage
+            statusCode  = errorDto.statusCode
         }
     }
 }
