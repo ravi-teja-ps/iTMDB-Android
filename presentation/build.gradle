@@ -1,0 +1,94 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    namespace 'com.imoviedb.app.presentation'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 33
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    //Core Android
+    implementation coreAndroidLibs.coreKTX
+    implementation coreAndroidLibs.appCompat
+    implementation coreAndroidLibs.lifeCycleRunTime
+    implementation coreAndroidLibs.fragmentKtx
+
+    //testing
+    testImplementation junitTestLibs.junit
+    testImplementation junitTestLibs.mockito
+    testImplementation junitTestLibs.turbine
+    testImplementation junitTestLibs.mockitoInline
+    testImplementation androidTestLibs.coreTesting
+
+
+    //android testing
+    androidTestImplementation  androidTestLibs.junitAndroidXTest
+    androidTestImplementation androidTestLibs.espressoTest
+
+
+    //UI
+    implementation uiAndroidLibs.material
+    implementation uiAndroidLibs.constraintLayout
+
+
+    //Navigation
+    implementation androidNavigationLibs.navigation
+    implementation androidNavigationLibs.navigationUIKtx
+
+    //DI
+    implementation dependencyInjectionLibs.hilt
+    kapt dependencyInjectionLibs.hiltCompiler
+
+    //Networking
+    implementation networkLibs.retrofit
+    implementation networkLibs.gsonConvertor
+    implementation networkLibs.okHTTPLogInterceptor
+
+    //Concurrency
+    implementation coroutinesLibs.coroutineCore
+    implementation coroutinesLibs.coroutineAndroid
+    testImplementation coroutinesLibs.coroutineTest
+
+    //Third party libs
+    implementation thirdPartyLibs.picasso
+
+    //local storage
+    implementation localStorageLib.roomKtx
+    implementation localStorageLib.roomRuntime
+    kapt    localStorageLib.roomCompiler
+    implementation localStorageLib.roomPaging
+
+    //Paging
+    implementation pagingLib.pagingRuntime
+
+    implementation project(path: ':domain')
+
+}

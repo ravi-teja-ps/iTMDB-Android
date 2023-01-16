@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'io.gitlab.arturbosch.detekt'
+
+
+}
+
+android {
+    namespace 'com.imoviedb.app'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.imoviedb.app"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+    flavorDimensions 'default'
+    productFlavors {
+        uat {
+            dimension 'default'
+            applicationId 'com.imoviesdb.app.uat'
+        }
+        production {
+            dimension 'default'
+            applicationId 'com.imoviesdb.app.prod'
+        }
+    }
+}
+
+dependencies {
+
+    //DI
+    implementation dependencyInjectionLibs.hilt
+    kapt dependencyInjectionLibs.hiltCompiler
+
+    // Clean Architecture app dependent Data & Domain modules
+    implementation project(path: ':data')
+    implementation project(path: ':presentation')
+}

@@ -21,6 +21,14 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField "String", "API_KEY", "\"${properties.getProperty('API_KEY_V3')}\""
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
 
     buildTypes {
@@ -47,8 +55,6 @@ dependencies {
 
     //Core Android
     implementation coreAndroidLibs.coreKTX
-    implementation project(path: ':domain')
-
     //testing
     testImplementation junitTestLibs.junit
     testImplementation junitTestLibs.mockito
@@ -85,5 +91,4 @@ dependencies {
     implementation pagingLib.pagingRuntime
 
     implementation project(path: ':domain')
-
 }

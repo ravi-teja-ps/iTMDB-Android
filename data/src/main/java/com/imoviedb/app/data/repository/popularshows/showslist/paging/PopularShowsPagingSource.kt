@@ -52,7 +52,7 @@ class PopularShowsPagingSource @Inject constructor(private var popularShowServic
         }
     }
 
-    companion object{
+    private companion object{
         const  val STARTING_PAGE_INDEX = 1
         const val NETWORK_SIZE = 25
     }

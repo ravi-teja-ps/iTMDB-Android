@@ -1,6 +1,6 @@
 package com.imoviedb.app.data.concurrencyutils
 
-import com.imoviedb.app.data.networking.utils.DispatcherProvider
+import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

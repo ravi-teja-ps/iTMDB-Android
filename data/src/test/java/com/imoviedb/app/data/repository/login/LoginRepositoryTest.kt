@@ -43,7 +43,7 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
     private lateinit var loginRepository: LoginRepository
 
     override fun onPostSetup() {
-        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,dispatcherProvider,accessTokenValidateMapper,sessionMapper)
+        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,accessTokenValidateMapper,sessionMapper)
     }
 
 
@@ -53,7 +53,7 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
 
             val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val userTokenEntityMock = mock(Response::class.java)
-            loginRepository.validateUserCredential(mockInputData)
+            loginRepository.validateUserCredential(mockInputData,dispatcherProvider.io)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService).authenticateUserDetails(requestBody = mockInputData.asMap())
 
 
@@ -68,7 +68,7 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
 
             val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val mockedUserTokenEntity = mock(UserTokenEntity::class.java)
-            loginRepository.validateUserCredential(mockInputData)
+            loginRepository.validateUserCredential(mockInputData,dispatcherProvider.io)
             userTokenDAO.saveToken(mockedUserTokenEntity)
             verify(userTokenDAO).saveToken(mockedUserTokenEntity)
         }
@@ -81,7 +81,7 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
             val mockInputData = HashMap<String, String>().apply { put("a", "b") }
             val userTokenEntityMock = mock(Response::class.java)
             val userSessionEntity = mock(UserSessionEntity::class.java)
-            loginRepository.createNewSessionIDForUser(mockInputData)
+            loginRepository.createNewSessionIDForUser(mockInputData,dispatcherProvider.io)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService).createSessionID(requestBody = mockInputData)
 
             val result = authenticationService.createSessionID(requestBody = mockInputData)
