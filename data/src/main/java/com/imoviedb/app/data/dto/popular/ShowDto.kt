@@ -2,7 +2,7 @@ package com.imoviedb.app.data.dto.popular
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.imoviedb.app.data.dto.BaseResponseDto
+import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class ShowDto : BaseResponseDto() {
     @SerializedName("adult")

@@ -1,8 +1,12 @@
 package com.imoviedb.app.data.repository.authentication.normaluser
 
-import com.imoviedb.app.data.dto.ErrorResponseDto
-import com.imoviedb.app.data.dto.authentication.mapper.AccessTokenValidateMapper
-import com.imoviedb.app.data.dto.authentication.mapper.NewSessionMapper
+import com.imoviedb.app.data.dto.base.ErrorResponseDto
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
@@ -17,8 +21,15 @@ class LoginRepositoryImpl @Inject constructor(
     private val userTokenDAO: UserTokenDAO,
     private val authenticationService: AuthenticationService,
     private val userSessionDAO: UserSessionDAO,
-    private val accessTokenValidateMapper: AccessTokenValidateMapper,
-    private val sessionMapper: NewSessionMapper
+    private val accessTokenDtoModelMapper: AccessTokenValidateDtoModelMapper,
+    private val accessTokenModelEntityMapper: AccessTokenValidateModelEntityMapper,
+    private val accessTokenErrorModelMapper: AccessTokenValidateErrorModelMapper,
+
+    private val newSessionDtoDomainMapper: NewSessionDtoDomainMapper,
+    private val newSessionErrorDtoModelMapper: NewSessionErrorDtoModelMapper,
+    private val newSessionModelEntityMapper: NewSessionModelEntityMapper
+
+    ,
 
 ) : com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository {
 
@@ -27,14 +38,14 @@ class LoginRepositoryImpl @Inject constructor(
         if(response.isSuccessful && response.body() != null){
             response.body()?.let {
                 it.requestToken?.let { _ ->
-                    val domainModel = accessTokenValidateMapper.mapDtoToModel(it)
-                    userTokenDAO.saveToken(accessTokenValidateMapper.mapModelToEntity(domainModel))
+                    val domainModel = accessTokenDtoModelMapper.map(it)
+                    userTokenDAO.saveToken(accessTokenModelEntityMapper.map(domainModel))
                     emit(domainModel)
                 }
             }
         }else{
             val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
-            emit(accessTokenValidateMapper.mapErrorDtoToModel(errorModel))
+            emit(accessTokenErrorModelMapper.map(errorModel))
         }
     }.flowOn(coroutineDispatcher)
 
@@ -46,14 +57,14 @@ class LoginRepositoryImpl @Inject constructor(
                 response.body()?.let {
                     it.sessionId?.let { _ ->
                         userSessionDAO.removeAllSessions()
-                        val domainModel = sessionMapper.dtoToModel(it)
-                        userSessionDAO.saveSession(sessionMapper.modelToEntity(domainModel))
+                        val domainModel = newSessionDtoDomainMapper.map(it)
+                        userSessionDAO.saveSession(newSessionModelEntityMapper.map(domainModel))
                         emit(domainModel)
                     }
                 }
             }else{
                 val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
-                emit(sessionMapper.errorDtoToModel(errorModel))
+                emit(newSessionErrorDtoModelMapper.map(errorModel))
             }
 
 

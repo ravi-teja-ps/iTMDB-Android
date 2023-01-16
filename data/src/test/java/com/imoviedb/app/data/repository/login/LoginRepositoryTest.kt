@@ -1,8 +1,8 @@
 package com.imoviedb.app.data.repository.login
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
-import com.imoviedb.app.data.dto.authentication.mapper.AccessTokenValidateMapper
-import com.imoviedb.app.data.dto.authentication.mapper.NewSessionMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
@@ -35,15 +35,15 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
     private lateinit var userSessionDAO: UserSessionDAO
 
     @Mock
-    private lateinit var accessTokenValidateMapper: AccessTokenValidateMapper
+    private lateinit var accessTokenValidateDtoModelMapper: AccessTokenValidateDtoModelMapper
 
     @Mock
-    private lateinit var sessionMapper: NewSessionMapper
+    private lateinit var sessionMapper: NewSessionDtoDomainMapper
 
     private lateinit var loginRepository: LoginRepository
 
     override fun onPostSetup() {
-        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,accessTokenValidateMapper,sessionMapper)
+        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,accessTokenValidateDtoModelMapper,sessionMapper)
     }
 
 
