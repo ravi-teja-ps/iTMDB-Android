@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class PopularShowDetailsViewModelTestDto : BaseTestClass() {
+class PopularShowDetailsViewModelTest : BaseTestClass() {
 
     private lateinit var popularShowDetailsViewModel: PopularShowDetailsViewModel
 
@@ -33,7 +33,6 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
             PopularShowDetailsViewModel(fakePopularShowDetailsUseCase, dispatcherProvider)
     }
 
-
     @Test
     fun popularShowsDetailsViewModel_flow_data_initial_value() {
         assertNotNull(popularShowDetailsViewModel.data)
@@ -44,7 +43,9 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
     fun popularShowsDetailsViewModel_testUseCaseInvocation() {
         runTest {
             val mockAccountId = 100
+
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
+
             verify(fakePopularShowDetailsUseCase).getPopularShowDetails(
                 mockAccountId,
                 dispatcherProvider.default
@@ -57,6 +58,7 @@ class PopularShowDetailsViewModelTestDto : BaseTestClass() {
         runTest {
             val mockAccountId = 100
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
+
             Mockito.doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
                 .getPopularShowDetails(mockAccountId, dispatcherProvider.io)
 

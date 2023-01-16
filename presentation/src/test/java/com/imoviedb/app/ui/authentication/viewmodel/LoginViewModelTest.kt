@@ -54,21 +54,21 @@ class LoginViewModelTest : BaseTestClass() {
             val mockPassword = "test"
 
             loginViewModel.login(mockUserName, mockPassword)
+
             Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(true))
             verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)
-
         }
     }
 
     @Test
     fun loginViewModelLogin_validateCredentials_function() {
         runTest {
-
             val authenticationBody = AuthenticationBody("", "", "")
             doReturn(flowOf(AccessTokenValidateDomainModel())).`when`(fakeLoginUserUseCase)
                 .validateUserCredential(authenticationBody, dispatcherProvider.io)
 
             fakeLoginUserUseCase.validateUserCredential(authenticationBody, dispatcherProvider.io)
+
             verify(fakeLoginUserUseCase).validateUserCredential(
                 authenticationBody,
                 dispatcherProvider.io
@@ -101,7 +101,6 @@ class LoginViewModelTest : BaseTestClass() {
                 .createTokenForSession(dispatcherProvider.io)
 
             fakeGuestTokenUseCase.createTokenForSession(dispatcherProvider.io).collect {
-
                 Assert.assertEquals(mockedInput, it)
             }
         }

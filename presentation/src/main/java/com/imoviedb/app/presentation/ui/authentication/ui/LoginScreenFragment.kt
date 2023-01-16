@@ -88,12 +88,14 @@ class LoginScreenFragment : BaseFragment() {
 
     //Function to reset error inputs post re-edit
     private fun setErrorHandlersForInputs() {
-        binding.emailEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binding.emailEditField.isErrorEnabled = false //reset
-        }
+        with(binding){
+            emailEditField.editText?.doOnTextChanged { _, _, _, _ ->
+                emailEditField.isErrorEnabled = false //reset
+            }
 
-        binding.passwordEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binding.passwordEditField.isErrorEnabled = false
+            passwordEditField.editText?.doOnTextChanged { _, _, _, _ ->
+                passwordEditField.isErrorEnabled = false
+            }
         }
     }
 
