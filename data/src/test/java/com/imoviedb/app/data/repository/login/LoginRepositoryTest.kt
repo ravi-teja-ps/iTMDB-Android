@@ -2,7 +2,11 @@ package com.imoviedb.app.data.repository.login
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
+import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
@@ -28,22 +32,33 @@ class LoginRepositoryTest  : BaseDomainTestClass() {
     private lateinit var userTokenDAO: UserTokenDAO
 
     @Mock
-
     private lateinit var authenticationService: AuthenticationService
 
     @Mock
     private lateinit var userSessionDAO: UserSessionDAO
 
     @Mock
-    private lateinit var accessTokenValidateDtoModelMapper: AccessTokenValidateDtoModelMapper
+    private lateinit var accessTokenDtoModelMapper: AccessTokenValidateDtoModelMapper
 
     @Mock
-    private lateinit var sessionMapper: NewSessionDtoDomainMapper
+    private lateinit var accessTokenModelEntityMapper: AccessTokenValidateModelEntityMapper
+
+    @Mock
+    private lateinit var accessTokenErrorModelMapper: AccessTokenValidateErrorModelMapper
+
+    @Mock
+    private lateinit var newSessionDtoDomainMapper: NewSessionDtoDomainMapper
+
+    @Mock
+    private lateinit var newSessionErrorDtoModelMapper: NewSessionErrorDtoModelMapper
+
+    @Mock
+    private lateinit var newSessionModelEntityMapper: NewSessionModelEntityMapper
 
     private lateinit var loginRepository: LoginRepository
 
     override fun onPostSetup() {
-        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO,accessTokenValidateDtoModelMapper,sessionMapper)
+        loginRepository= LoginRepositoryImpl(userTokenDAO,authenticationService,userSessionDAO, accessTokenDtoModelMapper, accessTokenModelEntityMapper, accessTokenErrorModelMapper, newSessionDtoDomainMapper, newSessionErrorDtoModelMapper, newSessionModelEntityMapper)
     }
 
 

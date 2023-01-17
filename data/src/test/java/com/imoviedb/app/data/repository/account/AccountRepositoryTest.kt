@@ -2,6 +2,8 @@ package com.imoviedb.app.data.repository.account
 
 import com.imoviedb.app.data.base.BaseDomainTestClass
 import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
+import com.imoviedb.app.data.dto.account.mapper.AccountErrorModelMapper
+import com.imoviedb.app.data.dto.account.mapper.AccountModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
@@ -25,8 +27,15 @@ class AccountRepositoryTest : BaseDomainTestClass() {
     @Mock
     private lateinit var accountDAO: AccountDAO
 
+
     @Mock
-    private lateinit var mapper: AccountDtoModelMapper
+    private lateinit var dtoModelMapper : AccountDtoModelMapper
+
+    @Mock
+    private lateinit var modelEntityMapper: AccountModelEntityMapper
+
+    @Mock
+    private lateinit var errorModelMapper: AccountErrorModelMapper
 
     @Mock
     private lateinit var userSessionDAO: UserSessionDAO
@@ -35,7 +44,7 @@ class AccountRepositoryTest : BaseDomainTestClass() {
 
     override fun onPostSetup() {
         accountRepository =
-            AccountRepositoryImpl(accountService, accountDAO, mapper, userSessionDAO)
+            AccountRepositoryImpl(accountService, accountDAO, dtoModelMapper, modelEntityMapper, errorModelMapper, userSessionDAO)
     }
 
     @Test
