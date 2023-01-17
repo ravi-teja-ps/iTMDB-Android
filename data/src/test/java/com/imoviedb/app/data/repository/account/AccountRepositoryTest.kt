@@ -27,7 +27,6 @@ class AccountRepositoryTest : BaseDomainTestClass() {
     @Mock
     private lateinit var accountDAO: AccountDAO
 
-
     @Mock
     private lateinit var dtoModelMapper : AccountDtoModelMapper
 

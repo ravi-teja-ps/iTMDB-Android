@@ -1,5 +1,6 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
+import app.cash.turbine.test
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
@@ -42,9 +43,43 @@ class LoginViewModelTest : BaseTestClass() {
     }
 
     @Test
+    fun `test sign in button  happy path`(){
+        runTest {
+            loginViewModel.setPassword("hello")
+            loginViewModel.setUserId("hello")
+            loginViewModel.signInButtonStatus.test {
+              val result =  awaitItem()
+                Assert.assertEquals(result, true)
+            }
+        }
+    }
+
+    @Test
+    fun `test sign in button  failure username`(){
+        runTest {
+            loginViewModel.setPassword("hello")
+            loginViewModel.setUserId("")
+            loginViewModel.signInButtonStatus.test {
+                Assert.assertEquals(awaitItem(), false)
+            }
+        }
+    }
+
+    @Test
+    fun `test sign in button failure case`(){
+        runTest {
+            loginViewModel.setPassword("")
+            loginViewModel.setUserId("")
+            loginViewModel.signInButtonStatus.test {
+                Assert.assertEquals( awaitItem(), false)
+            }
+        }
+    }
+
+    @Test
     fun loginViewModel_flow_data_initial_value() {
-        Assert.assertNotNull(loginViewModel.loginStatus)
-        Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(false))
+        Assert.assertNotNull(loginViewModel.loginScreenUiState)
+        Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
     }
 
     @Test
@@ -55,7 +90,7 @@ class LoginViewModelTest : BaseTestClass() {
 
             loginViewModel.login(mockUserName, mockPassword)
 
-            Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(true))
+            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
             verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)
         }
     }
@@ -89,7 +124,7 @@ class LoginViewModelTest : BaseTestClass() {
             verify(fakeCreateNewSessionUseCase).createNewSession(mockInput, dispatcherProvider.io)
             fakeCreateNewSessionUseCase.emit(mockOutPutModel)
 
-            Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(false))
+            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
         }
     }
 

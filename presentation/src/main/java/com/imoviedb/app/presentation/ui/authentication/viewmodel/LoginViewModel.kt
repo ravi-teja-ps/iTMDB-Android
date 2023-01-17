@@ -13,7 +13,9 @@ import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,16 +31,30 @@ class LoginViewModel @Inject constructor(
     private val coroutineDispatcher: DispatcherProvider
 ) : BaseViewModel() {
 
-    private val _loginStatus = MutableStateFlow<State>(
-        State.Loading(
-            false
-        )
-    )
-    val loginStatus = _loginStatus
+    //Ui status of login screen
+    private val _loginScreenUiState = MutableStateFlow<State>(State.Loading(false))
+    val loginScreenUiState = _loginScreenUiState
+
+    //user name state
+    private val _userName = MutableStateFlow("")
+    val userName = _userName
+    //pwd state
+    private val _password= MutableStateFlow("")
+    val password = _password
+
+    //Function to check if sign in button can be enabled or not
+    private val _signInButtonStatus : Flow<Boolean> = combine(_userName,_password){ userID, password ->
+        val regexString = "[a-zA-Z0-9_]+"
+        val userIdCorrect = userID.matches(regexString.toRegex())
+        val isPasswordCorrect = password.isNotEmpty()
+        return@combine userIdCorrect and isPasswordCorrect
+    }
+
+    val signInButtonStatus = _signInButtonStatus
 
     //still refine this using lambda onComplete onError to handle errors in a single place
     fun login(userName: String, password: String) {
-        _loginStatus.value = State.Loading(true)
+        _loginScreenUiState.value = State.Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
@@ -53,8 +69,8 @@ class LoginViewModel @Inject constructor(
                             )
                         }
                     } else {
-                        _loginStatus.value = State.OnError(savedUserTokenModel.statusCode)
-                        _loginStatus.value = State.Loading(false)
+                        _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
+                        _loginScreenUiState.value = State.Loading(false)
                     }
                 }
         }
@@ -79,8 +95,8 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                 } else {
-                    _loginStatus.value = State.OnError(accessTokenModel.statusCode)
-                    _loginStatus.value = State.Loading(false)
+                    _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode)
+                    _loginScreenUiState.value = State.Loading(false)
                 }
             }
     }
@@ -94,12 +110,20 @@ class LoginViewModel @Inject constructor(
         createNewSessionUseCase.createNewSession(accessTokenAsMapBody, coroutineDispatcher)
             .collect { newSessionModel ->
                 if (newSessionModel.success == true && newSessionModel.sessionId != null) {
-                    _loginStatus.value = State.OnComplete(newSessionModel)
+                    _loginScreenUiState.value = State.OnComplete(newSessionModel)
 
                 } else {
-                    _loginStatus.value = State.OnError(newSessionModel.statusCode)
+                    _loginScreenUiState.value = State.OnError(newSessionModel.statusCode)
                 }
             }
-        _loginStatus.value = State.Loading(false)
+        _loginScreenUiState.value = State.Loading(false)
+    }
+
+    fun setPassword(password: String) {
+        _password.value = password
+    }
+
+    fun setUserId(id: String) {
+        _userName.value = id
     }
 }
