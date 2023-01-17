@@ -12,8 +12,7 @@ class FakePopularShowDetailsUseCase : GetPopularShowDetailsUseCase {
     suspend fun emit(value: ShowDomainModel) = flow.emit(value)
 
     override suspend fun getPopularShowDetails(
-        id: Int,
-        dispatcher: CoroutineDispatcher
+        id: Int, dispatcher: CoroutineDispatcher
     ): Flow<ShowDomainModel> {
         return flow
     }

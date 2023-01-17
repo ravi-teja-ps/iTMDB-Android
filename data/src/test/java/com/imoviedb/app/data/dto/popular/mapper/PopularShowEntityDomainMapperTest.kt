@@ -1,6 +1,6 @@
 package com.imoviedb.app.data.dto.popular.mapper
 
-import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
+import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -8,22 +8,22 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
-class PopularShowDomainEntityMapperTest {
+class PopularShowEntityDomainMapperTest {
 
-    private lateinit var popularShowDomainEntityMapper: PopularShowDomainEntityMapper
+    private lateinit var popularShowEntityModelMapper: PopularShowEntityModelMapper
+
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        popularShowDomainEntityMapper= PopularShowDomainEntityMapper()
+        popularShowEntityModelMapper= PopularShowEntityModelMapper()
     }
 
     @Test
-    fun `test conversion of model to Db entity`() {
-        val mockInput = Mockito.mock(ShowDomainModel::class.java)
-        val returnObject =popularShowDomainEntityMapper.map(mockInput)
+    fun `test conversion of entity to model`() {
+        val mockInput = Mockito.mock(ShowEntityModel::class.java)
+        val returnObject =popularShowEntityModelMapper.map(mockInput)
         assertNotNull(returnObject)
         assertEquals(returnObject.id, mockInput.id) //Likewise other props can be replicated
     }
-
 }

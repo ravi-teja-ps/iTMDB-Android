@@ -9,10 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeLoginUserUseCase : LoginUserUseCase {
     override suspend fun validateUserCredential(
-        authenticationBody: AuthenticationBody,
-        coroutineDispatcher: CoroutineDispatcher
-    ): Flow<AccessTokenValidateDomainModel> =
-        flow
+        authenticationBody: AuthenticationBody, coroutineDispatcher: CoroutineDispatcher
+    ): Flow<AccessTokenValidateDomainModel> = flow
 
     private val flow = MutableStateFlow(AccessTokenValidateDomainModel())
 }

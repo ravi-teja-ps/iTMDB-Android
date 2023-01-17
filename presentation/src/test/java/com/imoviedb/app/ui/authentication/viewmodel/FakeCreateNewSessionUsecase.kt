@@ -6,11 +6,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class FakeCreateNewSessionUsecase : CreateNewSessionUseCase{
+class FakeCreateNewSessionUsecase : CreateNewSessionUseCase {
 
     override suspend fun createNewSession(
-        validUserAccessToken: HashMap<String, String>,
-        coroutineDispatcher: CoroutineDispatcher
+        validUserAccessToken: HashMap<String, String>, coroutineDispatcher: CoroutineDispatcher
     ): Flow<NewSessionDomainModel> {
         return flow
     }

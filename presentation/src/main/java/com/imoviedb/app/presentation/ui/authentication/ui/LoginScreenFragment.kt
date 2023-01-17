@@ -1,11 +1,10 @@
 package com.imoviedb.app.presentation.ui.authentication.ui
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +16,7 @@ import com.imoviedb.app.presentation.ui.authentication.viewmodel.LoginViewModel
 import com.imoviedb.app.presentation.ui.base.BaseFragment
 import com.imoviedb.app.presentation.ui.base.State
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * Login screen fragment to authenticate  user
@@ -36,11 +36,9 @@ class LoginScreenFragment : BaseFragment() {
     private val binding get() = _binder!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binder = LoginScreenBinding.inflate(inflater,container,false)
+        _binder = LoginScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,52 +50,43 @@ class LoginScreenFragment : BaseFragment() {
 
     private fun initViews() {
 
-        setErrorHandlersForInputs()
+        with(binding){
+            emailEditField.editText?.setText(loginViewModel.userName.value)
+            passwordEditField.editText?.setText(loginViewModel.password.value)
 
-        binding.signinBtn.setOnClickListener {
-            validateAndProceedInputFields(
-                binding.emailEditField.editText?.text.toString(),
-                binding.passwordEditField.editText?.text.toString()
-            ) { id, message ->
-                when (id) {
-                    ERROR_INPUT_USERNAME -> {
-                        binding.emailEditField.error = message
-                    }
+            setErrorHandlersForInputs()
 
-                    ERROR_INPUT_PWD -> {
-                        binding.passwordEditField.error = message
-                    }
-                }
+            signinBtn.setOnClickListener {
+                loginViewModel.login(userName = emailEditField.editText.toString(), password = passwordEditField.editText.toString())
             }
-        }
-
-    }
-
-    //Check for input validity
-    private fun validateAndProceedInputFields(
-        email: String,
-        password: String,
-        OnError: (id: Int, message: String) -> Unit
-    ) {
-        if (TextUtils.isEmpty(email)) {
-            OnError(ERROR_INPUT_USERNAME, ERROR_MESSAGE_USER_NAME)
-            return
-        } else if (TextUtils.isEmpty(password)) {
-            OnError(ERROR_INPUT_PWD, ERROR_MESSAGE_PASSWORD)
-            return
-        } else {
-            loginViewModel.login(userName = email, password = password)
         }
     }
 
     //Function to reset error inputs post re-edit
     private fun setErrorHandlersForInputs() {
-        binding.emailEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binding.emailEditField.isErrorEnabled = false //reset
-        }
+        setSubmitButtonObserver()
+        with(binding){
+            with(emailEditField){
+                editText?.addTextChangedListener {
+                    isErrorEnabled = false
+                    loginViewModel.setUserId(it.toString())
+                }
+            }
 
-        binding.passwordEditField.editText?.doOnTextChanged { _, _, _, _ ->
-            binding.passwordEditField.isErrorEnabled = false
+            with(passwordEditField){
+                editText?.addTextChangedListener {
+                    isErrorEnabled = false
+                    loginViewModel.setPassword(it.toString())
+                }
+            }
+        }
+    }
+
+    private fun setSubmitButtonObserver() {
+        lifecycleScope.launch {
+            loginViewModel.signInButtonStatus.collect { value ->
+                binding.signinBtn.isEnabled = value
+            }
         }
     }
 
@@ -105,7 +94,7 @@ class LoginScreenFragment : BaseFragment() {
     private fun registerForStatus() {
         lifecycleScope.launchWhenCreated {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                loginViewModel.loginStatus.collect {
+                loginViewModel.loginScreenUiState.collect {
                     when (it) {
                         is State.Loading -> {
                             binding.progressBarView.visibility =
@@ -117,7 +106,7 @@ class LoginScreenFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode,it.errorMessage)
+                            showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                         }
 
                         is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result
@@ -131,20 +120,10 @@ class LoginScreenFragment : BaseFragment() {
         findNavController().navigate(R.id.action_loginScreenFragment_to_popularShowsFragment)
     }
 
-
     /**
      * Clear binder traces on fragment destroyed
      */
     override fun onDestroyBinding() {
         _binder = null
-    }
-
-
-    companion object {
-        //
-        const val ERROR_INPUT_USERNAME = 1
-        const val ERROR_INPUT_PWD = 2
-        const val ERROR_MESSAGE_USER_NAME = "Email Address is not valid"
-        const val ERROR_MESSAGE_PASSWORD = "Password is empty"
     }
 }

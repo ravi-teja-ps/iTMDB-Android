@@ -1,12 +1,13 @@
 package com.imoviedb.app.ui.authentication.viewmodel
 
+import app.cash.turbine.test
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import com.imoviedb.app.presentation.ui.authentication.viewmodel.LoginViewModel
-import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.ui.BaseTestClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -34,74 +35,108 @@ class LoginViewModelTest : BaseTestClass() {
     private lateinit var fakeGuestTokenUseCase: FakeAuthenticationUseCase
 
     @Before
-    override fun setup() {
-        initTestWithPrerequisites()
-        loginViewModel = LoginViewModel(
+    override fun postSetup() {
+         loginViewModel = LoginViewModel(
             fakeLoginUserUseCase, fakeCreateNewSessionUseCase, fakeGuestTokenUseCase,
             dispatcherProvider
         )
     }
 
     @Test
-    fun loginViewModel_flow_data_initial_value() {
-        Assert.assertNotNull(loginViewModel.loginStatus)
-        Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(false))
+    fun `test sign in button  happy path`(){
+        runTest {
+            loginViewModel.setPassword("hello")
+            loginViewModel.setUserId("hello")
+            loginViewModel.signInButtonStatus.test {
+              val result =  awaitItem()
+                Assert.assertEquals(result, true)
+            }
+        }
     }
 
     @Test
-    fun loginViewModelLogin_createTokenForSessionInvocation(){
+    fun `test sign in button  failure username`(){
+        runTest {
+            loginViewModel.setPassword("hello")
+            loginViewModel.setUserId("")
+            loginViewModel.signInButtonStatus.test {
+                Assert.assertEquals(awaitItem(), false)
+            }
+        }
+    }
+
+    @Test
+    fun `test sign in button failure case`(){
+        runTest {
+            loginViewModel.setPassword("")
+            loginViewModel.setUserId("")
+            loginViewModel.signInButtonStatus.test {
+                Assert.assertEquals( awaitItem(), false)
+            }
+        }
+    }
+
+    @Test
+    fun loginViewModel_flow_data_initial_value() {
+        Assert.assertNotNull(loginViewModel.loginScreenUiState)
+        Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
+    }
+
+    @Test
+    fun loginViewModelLogin_createTokenForSessionInvocation() {
         runTest {
             val mockUserName = "test"
             val mockPassword = "test"
 
-            loginViewModel.login(mockUserName,mockPassword)
-            Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(true))
-            verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)
+            loginViewModel.login(mockUserName, mockPassword)
 
+            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
+            verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)
         }
     }
 
     @Test
-    fun loginViewModelLogin_validateCredentials_function(){
+    fun loginViewModelLogin_validateCredentials_function() {
         runTest {
-
             val authenticationBody = AuthenticationBody("", "", "")
             doReturn(flowOf(AccessTokenValidateDomainModel())).`when`(fakeLoginUserUseCase)
-                .validateUserCredential(authenticationBody,dispatcherProvider.io)
+                .validateUserCredential(authenticationBody, dispatcherProvider.io)
 
-            fakeLoginUserUseCase.validateUserCredential(authenticationBody,dispatcherProvider.io)
-            verify(fakeLoginUserUseCase).validateUserCredential(authenticationBody,dispatcherProvider.io)
+            fakeLoginUserUseCase.validateUserCredential(authenticationBody, dispatcherProvider.io)
+
+            verify(fakeLoginUserUseCase).validateUserCredential(
+                authenticationBody,
+                dispatcherProvider.io
+            )
         }
     }
 
     @Test
-    fun loginViewModelLogin_createNewSessionPostAuth_function(){
+    fun loginViewModelLogin_createNewSessionPostAuth_function() {
         runTest {
 
-            val mockInput = HashMap<String,String>().apply { put("","") }
+            val mockInput = HashMap<String, String>().apply { put("", "") }
             val mockOutPutModel = NewSessionDomainModel()
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
-                .createNewSession(mockInput,dispatcherProvider.io)
+                .createNewSession(mockInput, dispatcherProvider.io)
 
-            fakeCreateNewSessionUseCase.createNewSession(mockInput,dispatcherProvider.io)
-            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput,dispatcherProvider.io)
+            fakeCreateNewSessionUseCase.createNewSession(mockInput, dispatcherProvider.io)
+            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput, dispatcherProvider.io)
             fakeCreateNewSessionUseCase.emit(mockOutPutModel)
 
-            Assert.assertEquals(loginViewModel.loginStatus.value, State.Loading(false))
+            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
         }
     }
 
     @Test
-    fun loginViewModelLogin_createTokenForSessionReturnType(){
+    fun loginViewModelLogin_createTokenForSessionReturnType() {
         runTest {
-
             val mockedInput = mock(GuestAuthCreateTokenDomainModel::class.java)
             doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase)
                 .createTokenForSession(dispatcherProvider.io)
 
-            fakeGuestTokenUseCase.createTokenForSession(dispatcherProvider.io).collect{
-
-                Assert.assertEquals(mockedInput,it)
+            fakeGuestTokenUseCase.createTokenForSession(dispatcherProvider.io).collect {
+                Assert.assertEquals(mockedInput, it)
             }
         }
     }

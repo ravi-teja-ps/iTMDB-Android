@@ -9,10 +9,13 @@ import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCas
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
 import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,72 +31,99 @@ class LoginViewModel @Inject constructor(
     private val coroutineDispatcher: DispatcherProvider
 ) : BaseViewModel() {
 
-    private val _loginStatus = MutableStateFlow<State>(
-        State.Loading(
-            false
-        )
-    )
-    val loginStatus = _loginStatus
+    //Ui status of login screen
+    private val _loginScreenUiState = MutableStateFlow<State>(State.Loading(false))
+    val loginScreenUiState = _loginScreenUiState
+
+    //user name state
+    private val _userName = MutableStateFlow("")
+    val userName = _userName
+    //pwd state
+    private val _password= MutableStateFlow("")
+    val password = _password
+
+    //Function to check if sign in button can be enabled or not
+    private val _signInButtonStatus : Flow<Boolean> = combine(_userName,_password){ userID, password ->
+        val regexString = "[a-zA-Z0-9_]+"
+        val userIdCorrect = userID.matches(regexString.toRegex())
+        val isPasswordCorrect = password.isNotEmpty()
+        return@combine userIdCorrect and isPasswordCorrect
+    }
+
+    val signInButtonStatus = _signInButtonStatus
 
     //still refine this using lambda onComplete onError to handle errors in a single place
     fun login(userName: String, password: String) {
-        _loginStatus.value = State.Loading(true)
+        _loginScreenUiState.value = State.Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
                 .flowOn(Dispatchers.Default).collect { savedUserTokenModel ->
-                //Step 1  authenticate user name password of user for right accounts only
-                if (savedUserTokenModel.success == true) {
-                    savedUserTokenModel.request_token?.let {
-                        //Step 2 validate the received access_token for a new session_id and save it across
-                        val authenticationBody = AuthenticationBody(userName, password, it)
-                        validateUserCredential(authenticationBody, coroutineDispatcher = coroutineDispatcher.io)
+                    //Step 1  authenticate user name password of user for right accounts only
+                    if (savedUserTokenModel.success == true) {
+                        savedUserTokenModel.request_token?.let {
+                            //Step 2 validate the received access_token for a new session_id and save it across
+                            val authenticationBody = AuthenticationBody(userName, password, it)
+                            validateUserCredential(
+                                authenticationBody, coroutineDispatcher = coroutineDispatcher.io
+                            )
+                        }
+                    } else {
+                        _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
+                        _loginScreenUiState.value = State.Loading(false)
                     }
-                } else {
-                    _loginStatus.value =
-                        State.OnError(savedUserTokenModel.statusCode)
-                    _loginStatus.value = State.Loading(false)
-
                 }
-            }
         }
     }
 
     /**
      * validate a user credentials if api is asking for a encoding then use base64
      */
-    private suspend fun validateUserCredential(authenticationBody: AuthenticationBody,coroutineDispatcher: CoroutineDispatcher) {
-        loginUserUseCase.validateUserCredential(authenticationBody,coroutineDispatcher).collect { accessTokenModel ->
-            if (accessTokenModel.success == true) {
-                accessTokenModel.requestToken?.let {
-                    //Step3 use the sessionId and get a account ID and account data for future
-                    val accessTokenAsMapBody = HashMap<String, String>().apply {
-                        put("request_token", it)
+    private suspend fun validateUserCredential(
+        authenticationBody: AuthenticationBody, coroutineDispatcher: CoroutineDispatcher
+    ) {
+        loginUserUseCase.validateUserCredential(authenticationBody, coroutineDispatcher)
+            .collect { accessTokenModel ->
+                if (accessTokenModel.success == true) {
+                    accessTokenModel.requestToken?.let {
+                        //Step3 use the sessionId and get a account ID and account data for future
+                        val accessTokenAsMapBody = HashMap<String, String>().apply {
+                            put(KeyUtils.REQUEST_TOKEN_KEY, it)
+                        }
+                        createNewSessionPostAuthentication(
+                            accessTokenAsMapBody, coroutineDispatcher
+                        )
                     }
-                    createNewSessionPostAuthentication(accessTokenAsMapBody,coroutineDispatcher)
+                } else {
+                    _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode)
+                    _loginScreenUiState.value = State.Loading(false)
                 }
-            } else {
-                _loginStatus.value =
-                    State.OnError(accessTokenModel.statusCode)
-                _loginStatus.value = State.Loading(false)
             }
-        }
     }
 
     /**
      * Create a session using the obtained access token here
      */
-    private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>,coroutineDispatcher: CoroutineDispatcher) {
-        createNewSessionUseCase.createNewSession(accessTokenAsMapBody,coroutineDispatcher).collect { newSessionModel ->
-            if (newSessionModel.success == true && newSessionModel.sessionId != null) {
-                _loginStatus.value =
-                    State.OnComplete(newSessionModel)
+    private suspend fun createNewSessionPostAuthentication(
+        accessTokenAsMapBody: HashMap<String, String>, coroutineDispatcher: CoroutineDispatcher
+    ) {
+        createNewSessionUseCase.createNewSession(accessTokenAsMapBody, coroutineDispatcher)
+            .collect { newSessionModel ->
+                if (newSessionModel.success == true && newSessionModel.sessionId != null) {
+                    _loginScreenUiState.value = State.OnComplete(newSessionModel)
 
-            } else {
-                _loginStatus.value =
-                    State.OnError(newSessionModel.statusCode)
+                } else {
+                    _loginScreenUiState.value = State.OnError(newSessionModel.statusCode)
+                }
             }
-        }
-        _loginStatus.value = State.Loading(false)
+        _loginScreenUiState.value = State.Loading(false)
+    }
+
+    fun setPassword(password: String) {
+        _password.value = password
+    }
+
+    fun setUserId(id: String) {
+        _userName.value = id
     }
 }

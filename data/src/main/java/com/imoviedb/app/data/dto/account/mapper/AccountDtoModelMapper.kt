@@ -8,17 +8,17 @@ import javax.inject.Inject
 
 class AccountDtoModelMapper @Inject constructor() : Mapper<AccountDto, AccountDomainModel> {
 
-    override fun map(accountModel: AccountDto): AccountDomainModel {
+    override fun map(from: AccountDto): AccountDomainModel {
         return AccountDomainModel().apply {
-            id = accountModel.id ?: -1
-            name = accountModel.name
-            includeAdult = accountModel.includeAdult
-            iso31661 = accountModel.iso31661
-            iso6391 = accountModel.iso6391
-            username = accountModel.username
-            statusCode = accountModel.statusCode
-            statusMessage = accountModel.statusMessage
-            avatarHash = accountModel.avatarDto?.gravatarDto?.hash
+            id = from.id ?: -1
+            name = from.name
+            includeAdult = from.includeAdult
+            iso31661 = from.iso31661
+            iso6391 = from.iso6391
+            username = from.username
+            statusCode = from.statusCode
+            statusMessage = from.statusMessage
+            avatarHash = from.avatarDto?.gravatarDto?.hash
         }
     }
 }
