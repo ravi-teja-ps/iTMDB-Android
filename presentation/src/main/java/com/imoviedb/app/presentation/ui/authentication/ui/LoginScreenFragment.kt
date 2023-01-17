@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -57,7 +57,7 @@ class LoginScreenFragment : BaseFragment() {
             setErrorHandlersForInputs()
 
             signinBtn.setOnClickListener {
-                loginViewModel.login(userName = emailEditField.editText.toString(), password = passwordEditField.editText.toString())
+                loginViewModel.login()
             }
         }
     }
@@ -67,18 +67,19 @@ class LoginScreenFragment : BaseFragment() {
         setSubmitButtonObserver()
         with(binding){
             with(emailEditField){
-                editText?.addTextChangedListener {
-                    isErrorEnabled = false
-                    loginViewModel.setUserId(it.toString())
-                }
+               editText?.doOnTextChanged { text, _, _, _ ->
+                   isErrorEnabled = false
+                   loginViewModel.setUserId(text.toString())
+               }
             }
 
             with(passwordEditField){
-                editText?.addTextChangedListener {
+                editText?.doOnTextChanged { text, _, _, _ ->
                     isErrorEnabled = false
-                    loginViewModel.setPassword(it.toString())
+                    loginViewModel.setPassword(text.toString())
                 }
             }
+
         }
     }
 

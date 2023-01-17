@@ -85,10 +85,7 @@ class LoginViewModelTest : BaseTestClass() {
     @Test
     fun loginViewModelLogin_createTokenForSessionInvocation() {
         runTest {
-            val mockUserName = "test"
-            val mockPassword = "test"
-
-            loginViewModel.login(mockUserName, mockPassword)
+            loginViewModel.login()
 
             Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
             verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)

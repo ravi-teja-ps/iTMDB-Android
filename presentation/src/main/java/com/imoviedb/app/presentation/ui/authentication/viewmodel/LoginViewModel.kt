@@ -53,7 +53,7 @@ class LoginViewModel @Inject constructor(
     val signInButtonStatus = _signInButtonStatus
 
     //still refine this using lambda onComplete onError to handle errors in a single place
-    fun login(userName: String, password: String) {
+    fun login() {
         _loginScreenUiState.value = State.Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
@@ -63,7 +63,7 @@ class LoginViewModel @Inject constructor(
                     if (savedUserTokenModel.success == true) {
                         savedUserTokenModel.request_token?.let {
                             //Step 2 validate the received access_token for a new session_id and save it across
-                            val authenticationBody = AuthenticationBody(userName, password, it)
+                            val authenticationBody = AuthenticationBody(userName.value, password.value, it)
                             validateUserCredential(
                                 authenticationBody, coroutineDispatcher = coroutineDispatcher.io
                             )
@@ -95,7 +95,7 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                 } else {
-                    _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode)
+                    _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode,accessTokenModel.statusMessage)
                     _loginScreenUiState.value = State.Loading(false)
                 }
             }
