@@ -9,8 +9,6 @@ class ShowDto : BaseResponseDto() {
     @Expose
     var adult: Boolean? = null
 
-    var insertOrder : Int= 0
-
     @SerializedName("id")
     @Expose
     var id: Int? = null
@@ -37,7 +35,7 @@ class ShowDto : BaseResponseDto() {
 
     @SerializedName("backdrop_path")
     @Expose
-    var backdrop_path: String? = null
+    var backdropPath: String? = null
 
     @SerializedName("media_type")
     @Expose
@@ -76,7 +74,4 @@ class ShowDto : BaseResponseDto() {
     @SerializedName("first_air_date")
     @Expose
     var firstAirDate: String? = null
-
-
-
 }

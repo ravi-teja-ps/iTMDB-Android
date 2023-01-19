@@ -7,7 +7,7 @@ class GuestAuthCreateTokenDomainModel :BaseDomainModel() {
 
     var success: Boolean? = null
 
-    var request_token: String? = null
+    var requestToken: String? = null
 
     var expiresAt: String? = null
 }

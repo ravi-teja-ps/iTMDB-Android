@@ -8,13 +8,13 @@ import javax.inject.Inject
 class GuestAutTokenModelEntityMapper @Inject constructor() : Mapper<GuestAuthCreateTokenDomainModel,GuestUserTokenEntity> {
 
 
-    override fun map(model: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
+    override fun map(from: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
         return GuestUserTokenEntity().apply {
-            requestToken = model.request_token ?: ""
-            expiresAt = model.expiresAt
-            status_code = model.statusCode
-            success = model.success
-            status_message = model.statusMessage
+            requestToken = from.requestToken ?: ""
+            expiresAt = from.expiresAt
+            status_code = from.statusCode
+            success = from.success
+            status_message = from.statusMessage
         }
     }
 }

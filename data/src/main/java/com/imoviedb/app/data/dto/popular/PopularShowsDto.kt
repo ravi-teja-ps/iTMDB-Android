@@ -16,9 +16,5 @@ class PopularShowsDto : BaseResponseDto() {
     @SerializedName("total_pages")
     @Expose
     var totalPages: Int? = null
-
-    @SerializedName("total_results")
-    @Expose
-    var totalResults: Int? = null
 }
 

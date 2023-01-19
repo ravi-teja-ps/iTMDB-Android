@@ -9,7 +9,7 @@ class GuestAutTokenDtoDomainMapper @Inject constructor() : Mapper<GuestAuthCreat
 
     override fun map(from : GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
         return GuestAuthCreateTokenDomainModel().apply {
-            request_token = from.requestToken
+            requestToken = from.requestToken
             expiresAt = from.expiresAt
             statusCode = from.statusCode
             success = from.success

@@ -12,7 +12,7 @@ class AuthenticationBodyMapper @Inject constructor() : Mapper<AuthenticationBody
             with(from){
                 put(KeyUtils.USERNAME_KEY ,userName)
                 put(KeyUtils.PASSWORD_KEY,password)
-                put(KeyUtils.REQUEST_TOKEN_KEY,request_token)
+                put(KeyUtils.REQUEST_TOKEN_KEY,requestToken)
             }
         }
      }

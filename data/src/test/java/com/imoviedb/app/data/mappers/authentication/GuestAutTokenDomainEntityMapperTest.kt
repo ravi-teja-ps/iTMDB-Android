@@ -30,7 +30,7 @@ class GuestAutTokenDomainEntityMapperTest : BaseMapperTest() {
 
         //Assertion
         assertNotNull(returnObject)
-        assertEquals(returnObject.request_token, mockInput.requestToken)
+        assertEquals(returnObject.requestToken, mockInput.requestToken)
         assertEquals(returnObject.success, mockInput.success)
         assertEquals(returnObject.expiresAt, mockInput.expiresAt)
     }

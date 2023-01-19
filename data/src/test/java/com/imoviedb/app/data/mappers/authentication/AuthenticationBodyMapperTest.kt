@@ -32,7 +32,7 @@ class AuthenticationBodyMapperTest : BaseMapperTest() {
         Assert.assertNotNull(result)
         Assert.assertEquals(result[KeyUtils.USERNAME_KEY], mockedInput.userName)
         Assert.assertEquals(result[KeyUtils.PASSWORD_KEY], mockedInput.password)
-        Assert.assertEquals(result[KeyUtils.REQUEST_TOKEN_KEY], mockedInput.request_token)
+        Assert.assertEquals(result[KeyUtils.REQUEST_TOKEN_KEY], mockedInput.requestToken)
     }
 
     override fun testInstanceOfSubject() {

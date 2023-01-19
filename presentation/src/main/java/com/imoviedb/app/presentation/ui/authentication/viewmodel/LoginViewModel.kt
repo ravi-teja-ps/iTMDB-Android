@@ -54,7 +54,7 @@ class LoginViewModel @Inject constructor(
             guestTokenUseCase.createTokenForSession().collect { savedUserTokenModel ->
                     //Step 1  authenticate user name password of user for right accounts only
                     if (savedUserTokenModel.success == true) {
-                        savedUserTokenModel.request_token?.let {
+                        savedUserTokenModel.requestToken?.let {
                             //Step 2 validate the received access_token for a new session_id and save it across
                             val authenticationBody = AuthenticationBody(userName.value, password.value, it)
                             validateUserCredential(authenticationBody)
