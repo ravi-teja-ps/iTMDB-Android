@@ -37,9 +37,7 @@ class LoginViewModelTest : BaseTestClass() {
     @Before
     override fun postSetup() {
          loginViewModel = LoginViewModel(
-            fakeLoginUserUseCase, fakeCreateNewSessionUseCase, fakeGuestTokenUseCase,
-            dispatcherProvider
-        )
+            fakeLoginUserUseCase, fakeCreateNewSessionUseCase, fakeGuestTokenUseCase)
     }
 
     @Test
@@ -88,7 +86,7 @@ class LoginViewModelTest : BaseTestClass() {
             loginViewModel.login()
 
             Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
-            verify(fakeGuestTokenUseCase).createTokenForSession(dispatcherProvider.io)
+            verify(fakeGuestTokenUseCase).createTokenForSession()
         }
     }
 
@@ -97,14 +95,11 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             val authenticationBody = AuthenticationBody("", "", "")
             doReturn(flowOf(AccessTokenValidateDomainModel())).`when`(fakeLoginUserUseCase)
-                .validateUserCredential(authenticationBody, dispatcherProvider.io)
+                .validateUserCredential(authenticationBody)
 
-            fakeLoginUserUseCase.validateUserCredential(authenticationBody, dispatcherProvider.io)
+            fakeLoginUserUseCase.validateUserCredential(authenticationBody)
 
-            verify(fakeLoginUserUseCase).validateUserCredential(
-                authenticationBody,
-                dispatcherProvider.io
-            )
+            verify(fakeLoginUserUseCase).validateUserCredential(authenticationBody)
         }
     }
 
@@ -115,10 +110,10 @@ class LoginViewModelTest : BaseTestClass() {
             val mockInput = HashMap<String, String>().apply { put("", "") }
             val mockOutPutModel = NewSessionDomainModel()
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
-                .createNewSession(mockInput, dispatcherProvider.io)
+                .createNewSession(mockInput)
 
-            fakeCreateNewSessionUseCase.createNewSession(mockInput, dispatcherProvider.io)
-            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput, dispatcherProvider.io)
+            fakeCreateNewSessionUseCase.createNewSession(mockInput)
+            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput)
             fakeCreateNewSessionUseCase.emit(mockOutPutModel)
 
             Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
@@ -130,9 +125,9 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             val mockedInput = mock(GuestAuthCreateTokenDomainModel::class.java)
             doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase)
-                .createTokenForSession(dispatcherProvider.io)
+                .createTokenForSession()
 
-            fakeGuestTokenUseCase.createTokenForSession(dispatcherProvider.io).collect {
+            fakeGuestTokenUseCase.createTokenForSession().collect {
                 Assert.assertEquals(mockedInput, it)
             }
         }

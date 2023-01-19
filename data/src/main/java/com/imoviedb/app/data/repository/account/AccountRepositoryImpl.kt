@@ -1,15 +1,15 @@
 package com.imoviedb.app.data.repository.account
 
-import com.imoviedb.app.data.dto.base.ErrorResponseDto
 import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
 import com.imoviedb.app.data.dto.account.mapper.AccountErrorModelMapper
 import com.imoviedb.app.data.dto.account.mapper.AccountModelEntityMapper
+import com.imoviedb.app.data.dto.base.ErrorResponseDto
 import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.account.AccountDAO
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.domain.account.repository.AccountRepository
-import kotlinx.coroutines.Dispatchers
+import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -19,7 +19,8 @@ class AccountRepositoryImpl @Inject constructor(private val accountService: Acco
                                                 private val dtoModelMapper : AccountDtoModelMapper,
                                                 private val modelEntityMapper: AccountModelEntityMapper,
                                                 private val errorModelMapper: AccountErrorModelMapper,
-                                                private val userSessionDAO: UserSessionDAO
+                                                private val userSessionDAO: UserSessionDAO,
+                                                private val dispatcherProvider: DispatcherProvider
 ) : AccountRepository {
 
     override suspend fun getAccountInfo(sessionId : String ) =  flow {
@@ -39,9 +40,9 @@ class AccountRepositoryImpl @Inject constructor(private val accountService: Acco
             val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
             emit(errorModelMapper.map(errorModel))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcherProvider.io)
 
     override suspend fun getStoredSessionId() =  flow {
         emit(userSessionDAO.getSession().session_id)
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(dispatcherProvider.default)
 }

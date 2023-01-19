@@ -12,7 +12,7 @@ import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.data.storage.authentication.UserTokenDAO
 import com.imoviedb.app.domain.account.model.AuthenticationBody
-import kotlinx.coroutines.CoroutineDispatcher
+import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -27,13 +27,11 @@ class LoginRepositoryImpl @Inject constructor(
 
     private val newSessionDtoDomainMapper: NewSessionDtoDomainMapper,
     private val newSessionErrorDtoModelMapper: NewSessionErrorDtoModelMapper,
-    private val newSessionModelEntityMapper: NewSessionModelEntityMapper
-
-    ,
-
+    private val newSessionModelEntityMapper: NewSessionModelEntityMapper,
+    private val dispatcherProvider: DispatcherProvider
 ) : com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository {
 
-    override suspend fun validateUserCredential(authenticationBody: AuthenticationBody,coroutineDispatcher: CoroutineDispatcher) = flow {
+    override suspend fun validateUserCredential(authenticationBody: AuthenticationBody) = flow {
         val response = authenticationService.authenticateUserDetails(requestBody = authenticationBody.asMap())
         if(response.isSuccessful && response.body() != null){
             response.body()?.let {
@@ -47,10 +45,10 @@ class LoginRepositoryImpl @Inject constructor(
             val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
             emit(accessTokenErrorModelMapper.map(errorModel))
         }
-    }.flowOn(coroutineDispatcher)
+    }.flowOn(dispatcherProvider.io)
 
 
-    override suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>,coroutineDispatcher: CoroutineDispatcher) =
+    override suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>) =
         flow {
             val response = authenticationService.createSessionID(requestBody = requestBody)
             if(response.isSuccessful && response.body() != null){
@@ -68,6 +66,6 @@ class LoginRepositoryImpl @Inject constructor(
             }
 
 
-        }.flowOn(coroutineDispatcher)
+        }.flowOn(dispatcherProvider.io)
 
 }

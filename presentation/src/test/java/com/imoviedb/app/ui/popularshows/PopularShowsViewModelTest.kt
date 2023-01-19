@@ -24,7 +24,7 @@ class PopularShowsViewModelTest : BaseTestClass() {
     private lateinit var popularShowsUseCase: FakePopularShowsUseCase
 
     override fun postSetup() {
-        popularShowsViewModel = PopularShowsViewModel(popularShowsUseCase, dispatcherProvider)
+        popularShowsViewModel = PopularShowsViewModel(popularShowsUseCase)
 
     }
 
@@ -37,8 +37,8 @@ class PopularShowsViewModelTest : BaseTestClass() {
     @Test
     fun popularShowsViewModel_getPopularShows_invoked() {
         runTest {
-            popularShowsUseCase.fetchPopularShows(dispatcherProvider.io)
-            verify(popularShowsUseCase).fetchPopularShows(dispatcherProvider.io)
+            popularShowsUseCase.fetchPopularShows()
+            verify(popularShowsUseCase).fetchPopularShows()
         }
     }
 
@@ -47,7 +47,7 @@ class PopularShowsViewModelTest : BaseTestClass() {
         runTest {
             val mockPagingDataFlow = PagingData.from(listOf(ShowDomainModel()))
             doReturn(flowOf(mockPagingDataFlow)).`when`(popularShowsUseCase)
-                .fetchPopularShows(dispatcherProvider.io)
+                .fetchPopularShows()
             popularShowsViewModel.getPopularShows()
         }
     }

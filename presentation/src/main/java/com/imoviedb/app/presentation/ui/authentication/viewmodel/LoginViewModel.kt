@@ -6,17 +6,13 @@ import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
 import com.imoviedb.app.domain.authentication.normaluser.usecase.LoginUserUseCase
-import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
 import com.imoviedb.app.presentation.ui.base.State
 import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,9 +23,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
     private val createNewSessionUseCase: CreateNewSessionUseCase,
-    private val guestTokenUseCase: AuthenticationUseCase,
-    private val coroutineDispatcher: DispatcherProvider
-) : BaseViewModel() {
+    private val guestTokenUseCase: AuthenticationUseCase) : BaseViewModel() {
 
     //Ui status of login screen
     private val _loginScreenUiState = MutableStateFlow<State>(State.Loading(false))
@@ -57,16 +51,13 @@ class LoginViewModel @Inject constructor(
         _loginScreenUiState.value = State.Loading(true)
         viewModelScope.launch {
             //Step 0   get access token
-            guestTokenUseCase.createTokenForSession(coroutineDispatcher.io)
-                .flowOn(Dispatchers.Default).collect { savedUserTokenModel ->
+            guestTokenUseCase.createTokenForSession().collect { savedUserTokenModel ->
                     //Step 1  authenticate user name password of user for right accounts only
                     if (savedUserTokenModel.success == true) {
                         savedUserTokenModel.request_token?.let {
                             //Step 2 validate the received access_token for a new session_id and save it across
                             val authenticationBody = AuthenticationBody(userName.value, password.value, it)
-                            validateUserCredential(
-                                authenticationBody, coroutineDispatcher = coroutineDispatcher.io
-                            )
+                            validateUserCredential(authenticationBody)
                         }
                     } else {
                         _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
@@ -79,10 +70,8 @@ class LoginViewModel @Inject constructor(
     /**
      * validate a user credentials if api is asking for a encoding then use base64
      */
-    private suspend fun validateUserCredential(
-        authenticationBody: AuthenticationBody, coroutineDispatcher: CoroutineDispatcher
-    ) {
-        loginUserUseCase.validateUserCredential(authenticationBody, coroutineDispatcher)
+    private suspend fun validateUserCredential(authenticationBody: AuthenticationBody) {
+        loginUserUseCase.validateUserCredential(authenticationBody)
             .collect { accessTokenModel ->
                 if (accessTokenModel.success == true) {
                     accessTokenModel.requestToken?.let {
@@ -90,9 +79,7 @@ class LoginViewModel @Inject constructor(
                         val accessTokenAsMapBody = HashMap<String, String>().apply {
                             put(KeyUtils.REQUEST_TOKEN_KEY, it)
                         }
-                        createNewSessionPostAuthentication(
-                            accessTokenAsMapBody, coroutineDispatcher
-                        )
+                        createNewSessionPostAuthentication(accessTokenAsMapBody)
                     }
                 } else {
                     _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode,accessTokenModel.statusMessage)
@@ -104,10 +91,8 @@ class LoginViewModel @Inject constructor(
     /**
      * Create a session using the obtained access token here
      */
-    private suspend fun createNewSessionPostAuthentication(
-        accessTokenAsMapBody: HashMap<String, String>, coroutineDispatcher: CoroutineDispatcher
-    ) {
-        createNewSessionUseCase.createNewSession(accessTokenAsMapBody, coroutineDispatcher)
+    private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>) {
+        createNewSessionUseCase.createNewSession(accessTokenAsMapBody)
             .collect { newSessionModel ->
                 if (newSessionModel.success == true && newSessionModel.sessionId != null) {
                     _loginScreenUiState.value = State.OnComplete(newSessionModel)

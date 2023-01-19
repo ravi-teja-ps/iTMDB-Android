@@ -43,7 +43,7 @@ class AccountRepositoryTest : BaseDomainTestClass() {
 
     override fun onPostSetup() {
         accountRepository =
-            AccountRepositoryImpl(accountService, accountDAO, dtoModelMapper, modelEntityMapper, errorModelMapper, userSessionDAO)
+            AccountRepositoryImpl(accountService, accountDAO, dtoModelMapper, modelEntityMapper, errorModelMapper, userSessionDAO,dispatcherProvider)
     }
 
     @Test

@@ -8,7 +8,7 @@ import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.authentication.GuestUserTokenDAO
 import com.imoviedb.app.domain.authentication.guestuser.repository.GuestUserAuthRepository
-import kotlinx.coroutines.CoroutineDispatcher
+import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -18,11 +18,12 @@ class GuestUserAuthRepositoryImpl @Inject constructor(
     private val guestUserTokenDAO: GuestUserTokenDAO,
     private val guestAutTokenDtoDomainMapper: GuestAutTokenDtoDomainMapper,
     private val guestAutTokenModelEntityMapper: GuestAutTokenModelEntityMapper,
-    private val guestAuthTokenValidateErrorModelMapper: GuestAutTokenErrorDtoDomainMapper
+    private val guestAuthTokenValidateErrorModelMapper: GuestAutTokenErrorDtoDomainMapper,
+    private val dispatcherProvider: DispatcherProvider
 ) : GuestUserAuthRepository {
 
 
-    override suspend fun createGuestTokenForSession(coroutineDispatcher: CoroutineDispatcher) =
+    override suspend fun createGuestTokenForSession() =
         flow {
             val response = authenticationService.createApiToken()
             if (response.isSuccessful && response.body()!=null) {
@@ -37,11 +38,11 @@ class GuestUserAuthRepositoryImpl @Inject constructor(
                 val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
                 emit(guestAuthTokenValidateErrorModelMapper.map(errorModel))
             }
-        }.flowOn(coroutineDispatcher)
+        }.flowOn(dispatcherProvider.io)
 
 
-    override suspend fun deletePreviousGuestToken(coroutineDispatcher: CoroutineDispatcher) =
+    override suspend fun deletePreviousGuestToken() =
         flow<Unit> {
             guestUserTokenDAO.removeToken()
-        }.flowOn(coroutineDispatcher)
+        }.flowOn(dispatcherProvider.io)
 }

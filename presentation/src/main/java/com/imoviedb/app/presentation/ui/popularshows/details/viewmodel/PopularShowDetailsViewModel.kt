@@ -1,7 +1,6 @@
 package com.imoviedb.app.presentation.ui.popularshows.details.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.app.domain.popularshows.details.usecase.GetPopularShowDetailsUseCase
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
 import com.imoviedb.app.presentation.ui.base.State
@@ -15,9 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularShowDetailsViewModel @Inject constructor(
-    private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase,
-    private val dispatcherProvider: DispatcherProvider
-) : BaseViewModel() {
+    private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase) : BaseViewModel() {
     private val _data = MutableStateFlow<State>(
         State.Loading(
             true
@@ -30,7 +27,7 @@ class PopularShowDetailsViewModel @Inject constructor(
      */
     fun getShowDetailsFromDB(id: Int) {
         viewModelScope.launch {
-            getPopularShowDetailsUseCase.getPopularShowDetails(id, dispatcherProvider.default)
+            getPopularShowDetailsUseCase.getPopularShowDetails(id)
                 .catch {
                     data.value = State.OnError(ErrorCodes.INTERNAL)
                 }.collectLatest {

@@ -67,7 +67,8 @@ class LoginRepositoryTest : BaseDomainTestClass() {
             accessTokenErrorModelMapper,
             newSessionDtoDomainMapper,
             newSessionErrorDtoModelMapper,
-            newSessionModelEntityMapper
+            newSessionModelEntityMapper,
+            dispatcherProvider
         )
     }
 
@@ -78,7 +79,7 @@ class LoginRepositoryTest : BaseDomainTestClass() {
 
             val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val userTokenEntityMock = mock(Response::class.java)
-            loginRepository.validateUserCredential(mockInputData, dispatcherProvider.io)
+            loginRepository.validateUserCredential(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService)
                 .authenticateUserDetails(requestBody = mockInputData.asMap())
 
@@ -95,7 +96,7 @@ class LoginRepositoryTest : BaseDomainTestClass() {
 
             val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
             val mockedUserTokenEntity = mock(UserTokenEntity::class.java)
-            loginRepository.validateUserCredential(mockInputData, dispatcherProvider.io)
+            loginRepository.validateUserCredential(mockInputData)
             userTokenDAO.saveToken(mockedUserTokenEntity)
             verify(userTokenDAO).saveToken(mockedUserTokenEntity)
         }
@@ -108,7 +109,7 @@ class LoginRepositoryTest : BaseDomainTestClass() {
             val mockInputData = HashMap<String, String>().apply { put("a", "b") }
             val userTokenEntityMock = mock(Response::class.java)
             val userSessionEntity = mock(UserSessionEntity::class.java)
-            loginRepository.createNewSessionIDForUser(mockInputData, dispatcherProvider.io)
+            loginRepository.createNewSessionIDForUser(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService)
                 .createSessionID(requestBody = mockInputData)
 

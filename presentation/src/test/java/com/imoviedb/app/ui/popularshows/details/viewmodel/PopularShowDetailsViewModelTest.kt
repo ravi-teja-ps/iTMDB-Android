@@ -30,7 +30,7 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
     @Before
     override fun postSetup() {
         popularShowDetailsViewModel =
-            PopularShowDetailsViewModel(fakePopularShowDetailsUseCase, dispatcherProvider)
+            PopularShowDetailsViewModel(fakePopularShowDetailsUseCase)
     }
 
     @Test
@@ -47,9 +47,7 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
             verify(fakePopularShowDetailsUseCase).getPopularShowDetails(
-                mockAccountId,
-                dispatcherProvider.default
-            )
+                mockAccountId)
         }
     }
 
@@ -60,7 +58,7 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
 
             Mockito.doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
-                .getPopularShowDetails(mockAccountId, dispatcherProvider.io)
+                .getPopularShowDetails(mockAccountId)
 
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
