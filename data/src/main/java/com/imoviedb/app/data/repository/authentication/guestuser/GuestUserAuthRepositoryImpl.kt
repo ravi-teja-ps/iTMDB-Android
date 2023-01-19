@@ -26,7 +26,7 @@ class GuestUserAuthRepositoryImpl @Inject constructor(
     override suspend fun createGuestTokenForSession() =
         flow {
             val response = authenticationService.createApiToken()
-            if (response.isSuccessful && response.body()!=null) {
+            if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
                     //Store data token in local storage
                     val domainModel = guestAutTokenDtoDomainMapper.map(it)

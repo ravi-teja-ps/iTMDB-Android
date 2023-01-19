@@ -1,7 +1,7 @@
 package com.imoviedb.app.data.dto.account
 
-import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class AccountDto : BaseResponseDto() {
@@ -35,13 +35,13 @@ class AccountDto : BaseResponseDto() {
 
 }
 
- class AvatarDto {
+class AvatarDto {
     @SerializedName("gravatar")
     @Expose
     var gravatarDto: GravatarDto? = null
 }
 
- class GravatarDto {
+class GravatarDto {
     @SerializedName("hash")
     @Expose
     var hash: String? = null

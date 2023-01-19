@@ -25,28 +25,29 @@ object DataBaseModule {
 
     @Singleton
     @Provides
-    fun roomDbInstance(@ApplicationContext appContext : Context) : AppDatabase{
-         return  Room.databaseBuilder(  appContext , AppDatabase::class.java, "appDataBase").build()
+    fun roomDbInstance(@ApplicationContext appContext: Context): AppDatabase {
+        return Room.databaseBuilder(appContext, AppDatabase::class.java, "appDataBase").build()
     }
 
     @Singleton
     @Provides
-    fun guestUserTokenDAO(appDataBase: AppDatabase) : GuestUserTokenDAO = appDataBase.guestUserTokenDao()
+    fun guestUserTokenDAO(appDataBase: AppDatabase): GuestUserTokenDAO =
+        appDataBase.guestUserTokenDao()
 
     @Singleton
     @Provides
-    fun userTokenDAO(appDataBase: AppDatabase) : UserTokenDAO = appDataBase.userTokenDao()
+    fun userTokenDAO(appDataBase: AppDatabase): UserTokenDAO = appDataBase.userTokenDao()
 
     @Provides
-    fun accountDAO(appDataBase: AppDatabase) :AccountDAO = appDataBase.accountDao()
+    fun accountDAO(appDataBase: AppDatabase): AccountDAO = appDataBase.accountDao()
 
     @Provides
-    fun userSessionDAO(appDataBase: AppDatabase) :UserSessionDAO = appDataBase.userSessionDao()
+    fun userSessionDAO(appDataBase: AppDatabase): UserSessionDAO = appDataBase.userSessionDao()
 
 
     @Provides
-    fun popularShowDao(appDataBase: AppDatabase) :PopularShowsDao = appDataBase.popularShowsDao()
+    fun popularShowDao(appDataBase: AppDatabase): PopularShowsDao = appDataBase.popularShowsDao()
 
     @Provides
-    fun remoteKeyDao(appDataBase: AppDatabase) :RemoteKeyDao = appDataBase.remoteKeyDao()
+    fun remoteKeyDao(appDataBase: AppDatabase): RemoteKeyDao = appDataBase.remoteKeyDao()
 }

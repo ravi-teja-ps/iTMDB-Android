@@ -65,7 +65,7 @@ class PopularShowsViewModelTest : BaseTestClass() {
             popularShowsUseCase.fetchPopularShows().test {
 
                 //Assertion
-                assertEquals(awaitItem(),mockPagingDataFlow)
+                assertEquals(awaitItem(), mockPagingDataFlow)
                 cancelAndIgnoreRemainingEvents()
             }
         }

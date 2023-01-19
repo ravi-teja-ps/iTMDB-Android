@@ -16,14 +16,14 @@ class PopularShowsRepositoryImpl @OptIn(ExperimentalPagingApi::class)
     private val popularShowsDao: PopularShowsDao,
     private val mapper: PopularShowEntityModelMapper,
     private val dispatcherProvider: DispatcherProvider
-): PopularShowsRepository {
+) : PopularShowsRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getPopularShows() =
-         Pager(config = PagingConfig(1), remoteMediator = remoteMediator, pagingSourceFactory = {
+        Pager(config = PagingConfig(1), remoteMediator = remoteMediator, pagingSourceFactory = {
             popularShowsDao.pagingSource()
-        })  .flow.map {
-            it.map {entity->
+        }).flow.map {
+            it.map { entity ->
                 mapper.map(entity)
             }
         }.flowOn(dispatcherProvider.io)

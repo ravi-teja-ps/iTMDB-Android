@@ -5,9 +5,10 @@ import com.imoviedb.app.data.dto.base.mapper.Mapper
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import javax.inject.Inject
 
-class GuestAutTokenDtoDomainMapper @Inject constructor() : Mapper<GuestAuthCreateTokenDto,GuestAuthCreateTokenDomainModel> {
+class GuestAutTokenDtoDomainMapper @Inject constructor() :
+    Mapper<GuestAuthCreateTokenDto, GuestAuthCreateTokenDomainModel> {
 
-    override fun map(from : GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
+    override fun map(from: GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
         return GuestAuthCreateTokenDomainModel().apply {
             requestToken = from.requestToken
             expiresAt = from.expiresAt

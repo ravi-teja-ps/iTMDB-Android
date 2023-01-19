@@ -38,6 +38,9 @@ class AccountModelEntityMapperTest : BaseMapperTest() {
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(accountModelEntityMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            accountModelEntityMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

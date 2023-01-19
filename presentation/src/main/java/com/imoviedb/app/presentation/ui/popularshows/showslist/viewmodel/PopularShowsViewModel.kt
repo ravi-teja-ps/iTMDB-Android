@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularShowsViewModel @Inject constructor(
-    private val popularShowsUseCase: PopularShowsUseCase) : BaseViewModel() {
+    private val popularShowsUseCase: PopularShowsUseCase
+) : BaseViewModel() {
     private val _data = MutableStateFlow<State>(
         State.Loading(
             true

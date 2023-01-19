@@ -85,9 +85,9 @@ class LoginRepositoryTest : BaseDataTestClass() {
             //Arrange
             val mockInputData = mock(AuthenticationBody::class.java)
             val userTokenEntityMock = mock(Response::class.java)
-            val requestBody =  authenticationBodyMapper.map(mockInputData)
+            val requestBody = authenticationBodyMapper.map(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService)
-                .authenticateUserDetails(requestBody =requestBody)
+                .authenticateUserDetails(requestBody = requestBody)
 
             //Act
             loginRepository.validateUserCredential(mockInputData)
@@ -95,7 +95,7 @@ class LoginRepositoryTest : BaseDataTestClass() {
 
             //Assertion
             verify(authenticationService).authenticateUserDetails(requestBody = requestBody)
-            assertEquals(response,userTokenEntityMock)
+            assertEquals(response, userTokenEntityMock)
         }
     }
 

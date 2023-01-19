@@ -6,10 +6,10 @@ import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import kotlinx.coroutines.flow.Flow
 
 
-interface LoginRepository  {
+interface LoginRepository {
 
-    suspend fun validateUserCredential(authenticationBody: AuthenticationBody) : Flow<AccessTokenValidateDomainModel>
+    suspend fun validateUserCredential(authenticationBody: AuthenticationBody): Flow<AccessTokenValidateDomainModel>
 
-    suspend fun createNewSessionIDForUser(requestBody: HashMap<String,String>) : Flow<NewSessionDomainModel>
+    suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>): Flow<NewSessionDomainModel>
 
 }

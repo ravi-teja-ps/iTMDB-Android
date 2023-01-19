@@ -5,20 +5,20 @@ import com.imoviedb.app.data.dto.popular.ShowDto
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import javax.inject.Inject
 
-class PopularShowDtoDomainMapper @Inject constructor() : Mapper<ShowDto,ShowDomainModel> {
+class PopularShowDtoDomainMapper @Inject constructor() : Mapper<ShowDto, ShowDomainModel> {
 
-    override fun map(from: ShowDto) : ShowDomainModel {
+    override fun map(from: ShowDto): ShowDomainModel {
         return ShowDomainModel().apply {
             adult = from.adult
             id = from.id ?: -1
             title = from.title
             originalLanguage = from.originalLanguage
-            originalTitle  = from.originalTitle
+            originalTitle = from.originalTitle
             overview = from.overview
             posterPath = from.posterPath
             backdropPath = from.backdropPath
             mediaType = from.mediaType
-            popularity= from.popularity
+            popularity = from.popularity
             releaseDate = from.releaseDate
             video = from.video
             voteAverage = from.voteAverage

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
 
-    suspend fun getAccountInfo(sessionId : String ) : Flow<AccountDomainModel>
+    suspend fun getAccountInfo(sessionId: String): Flow<AccountDomainModel>
 
-    suspend fun getStoredSessionId() : Flow<String>
+    suspend fun getStoredSessionId(): Flow<String>
 }

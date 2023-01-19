@@ -5,6 +5,6 @@ import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import kotlinx.coroutines.flow.Flow
 
 interface PopularShowsUseCase {
-    suspend fun  fetchPopularShows() : Flow<PagingData<ShowDomainModel>>
+    suspend fun fetchPopularShows(): Flow<PagingData<ShowDomainModel>>
 }
 

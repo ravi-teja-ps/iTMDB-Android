@@ -5,15 +5,16 @@ import com.imoviedb.app.data.dto.utils.KeyUtils
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import javax.inject.Inject
 
-class AuthenticationBodyMapper @Inject constructor() : Mapper<AuthenticationBody,HashMap<String,String>>{
+class AuthenticationBodyMapper @Inject constructor() :
+    Mapper<AuthenticationBody, HashMap<String, String>> {
 
     override fun map(from: AuthenticationBody): HashMap<String, String> {
         return HashMap<String, String>().apply {
-            with(from){
-                put(KeyUtils.USERNAME_KEY ,userName)
-                put(KeyUtils.PASSWORD_KEY,password)
-                put(KeyUtils.REQUEST_TOKEN_KEY,requestToken)
+            with(from) {
+                put(KeyUtils.USERNAME_KEY, userName)
+                put(KeyUtils.PASSWORD_KEY, password)
+                put(KeyUtils.REQUEST_TOKEN_KEY, requestToken)
             }
         }
-     }
+    }
 }

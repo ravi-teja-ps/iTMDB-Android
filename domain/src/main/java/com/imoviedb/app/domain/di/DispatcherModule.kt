@@ -16,5 +16,5 @@ import dagger.hilt.components.SingletonComponent
 abstract class DispatcherModule {
 
     @Binds
-   abstract fun defaultDispatcher(defaultDispatcherProvider: DefaultDispatcherProvider) : DispatcherProvider
+    abstract fun defaultDispatcher(defaultDispatcherProvider: DefaultDispatcherProvider): DispatcherProvider
 }

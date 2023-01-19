@@ -11,13 +11,13 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.mockito.Mockito
 
-class PopularShowDtoDomainMapperTest :BaseMapperTest() {
+class PopularShowDtoDomainMapperTest : BaseMapperTest() {
 
     //class under test
     private lateinit var popularShowDtoDomainMapper: PopularShowDtoDomainMapper
 
     override fun postSetup() {
-        popularShowDtoDomainMapper= PopularShowDtoDomainMapper()
+        popularShowDtoDomainMapper = PopularShowDtoDomainMapper()
     }
 
     @Test
@@ -39,6 +39,9 @@ class PopularShowDtoDomainMapperTest :BaseMapperTest() {
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(popularShowDtoDomainMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            popularShowDtoDomainMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

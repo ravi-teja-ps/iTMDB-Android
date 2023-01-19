@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetUserSessionUseCase {
 
-    suspend fun getUserSession() : Flow<String>
+    suspend fun getUserSession(): Flow<String>
 }

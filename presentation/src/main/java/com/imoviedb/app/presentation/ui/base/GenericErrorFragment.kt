@@ -13,7 +13,7 @@ import com.imoviedb.app.presentation.databinding.FragmentGenericErrorBinding
  */
 class GenericErrorFragment : Fragment() {
     private var statusCode: Int? = null
-    private var message:String? = null
+    private var message: String? = null
 
     private lateinit var errorFragmentBinding: FragmentGenericErrorBinding
 

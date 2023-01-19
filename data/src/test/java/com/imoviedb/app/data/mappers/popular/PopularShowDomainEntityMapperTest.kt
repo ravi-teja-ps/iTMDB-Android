@@ -38,6 +38,9 @@ class PopularShowDomainEntityMapperTest : BaseMapperTest() {
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(popularShowDomainEntityMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            popularShowDomainEntityMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

@@ -13,7 +13,9 @@ interface AccountService {
      */
 
     @GET("account")
-    suspend fun account(@Query("api_key") api_key:String = ApiServiceUtils.API_KEY_V3,
-                        @Query("session_id") session_id: String) : Response<AccountDto>
+    suspend fun account(
+        @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
+        @Query("session_id") session_id: String
+    ): Response<AccountDto>
 
 }

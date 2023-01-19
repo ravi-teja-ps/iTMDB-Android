@@ -26,7 +26,7 @@ class SplashFragment : BaseFragment() {
     override val titleId: Int = R.string.app_name
 
     //View model for initial token
-    private val splashViewModel : SplashScreenViewModel by viewModels()
+    private val splashViewModel: SplashScreenViewModel by viewModels()
 
     //view binding for XML
     private var _binder: FragmentSplashBinding? = null
@@ -51,10 +51,11 @@ class SplashFragment : BaseFragment() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 splashViewModel.loadAccessTokenWithoutSession()
-                splashViewModel.splashScreenState.collect{
-                    when(it){
+                splashViewModel.splashScreenState.collect {
+                    when (it) {
                         is State.Loading -> {
-                            binding.progressBar.visibility = if(it.isLoading) View.VISIBLE else View.GONE
+                            binding.progressBar.visibility =
+                                if (it.isLoading) View.VISIBLE else View.GONE
                         }
 
                         is State.OnComplete -> {
@@ -62,17 +63,17 @@ class SplashFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode,it.errorMessage)
+                            showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                         }
 
-                        is State.OnCompletePagedData -> {  }
+                        is State.OnCompletePagedData -> {}
                     }
                 }
             }
         }
     }
 
-    private fun navigateToLoginScreen(){
+    private fun navigateToLoginScreen() {
         findNavController().navigate(R.id.action_splashFragment_to_loginScreenFragment)
     }
 

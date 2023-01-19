@@ -47,7 +47,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockPassword = "Hello"
-            val mockUserId ="hello"
+            val mockUserId = "hello"
 
             //Act
             loginViewModel.setPassword(mockPassword)
@@ -66,7 +66,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockPassword = "Hello"
-            val mockUserId =""
+            val mockUserId = ""
 
             //Act
             loginViewModel.setPassword(mockPassword)
@@ -85,7 +85,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockPassword = ""
-            val mockUserId =""
+            val mockUserId = ""
 
             //Act
             loginViewModel.setPassword(mockPassword)
@@ -165,8 +165,8 @@ class LoginViewModelTest : BaseTestClass() {
             //Act
             fakeGuestTokenUseCase.createTokenForSession().collect {
 
-             //Assertion
-             Assert.assertEquals(mockedInput, it)
+                //Assertion
+                Assert.assertEquals(mockedInput, it)
             }
         }
     }

@@ -5,7 +5,7 @@ import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainMo
 import kotlinx.coroutines.flow.Flow
 
 interface LoginUserUseCase {
-     suspend fun validateUserCredential(authenticationBody: AuthenticationBody): Flow<AccessTokenValidateDomainModel>
+    suspend fun validateUserCredential(authenticationBody: AuthenticationBody): Flow<AccessTokenValidateDomainModel>
 }
 
 

@@ -13,6 +13,6 @@ data class RemoteKey(
     @ColumnInfo(name = "current_page")
     val currentPage: Int,
 
-    @ColumnInfo(name ="last_page")
+    @ColumnInfo(name = "last_page")
     val lastPage: Int
 )

@@ -24,7 +24,7 @@ abstract class BaseTestClass {
     abstract fun postSetup()
 
     @Before
-    fun initTestWithPrerequisites(){
+    fun initTestWithPrerequisites() {
         dispatcherProvider = TestDispatcherProvider()
         MockitoAnnotations.initMocks(this)
         postSetup()

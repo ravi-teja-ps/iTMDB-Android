@@ -14,19 +14,20 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor(private val accountService: AccountService,
-                                                private val accountDAO: AccountDAO,
-                                                private val dtoModelMapper : AccountDtoModelMapper,
-                                                private val modelEntityMapper: AccountModelEntityMapper,
-                                                private val errorModelMapper: AccountErrorModelMapper,
-                                                private val userSessionDAO: UserSessionDAO,
-                                                private val dispatcherProvider: DispatcherProvider
+class AccountRepositoryImpl @Inject constructor(
+    private val accountService: AccountService,
+    private val accountDAO: AccountDAO,
+    private val dtoModelMapper: AccountDtoModelMapper,
+    private val modelEntityMapper: AccountModelEntityMapper,
+    private val errorModelMapper: AccountErrorModelMapper,
+    private val userSessionDAO: UserSessionDAO,
+    private val dispatcherProvider: DispatcherProvider
 ) : AccountRepository {
 
-    override suspend fun getAccountInfo(sessionId : String ) =  flow {
+    override suspend fun getAccountInfo(sessionId: String) = flow {
 
         val response = accountService.account(session_id = sessionId)
-        if(response.isSuccessful && response.body()!= null){
+        if (response.isSuccessful && response.body() != null) {
             response.body()?.let {
                 //Ensure to delete previous data if any. Can be more ID specific
                 //Like usage of Primary key. See update works instead of delete
@@ -35,14 +36,13 @@ class AccountRepositoryImpl @Inject constructor(private val accountService: Acco
                 accountDAO.insertAccountInfo(modelEntityMapper.map(domainModel))
                 emit(domainModel)
             }
-        }
-        else {
+        } else {
             val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
             emit(errorModelMapper.map(errorModel))
         }
     }.flowOn(dispatcherProvider.io)
 
-    override suspend fun getStoredSessionId() =  flow {
-        emit(userSessionDAO.getSession().session_id)
+    override suspend fun getStoredSessionId() = flow {
+        emit(userSessionDAO.getSession().sessionId)
     }.flowOn(dispatcherProvider.default)
 }

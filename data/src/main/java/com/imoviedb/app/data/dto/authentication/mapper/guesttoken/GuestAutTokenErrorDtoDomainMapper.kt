@@ -5,13 +5,14 @@ import com.imoviedb.app.data.dto.base.mapper.Mapper
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import javax.inject.Inject
 
-class GuestAutTokenErrorDtoDomainMapper @Inject constructor() : Mapper<ErrorResponseDto,GuestAuthCreateTokenDomainModel> {
+class GuestAutTokenErrorDtoDomainMapper @Inject constructor() :
+    Mapper<ErrorResponseDto, GuestAuthCreateTokenDomainModel> {
 
-    override fun map(input: ErrorResponseDto): GuestAuthCreateTokenDomainModel {
+    override fun map(from: ErrorResponseDto): GuestAuthCreateTokenDomainModel {
         return GuestAuthCreateTokenDomainModel().apply {
-            statusCode = input.statusCode
-            success =   input.success
-            statusMessage = input.statusMessage
+            statusCode = from.statusCode
+            success = from.success
+            statusMessage = from.statusMessage
         }
     }
 }

@@ -8,12 +8,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class PopularShowDetailsRepositoryImpl @Inject constructor(private val popularShowsDao: PopularShowsDao,
-                                                           private val entityModelMapper: PopularShowEntityModelMapper,
-                                                           private val dispatcherProvider: DispatcherProvider
+class PopularShowDetailsRepositoryImpl @Inject constructor(
+    private val popularShowsDao: PopularShowsDao,
+    private val entityModelMapper: PopularShowEntityModelMapper,
+    private val dispatcherProvider: DispatcherProvider
 ) : PopularShowDetailsRepository {
 
-    override suspend fun getPopularShowDetails(id : Int) = flow {
+    override suspend fun getPopularShowDetails(id: Int) = flow {
         val showDetails = popularShowsDao.fetchShowById(id = id)
         emit(entityModelMapper.map(showDetails))
         // Add else{ } for Future enhance the ui by making a new call to

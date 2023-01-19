@@ -68,7 +68,10 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
             //Assertion
-            assertEquals(popularShowDetailsViewModel.data.value, State.OnComplete(mockShowObjectDto))
+            assertEquals(
+                popularShowDetailsViewModel.data.value,
+                State.OnComplete(mockShowObjectDto)
+            )
         }
     }
 }

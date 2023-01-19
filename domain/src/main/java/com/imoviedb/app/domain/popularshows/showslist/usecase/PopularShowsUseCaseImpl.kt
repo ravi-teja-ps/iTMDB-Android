@@ -6,6 +6,8 @@ import com.imoviedb.app.domain.popularshows.showslist.repository.PopularShowsRep
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PopularShowsUseCaseImpl @Inject constructor(private val popularShowsRepository: PopularShowsRepository) :PopularShowsUseCase{
-    override suspend fun fetchPopularShows(): Flow<PagingData<ShowDomainModel>>  = popularShowsRepository.getPopularShows()
+class PopularShowsUseCaseImpl @Inject constructor(private val popularShowsRepository: PopularShowsRepository) :
+    PopularShowsUseCase {
+    override suspend fun fetchPopularShows(): Flow<PagingData<ShowDomainModel>> =
+        popularShowsRepository.getPopularShows()
 }

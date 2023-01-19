@@ -13,65 +13,65 @@ import com.imoviedb.app.presentation.R
  * Base fragment to have common reusable functions across root activity screens
  */
 abstract class BaseFragment : Fragment() {
-    abstract  val hasBottomNavigation : Boolean
-    abstract  val isDetailScreen: Boolean
-    abstract  val showTitleBar : Boolean
-    abstract  val titleId : Int
-    private val title :String by lazy { resources.getString(titleId) }
+    abstract val hasBottomNavigation: Boolean
+    abstract val isDetailScreen: Boolean
+    abstract val showTitleBar: Boolean
+    abstract val titleId: Int
+    private val title: String by lazy { resources.getString(titleId) }
     abstract fun onDestroyBinding()
 
     /** show bottom navigation on selected tab if enabled in respective fragment */
-    private fun showBottomNavigationWithSelectedTab(){
+    private fun showBottomNavigationWithSelectedTab() {
         (activity as? RootActivity)?.let {
             it.findViewById<BottomNavigationView>(R.id.bottomNavigation).visibility =
-                if(hasBottomNavigation) View.VISIBLE else View.GONE
+                if (hasBottomNavigation) View.VISIBLE else View.GONE
         }
     }
 
     //Show a error fragment in current flow
-    fun showErrorScreenWithInfo(code : Int , message: String?){
+    fun showErrorScreenWithInfo(code: Int, message: String?) {
         val bundle = Bundle().apply {
-            if(message != null){
-                putString(GenericErrorFragment.ERROR_MESG_KEY,message)
+            if (message != null) {
+                putString(GenericErrorFragment.ERROR_MESG_KEY, message)
             }
-            putInt(GenericErrorFragment.ERROR_CODE_TYPE,code)
+            putInt(GenericErrorFragment.ERROR_CODE_TYPE, code)
         }
-        findNavController().navigate(R.id.genericErrorFragment,bundle)
+        findNavController().navigate(R.id.genericErrorFragment, bundle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(showTitleBar) {
+        if (showTitleBar) {
             showToolbar()
-        }else{
+        } else {
             hideToolBar()
         }
 
         showBottomNavigationWithSelectedTab()
     }
 
-    private fun showToolbar(){
+    private fun showToolbar() {
         (activity as? RootActivity)?.let {
             val toolbar: Toolbar = it.findViewById(R.id.toolbar) as Toolbar
             toolbar.visibility = View.VISIBLE
             toolbar.title = title
-            if(isDetailScreen) {
+            if (isDetailScreen) {
                 toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
-            }else{
-                toolbar.navigationIcon  = null
+            } else {
+                toolbar.navigationIcon = null
             }
         }
     }
 
-    private fun hideToolBar(){
+    private fun hideToolBar() {
         (activity as? RootActivity)?.let {
             (it.findViewById(R.id.toolbar) as Toolbar).visibility = View.GONE
         }
     }
 
-    fun updateToolbarTitle(headerTitle: String?){
+    fun updateToolbarTitle(headerTitle: String?) {
         (activity as? RootActivity)?.let {
-            (it.findViewById(R.id.toolbar) as Toolbar).title = headerTitle?:title
+            (it.findViewById(R.id.toolbar) as Toolbar).title = headerTitle ?: title
         }
     }
 

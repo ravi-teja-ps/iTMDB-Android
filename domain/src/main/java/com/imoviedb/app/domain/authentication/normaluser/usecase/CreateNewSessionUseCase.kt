@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CreateNewSessionUseCase {
 
-    suspend fun createNewSession(validUserAccessToken: HashMap<String,String>) : Flow<NewSessionDomainModel>
+    suspend fun createNewSession(validUserAccessToken: HashMap<String, String>): Flow<NewSessionDomainModel>
 }

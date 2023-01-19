@@ -5,13 +5,14 @@ import com.imoviedb.app.data.dto.base.mapper.Mapper
 import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import javax.inject.Inject
 
-class NewSessionErrorDtoModelMapper @Inject constructor() : Mapper<ErrorResponseDto,NewSessionDomainModel> {
+class NewSessionErrorDtoModelMapper @Inject constructor() :
+    Mapper<ErrorResponseDto, NewSessionDomainModel> {
 
-    override fun map(errorDto: ErrorResponseDto): NewSessionDomainModel{
-        return  NewSessionDomainModel().apply {
-            success = errorDto.success
-            statusCode = errorDto.statusCode
-            statusMessage = errorDto.statusMessage
+    override fun map(from: ErrorResponseDto): NewSessionDomainModel {
+        return NewSessionDomainModel().apply {
+            success = from.success
+            statusCode = from.statusCode
+            statusMessage = from.statusMessage
         }
     }
 }

@@ -5,27 +5,28 @@ import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import javax.inject.Inject
 
-class PopularShowDomainEntityMapper @Inject constructor(): Mapper<ShowDomainModel,ShowEntityModel>{
+class PopularShowDomainEntityMapper @Inject constructor() :
+    Mapper<ShowDomainModel, ShowEntityModel> {
 
-    override fun map(show: ShowDomainModel) : ShowEntityModel {
+    override fun map(from: ShowDomainModel): ShowEntityModel {
         return ShowEntityModel().apply {
-            adult = show.adult
-            id = show.id ?: -1
-            title = show.title
-            originalLanguage = show.originalLanguage
-            originalTitle  = show.originalTitle
-            overview = show.overview
-            posterPath = show.posterPath
-            backdrop_path = show.backdropPath
-            mediaType = show.mediaType
-            popularity= show.popularity
-            releaseDate = show.releaseDate
-            video = show.video
-            voteAverage = show.voteAverage
-            voteCount = show.voteCount
-            name = show.name
-            originalName = show.originalName
-            firstAirDate = show.firstAirDate
+            adult = from.adult
+            id = from.id ?: -1
+            title = from.title
+            originalLanguage = from.originalLanguage
+            originalTitle = from.originalTitle
+            overview = from.overview
+            posterPath = from.posterPath
+            backdrop_path = from.backdropPath
+            mediaType = from.mediaType
+            popularity = from.popularity
+            releaseDate = from.releaseDate
+            video = from.video
+            voteAverage = from.voteAverage
+            voteCount = from.voteCount
+            name = from.name
+            originalName = from.originalName
+            firstAirDate = from.firstAirDate
         }
     }
 }

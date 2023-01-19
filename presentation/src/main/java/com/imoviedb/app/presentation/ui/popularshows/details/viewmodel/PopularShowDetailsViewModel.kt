@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularShowDetailsViewModel @Inject constructor(
-    private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase) : BaseViewModel() {
+    private val getPopularShowDetailsUseCase: GetPopularShowDetailsUseCase
+) : BaseViewModel() {
     private val _data = MutableStateFlow<State>(
         State.Loading(
             true
@@ -31,8 +32,8 @@ class PopularShowDetailsViewModel @Inject constructor(
                 .catch {
                     data.value = State.OnError(ErrorCodes.INTERNAL)
                 }.collectLatest {
-                data.value = State.OnComplete(it)
-            }
+                    data.value = State.OnComplete(it)
+                }
         }
     }
 }

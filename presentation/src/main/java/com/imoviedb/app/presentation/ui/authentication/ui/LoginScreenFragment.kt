@@ -50,7 +50,7 @@ class LoginScreenFragment : BaseFragment() {
 
     private fun initViews() {
 
-        with(binding){
+        with(binding) {
             emailEditField.editText?.setText(loginViewModel.userName.value)
             passwordEditField.editText?.setText(loginViewModel.password.value)
 
@@ -65,15 +65,15 @@ class LoginScreenFragment : BaseFragment() {
     //Function to reset error inputs post re-edit
     private fun setErrorHandlersForInputs() {
         setSubmitButtonObserver()
-        with(binding){
-            with(emailEditField){
-               editText?.doOnTextChanged { text, _, _, _ ->
-                   isErrorEnabled = false
-                   loginViewModel.setUserId(text.toString())
-               }
+        with(binding) {
+            with(emailEditField) {
+                editText?.doOnTextChanged { text, _, _, _ ->
+                    isErrorEnabled = false
+                    loginViewModel.setUserId(text.toString())
+                }
             }
 
-            with(passwordEditField){
+            with(passwordEditField) {
                 editText?.doOnTextChanged { text, _, _, _ ->
                     isErrorEnabled = false
                     loginViewModel.setPassword(text.toString())

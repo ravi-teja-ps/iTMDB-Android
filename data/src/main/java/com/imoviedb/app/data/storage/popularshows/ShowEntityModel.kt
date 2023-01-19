@@ -5,61 +5,61 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "PopularShows")
-class ShowEntityModel{
+class ShowEntityModel {
 
-    @ColumnInfo(name ="adult")
+    @ColumnInfo(name = "adult")
     var adult: Boolean? = null
 
     @PrimaryKey(autoGenerate = true)
-    var insertOrder : Int=0
+    var insertOrder: Int = 0
 
-    @ColumnInfo(name ="id")
+    @ColumnInfo(name = "id")
     var id: Int = -1
 
-    @ColumnInfo(name ="title")
+    @ColumnInfo(name = "title")
     var title: String? = null
 
-    @ColumnInfo(name ="original_language")
+    @ColumnInfo(name = "original_language")
     var originalLanguage: String? = null
 
-    @ColumnInfo(name ="original_title")
+    @ColumnInfo(name = "original_title")
     var originalTitle: String? = null
 
-    @ColumnInfo(name ="overview")
+    @ColumnInfo(name = "overview")
     var overview: String? = null
 
-    @ColumnInfo(name ="poster_path")
+    @ColumnInfo(name = "poster_path")
     var posterPath: String? = null
 
-    @ColumnInfo(name ="backdrop_path")
+    @ColumnInfo(name = "backdrop_path")
     var backdrop_path: String? = null
 
 
-    @ColumnInfo(name ="media_type")
+    @ColumnInfo(name = "media_type")
     var mediaType: String? = null
 
-    @ColumnInfo(name ="popularity")
+    @ColumnInfo(name = "popularity")
     var popularity: Double? = null
 
-    @ColumnInfo(name ="release_date")
+    @ColumnInfo(name = "release_date")
     var releaseDate: String? = null
 
-    @ColumnInfo(name ="video")
+    @ColumnInfo(name = "video")
     var video: Boolean? = null
 
-    @ColumnInfo(name ="vote_average")
+    @ColumnInfo(name = "vote_average")
     var voteAverage: Double? = null
 
-    @ColumnInfo(name ="vote_count")
+    @ColumnInfo(name = "vote_count")
     var voteCount: Int? = null
 
-    @ColumnInfo(name ="name")
+    @ColumnInfo(name = "name")
     var name: String? = null
 
-    @ColumnInfo(name ="original_name")
+    @ColumnInfo(name = "original_name")
     var originalName: String? = null
 
-    @ColumnInfo(name ="first_air_date")
+    @ColumnInfo(name = "first_air_date")
     var firstAirDate: String? = null
 
 }

@@ -1,6 +1,5 @@
 package com.imoviedb.app.data.repository.authentication.normaluser
 
-import com.imoviedb.app.data.dto.base.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
@@ -8,6 +7,7 @@ import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.Authenticatio
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
+import com.imoviedb.app.data.dto.base.ErrorResponseDto
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.networking.utils.toErrorModel
 import com.imoviedb.app.data.storage.authentication.UserSessionDAO
@@ -34,8 +34,10 @@ class LoginRepositoryImpl @Inject constructor(
 ) : com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository {
 
     override suspend fun validateUserCredential(authenticationBody: AuthenticationBody) = flow {
-        val response = authenticationService.authenticateUserDetails(requestBody = authenticationBodyMapper.map(authenticationBody))
-        if(response.isSuccessful && response.body() != null){
+        val response = authenticationService.authenticateUserDetails(
+            requestBody = authenticationBodyMapper.map(authenticationBody)
+        )
+        if (response.isSuccessful && response.body() != null) {
             response.body()?.let {
                 it.requestToken?.let { _ ->
                     val domainModel = accessTokenDtoModelMapper.map(it)
@@ -43,7 +45,7 @@ class LoginRepositoryImpl @Inject constructor(
                     emit(domainModel)
                 }
             }
-        }else{
+        } else {
             val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
             emit(accessTokenErrorModelMapper.map(errorModel))
         }
@@ -53,7 +55,7 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>) =
         flow {
             val response = authenticationService.createSessionID(requestBody = requestBody)
-            if(response.isSuccessful && response.body() != null){
+            if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
                     it.sessionId?.let { _ ->
                         userSessionDAO.removeAllSessions()
@@ -62,7 +64,7 @@ class LoginRepositoryImpl @Inject constructor(
                         emit(domainModel)
                     }
                 }
-            }else{
+            } else {
                 val errorModel = response.errorBody()!!.toErrorModel<ErrorResponseDto>()
                 emit(newSessionErrorDtoModelMapper.map(errorModel))
             }

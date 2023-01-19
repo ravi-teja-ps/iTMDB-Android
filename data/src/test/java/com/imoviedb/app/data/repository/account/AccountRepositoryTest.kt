@@ -60,7 +60,8 @@ class AccountRepositoryTest : BaseDataTestClass() {
             //Arrange
             val mockedSession = "Zi1ao2i3i"
             val mockedAccountModel = mock(Response::class.java)
-            doReturn(mockedAccountModel).`when`(accountService).account(session_id = mockedSession) //Stubbing
+            doReturn(mockedAccountModel).`when`(accountService)
+                .account(session_id = mockedSession) //Stubbing
 
             //Act
             accountRepository.getAccountInfo(mockedSession)
@@ -82,6 +83,6 @@ class AccountRepositoryTest : BaseDataTestClass() {
 
         //Assertion
         verify(userSessionDAO).getSession()
-        assertEquals(userSessionDAO.getSession().session_id, mockedSessionEntity.session_id)
+        assertEquals(userSessionDAO.getSession().sessionId, mockedSessionEntity.sessionId)
     }
 }

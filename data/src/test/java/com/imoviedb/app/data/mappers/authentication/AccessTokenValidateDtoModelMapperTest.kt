@@ -36,6 +36,9 @@ class AccessTokenValidateDtoModelMapperTest : BaseMapperTest() {
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(accessTokenValidateDtoModelMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            accessTokenValidateDtoModelMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

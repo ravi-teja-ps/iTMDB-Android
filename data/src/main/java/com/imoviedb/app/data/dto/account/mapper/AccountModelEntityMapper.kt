@@ -5,9 +5,9 @@ import com.imoviedb.app.data.storage.account.AccountEntity
 import com.imoviedb.app.domain.account.model.AccountDomainModel
 import javax.inject.Inject
 
-class AccountModelEntityMapper @Inject constructor(): Mapper<AccountDomainModel,AccountEntity> {
+class AccountModelEntityMapper @Inject constructor() : Mapper<AccountDomainModel, AccountEntity> {
 
-   override fun map(from: AccountDomainModel) : AccountEntity {
+    override fun map(from: AccountDomainModel): AccountEntity {
         return AccountEntity().apply {
             id = from.id ?: -1
             name = from.name

@@ -9,7 +9,7 @@ import javax.inject.Inject
  * to execute read/write and commit transaction. App database sticks to data module only
  *
  */
-class DBTransactionHandler @Inject constructor(private val appDatabase: AppDatabase){
+class DBTransactionHandler @Inject constructor(private val appDatabase: AppDatabase) {
     suspend fun <T> executeTransaction(codeBlock: suspend () -> T): T {
         return appDatabase.withTransaction(codeBlock)
     }

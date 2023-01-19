@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakePopularShowsUseCase : PopularShowsUseCase {
-     private val flow = MutableStateFlow(PagingData.from(listOf(ShowDomainModel())))
+    private val flow = MutableStateFlow(PagingData.from(listOf(ShowDomainModel())))
 
     override suspend fun fetchPopularShows(): Flow<PagingData<ShowDomainModel>> {
         return flow

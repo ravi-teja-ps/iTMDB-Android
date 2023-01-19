@@ -23,7 +23,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
     private val createNewSessionUseCase: CreateNewSessionUseCase,
-    private val guestTokenUseCase: AuthenticationUseCase) : BaseViewModel() {
+    private val guestTokenUseCase: AuthenticationUseCase
+) : BaseViewModel() {
 
     //Ui status of login screen
     private val _loginScreenUiState = MutableStateFlow<State>(State.Loading(false))
@@ -32,17 +33,19 @@ class LoginViewModel @Inject constructor(
     //user name state
     private val _userName = MutableStateFlow("")
     val userName = _userName
+
     //pwd state
-    private val _password= MutableStateFlow("")
+    private val _password = MutableStateFlow("")
     val password = _password
 
     //Function to check if sign in button can be enabled or not
-    private val _signInButtonStatus : Flow<Boolean> = combine(_userName,_password){ userID, password ->
-        val regexString = "[a-zA-Z0-9_]+"
-        val userIdCorrect = userID.matches(regexString.toRegex())
-        val isPasswordCorrect = password.isNotEmpty()
-        return@combine userIdCorrect and isPasswordCorrect
-    }
+    private val _signInButtonStatus: Flow<Boolean> =
+        combine(_userName, _password) { userID, password ->
+            val regexString = "[a-zA-Z0-9_]+"
+            val userIdCorrect = userID.matches(regexString.toRegex())
+            val isPasswordCorrect = password.isNotEmpty()
+            return@combine userIdCorrect and isPasswordCorrect
+        }
 
     val signInButtonStatus = _signInButtonStatus
 
@@ -52,18 +55,19 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession().collect { savedUserTokenModel ->
-                    //Step 1  authenticate user name password of user for right accounts only
-                    if (savedUserTokenModel.success == true) {
-                        savedUserTokenModel.requestToken?.let {
-                            //Step 2 validate the received access_token for a new session_id and save it across
-                            val authenticationBody = AuthenticationBody(userName.value, password.value, it)
-                            validateUserCredential(authenticationBody)
-                        }
-                    } else {
-                        _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
-                        _loginScreenUiState.value = State.Loading(false)
+                //Step 1  authenticate user name password of user for right accounts only
+                if (savedUserTokenModel.success == true) {
+                    savedUserTokenModel.requestToken?.let {
+                        //Step 2 validate the received access_token for a new session_id and save it across
+                        val authenticationBody =
+                            AuthenticationBody(userName.value, password.value, it)
+                        validateUserCredential(authenticationBody)
                     }
+                } else {
+                    _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
+                    _loginScreenUiState.value = State.Loading(false)
                 }
+            }
         }
     }
 
@@ -82,7 +86,8 @@ class LoginViewModel @Inject constructor(
                         createNewSessionPostAuthentication(accessTokenAsMapBody)
                     }
                 } else {
-                    _loginScreenUiState.value = State.OnError(accessTokenModel.statusCode,accessTokenModel.statusMessage)
+                    _loginScreenUiState.value =
+                        State.OnError(accessTokenModel.statusCode, accessTokenModel.statusMessage)
                     _loginScreenUiState.value = State.Loading(false)
                 }
             }

@@ -42,7 +42,6 @@ class ShowDto : BaseResponseDto() {
     var mediaType: String? = null
 
 
-
     @SerializedName("popularity")
     @Expose
     var popularity: Double? = null

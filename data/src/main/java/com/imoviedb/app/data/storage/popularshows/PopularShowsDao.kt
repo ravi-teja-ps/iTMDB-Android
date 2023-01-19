@@ -19,6 +19,6 @@ interface PopularShowsDao {
     fun pagingSource(): PagingSource<Int, ShowEntityModel>
 
     @Query("SELECT * FROM PopularShows where id= :id")
-    suspend fun fetchShowById(id : Int) : ShowEntityModel
+    suspend fun fetchShowById(id: Int): ShowEntityModel
 
 }

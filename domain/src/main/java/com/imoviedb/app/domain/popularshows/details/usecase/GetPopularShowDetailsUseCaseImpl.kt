@@ -4,7 +4,8 @@ import com.imoviedb.app.domain.popularshows.details.repository.PopularShowDetail
 import javax.inject.Inject
 
 class GetPopularShowDetailsUseCaseImpl @Inject
-constructor(private val popularShowDetailsRepository: PopularShowDetailsRepository):GetPopularShowDetailsUseCase {
+constructor(private val popularShowDetailsRepository: PopularShowDetailsRepository) :
+    GetPopularShowDetailsUseCase {
     override suspend fun getPopularShowDetails(id: Int) =
         popularShowDetailsRepository.getPopularShowDetails(id)
 }

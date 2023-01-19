@@ -11,13 +11,13 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.mockito.Mockito
 
-class PopularShowEntityDomainMapperTest :BaseMapperTest() {
+class PopularShowEntityDomainMapperTest : BaseMapperTest() {
     //class under test
     private lateinit var popularShowEntityModelMapper: PopularShowEntityModelMapper
 
 
     override fun postSetup() {
-        popularShowEntityModelMapper= PopularShowEntityModelMapper()
+        popularShowEntityModelMapper = PopularShowEntityModelMapper()
     }
 
     @Test
@@ -26,7 +26,7 @@ class PopularShowEntityDomainMapperTest :BaseMapperTest() {
         val mockInput = Mockito.mock(ShowEntityModel::class.java)
 
         //Act
-        val returnObject =popularShowEntityModelMapper.map(mockInput)
+        val returnObject = popularShowEntityModelMapper.map(mockInput)
 
         //Assertion
         assertNotNull(returnObject)
@@ -35,6 +35,9 @@ class PopularShowEntityDomainMapperTest :BaseMapperTest() {
 
     override fun testInstanceOfSubject() {
         //Assertion only
-        MatcherAssert.assertThat(popularShowEntityModelMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            popularShowEntityModelMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class GuestAuthCreateTokenDto : BaseResponseDto(){
+class GuestAuthCreateTokenDto : BaseResponseDto() {
     @SerializedName("success")
     @Expose
     var success: Boolean? = null

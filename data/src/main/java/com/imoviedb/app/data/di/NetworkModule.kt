@@ -22,7 +22,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun retrofit(okHttpClient: OkHttpClient) : Retrofit {
+    fun retrofit(okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(ApiServiceUtils.BASE_URL)
@@ -33,11 +33,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun okhttpClient(networkInterceptor : NetworkInterceptorImpl, httpLogger : HttpLoggingInterceptor) : OkHttpClient {
+    fun okhttpClient(
+        networkInterceptor: NetworkInterceptorImpl,
+        httpLogger: HttpLoggingInterceptor
+    ): OkHttpClient {
         val okHttpClient = OkHttpClient()
             .newBuilder()
             .addInterceptor(networkInterceptor)
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             okHttpClient.addInterceptor(httpLogger)
         }
         return okHttpClient.build()
@@ -45,7 +48,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun okhttpLogging() : HttpLoggingInterceptor {
+    fun okhttpLogging(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
     }
 }

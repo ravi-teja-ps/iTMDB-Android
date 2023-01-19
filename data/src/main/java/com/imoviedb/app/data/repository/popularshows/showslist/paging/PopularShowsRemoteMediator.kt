@@ -41,7 +41,7 @@ class PopularShowsRemoteMediator @Inject constructor(
                 }
                 LoadType.PREPEND -> return MediatorResult.Success(true)
                 LoadType.APPEND -> {
-                    remoteKeyDao.get()?.let{
+                    remoteKeyDao.get()?.let {
                         if (it.currentPage == it.lastPage) {
                             return MediatorResult.Success(true)
                         }
@@ -57,10 +57,13 @@ class PopularShowsRemoteMediator @Inject constructor(
                         //writing to DB under queuing by Room db for synchronization
                         dbTransaction.executeTransaction {
                             remoteKeyDao.insertOrReplace(
-                                RemoteKey(currentPage = currentPage, lastPage = popularShowModel.totalPages!!)
+                                RemoteKey(
+                                    currentPage = currentPage,
+                                    lastPage = popularShowModel.totalPages!!
+                                )
                             )
                             val popularShowEntityList = mutableListOf<ShowEntityModel>()
-                            response.body()?.shows?.map {show: ShowDto ->
+                            response.body()?.shows?.map { show: ShowDto ->
                                 val domainModel = popularShowDtoDomainMapper.map(show)
                                 popularShowEntityList.add(
                                     popularShowDomainEntityMapper.map(domainModel)

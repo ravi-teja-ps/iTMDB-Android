@@ -27,9 +27,9 @@ class PopularShowDetailsFragment : BaseFragment() {
     override val showTitleBar: Boolean = true
     override val titleId: Int = R.string.movie_details_header
 
-    private var _binder : FragmentPopularShowDetailsBinding? = null
+    private var _binder: FragmentPopularShowDetailsBinding? = null
     private val binding get() = _binder!!
-    private val popularShowDetailsViewModel : PopularShowDetailsViewModel by viewModels()
+    private val popularShowDetailsViewModel: PopularShowDetailsViewModel by viewModels()
     private var showId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,7 @@ class PopularShowDetailsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binder= FragmentPopularShowDetailsBinding.inflate(inflater)
+        _binder = FragmentPopularShowDetailsBinding.inflate(inflater)
         return binding.root
     }
 
@@ -51,12 +51,12 @@ class PopularShowDetailsFragment : BaseFragment() {
         registerForData()
     }
 
-    private fun registerForData(){
+    private fun registerForData() {
         showId?.let {
             lifecycleScope.launchWhenCreated {
                 popularShowDetailsViewModel.getShowDetailsFromDB(it)
-                popularShowDetailsViewModel.data.collect{
-                    when(it){
+                popularShowDetailsViewModel.data.collect {
+                    when (it) {
                         is State.Loading -> {
 
                         }
@@ -64,15 +64,20 @@ class PopularShowDetailsFragment : BaseFragment() {
                             updateUiFromState(it.completionResult as ShowDomainModel)
                         }
                         is State.OnCompletePagedData -> {}
-                        is State.OnError -> {showErrorScreenWithInfo(code = it.errorCode,it.errorMessage)}
+                        is State.OnError -> {
+                            showErrorScreenWithInfo(code = it.errorCode, it.errorMessage)
+                        }
                     }
                 }
             }
         }
     }
-    private fun updateUiFromState(show: ShowDomainModel){
-        Picasso.with(context).load("${UrlUtils.IMAGE_URL_BACKDROP_PREFIX}${show.posterPath}").into(binding.moviePoster)
-        Picasso.with(context).load("${UrlUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdropPath}").into(binding.movieBackdrop)
+
+    private fun updateUiFromState(show: ShowDomainModel) {
+        Picasso.with(context).load("${UrlUtils.IMAGE_URL_BACKDROP_PREFIX}${show.posterPath}")
+            .into(binding.moviePoster)
+        Picasso.with(context).load("${UrlUtils.IMAGE_URL_BACKDROP_PREFIX}${show.backdropPath}")
+            .into(binding.movieBackdrop)
         binding.let {
             it.movieTitle.text = show.originalTitle
             it.movieReleaseDate.text = show.releaseDate

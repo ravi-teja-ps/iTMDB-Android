@@ -22,7 +22,7 @@ abstract class BaseMapperTest {
     }
 
     @Test
-    fun `test if given class is instance of Mapper interface`(){
+    fun `test if given class is instance of Mapper interface`() {
         testInstanceOfSubject()
     }
 }

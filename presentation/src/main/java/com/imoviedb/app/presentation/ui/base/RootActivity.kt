@@ -28,7 +28,7 @@ class RootActivity : BaseActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.popular_tab -> {
-                  findNavController(R.id.container).navigate(R.id.popularShowsFragment)
+                    findNavController(R.id.container).navigate(R.id.popularShowsFragment)
                 }
                 R.id.account_tab -> {
                     findNavController(R.id.container).navigate(R.id.accountFragment)

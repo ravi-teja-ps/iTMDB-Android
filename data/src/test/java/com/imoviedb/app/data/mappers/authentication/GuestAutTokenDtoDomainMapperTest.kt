@@ -36,6 +36,9 @@ class GuestAutTokenDtoDomainMapperTest : BaseMapperTest() {
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(guestAutTokenModelEntityMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            guestAutTokenModelEntityMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

@@ -32,12 +32,15 @@ class AccessTokenValidateModelEntityMapperTest : BaseMapperTest() {
 
         //Assertion
         assertNotNull(returnObject)
-        assertNotNull(returnObject.request_token)
+        assertNotNull(returnObject.requestToken)
         assertEquals(returnObject.success, mockInput.success)
         assertEquals(returnObject.expiresAt, mockInput.expiresAt)
     }
 
     override fun testInstanceOfSubject() {
-        MatcherAssert.assertThat(accessTokenValidateModelEntityMapper, CoreMatchers.instanceOf(Mapper::class.java))
+        MatcherAssert.assertThat(
+            accessTokenValidateModelEntityMapper,
+            CoreMatchers.instanceOf(Mapper::class.java)
+        )
     }
 }

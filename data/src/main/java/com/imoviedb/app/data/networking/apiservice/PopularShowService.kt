@@ -13,9 +13,11 @@ import retrofit2.http.Query
 interface PopularShowService {
 
     @GET("trending/{media_type}/{time_window}")
-    suspend fun popularShows(@Path("media_type") mediaType:String = "all",
-                             @Path("time_window") timeWindow:String = "day",
-                             @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
-                             @Query("page") page : Int) : Response<PopularShowsDto>
+    suspend fun popularShows(
+        @Path("media_type") mediaType: String = "all",
+        @Path("time_window") timeWindow: String = "day",
+        @Query("api_key") api_key: String = ApiServiceUtils.API_KEY_V3,
+        @Query("page") page: Int
+    ): Response<PopularShowsDto>
 
 }

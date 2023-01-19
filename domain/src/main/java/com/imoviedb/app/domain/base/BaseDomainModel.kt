@@ -1,13 +1,13 @@
 package com.imoviedb.app.domain.base
 
-open class BaseDomainModel{
+open class BaseDomainModel {
 
-     var statusCode: Int = 0
+    var statusCode: Int = 0
 
-     var statusMessage: String? = null
+    var statusMessage: String? = null
 
-     fun isSuccess() :Boolean{
-          return statusCode <= 0
-     }
+    fun isSuccess(): Boolean {
+        return statusCode <= 0
+    }
 
 }
