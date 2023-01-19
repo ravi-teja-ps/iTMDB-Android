@@ -7,21 +7,19 @@ import com.imoviedb.app.ui.BaseTestClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PopularShowDetailsViewModelTest : BaseTestClass() {
-
+    //Class to be tested
     private lateinit var popularShowDetailsViewModel: PopularShowDetailsViewModel
 
     @Mock
@@ -35,37 +33,42 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
 
     @Test
     fun popularShowsDetailsViewModel_flow_data_initial_value() {
+        //Arrange
+        val expectedState = State.Loading(true)
+
+        //Assertion
         assertNotNull(popularShowDetailsViewModel.data)
-        Assert.assertEquals(popularShowDetailsViewModel.data.value, State.Loading(true))
+        assertEquals(popularShowDetailsViewModel.data.value, expectedState)
     }
 
     @Test
     fun popularShowsDetailsViewModel_testUseCaseInvocation() {
         runTest {
+            //Arrange
             val mockAccountId = 100
 
+            //Act
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
-            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(
-                mockAccountId)
+            //Assert or Verify
+            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(mockAccountId)
         }
     }
 
     @Test
     fun popularShowsDetailsViewModel_getShowDetailsFromDB() {
         runTest {
+            //Arrange
             val mockAccountId = 100
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
-
-            Mockito.doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
+            doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
                 .getPopularShowDetails(mockAccountId)
 
+            //Act
             popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
 
-            Assert.assertEquals(
-                popularShowDetailsViewModel.data.value, State.OnComplete(mockShowObjectDto)
-            )
+            //Assertion
+            assertEquals(popularShowDetailsViewModel.data.value, State.OnComplete(mockShowObjectDto))
         }
-
     }
 }

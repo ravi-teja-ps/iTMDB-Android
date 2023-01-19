@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class LoginViewModelTest : BaseTestClass() {
 
+    //Class to be tested
     private lateinit var loginViewModel: LoginViewModel
 
     @Mock
@@ -36,55 +37,84 @@ class LoginViewModelTest : BaseTestClass() {
 
     @Before
     override fun postSetup() {
-         loginViewModel = LoginViewModel(
-            fakeLoginUserUseCase, fakeCreateNewSessionUseCase, fakeGuestTokenUseCase)
+        loginViewModel = LoginViewModel(
+            fakeLoginUserUseCase, fakeCreateNewSessionUseCase, fakeGuestTokenUseCase
+        )
     }
 
     @Test
-    fun `test sign in button  happy path`(){
+    fun `test sign in button  happy path`() {
         runTest {
-            loginViewModel.setPassword("hello")
-            loginViewModel.setUserId("hello")
+            //Arrange
+            val mockPassword = "Hello"
+            val mockUserId ="hello"
+
+            //Act
+            loginViewModel.setPassword(mockPassword)
+            loginViewModel.setUserId(mockUserId)
+
             loginViewModel.signInButtonStatus.test {
-              val result =  awaitItem()
+                val result = awaitItem()
+                //Assertion
                 Assert.assertEquals(result, true)
             }
         }
     }
 
     @Test
-    fun `test sign in button  failure username`(){
+    fun `test sign in button  failure username`() {
         runTest {
-            loginViewModel.setPassword("hello")
-            loginViewModel.setUserId("")
+            //Arrange
+            val mockPassword = "Hello"
+            val mockUserId =""
+
+            //Act
+            loginViewModel.setPassword(mockPassword)
+            loginViewModel.setUserId(mockUserId)
+
             loginViewModel.signInButtonStatus.test {
+
+                //Assertion
                 Assert.assertEquals(awaitItem(), false)
             }
         }
     }
 
     @Test
-    fun `test sign in button failure case`(){
+    fun `test sign in button failure case`() {
         runTest {
-            loginViewModel.setPassword("")
-            loginViewModel.setUserId("")
+            //Arrange
+            val mockPassword = ""
+            val mockUserId =""
+
+            //Act
+            loginViewModel.setPassword(mockPassword)
+            loginViewModel.setUserId(mockUserId)
             loginViewModel.signInButtonStatus.test {
-                Assert.assertEquals( awaitItem(), false)
+
+                //Assertion
+                Assert.assertEquals(awaitItem(), false)
             }
         }
     }
 
     @Test
     fun loginViewModel_flow_data_initial_value() {
-        Assert.assertNotNull(loginViewModel.loginScreenUiState)
-        Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
+        //Arrange
+        val initialUiState = loginViewModel.loginScreenUiState
+
+        //Assertions
+        Assert.assertNotNull(initialUiState)
+        Assert.assertEquals(initialUiState.value, State.Loading(false))
     }
 
     @Test
     fun loginViewModelLogin_createTokenForSessionInvocation() {
         runTest {
+            //Act
             loginViewModel.login()
 
+            //Assertion
             Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
             verify(fakeGuestTokenUseCase).createTokenForSession()
         }
@@ -93,12 +123,15 @@ class LoginViewModelTest : BaseTestClass() {
     @Test
     fun loginViewModelLogin_validateCredentials_function() {
         runTest {
-            val authenticationBody = AuthenticationBody("", "", "")
+            //Arrange
+            val authenticationBody = mock(AuthenticationBody::class.java)
             doReturn(flowOf(AccessTokenValidateDomainModel())).`when`(fakeLoginUserUseCase)
                 .validateUserCredential(authenticationBody)
 
+            //Act
             fakeLoginUserUseCase.validateUserCredential(authenticationBody)
 
+            //Assertion or Validation
             verify(fakeLoginUserUseCase).validateUserCredential(authenticationBody)
         }
     }
@@ -106,16 +139,18 @@ class LoginViewModelTest : BaseTestClass() {
     @Test
     fun loginViewModelLogin_createNewSessionPostAuth_function() {
         runTest {
-
+            //Arrange
             val mockInput = HashMap<String, String>().apply { put("", "") }
             val mockOutPutModel = NewSessionDomainModel()
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
                 .createNewSession(mockInput)
 
+            //Act
             fakeCreateNewSessionUseCase.createNewSession(mockInput)
-            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput)
             fakeCreateNewSessionUseCase.emit(mockOutPutModel)
 
+            //Assertion
+            verify(fakeCreateNewSessionUseCase).createNewSession(mockInput)
             Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
         }
     }
@@ -123,12 +158,15 @@ class LoginViewModelTest : BaseTestClass() {
     @Test
     fun loginViewModelLogin_createTokenForSessionReturnType() {
         runTest {
+            //Arrange
             val mockedInput = mock(GuestAuthCreateTokenDomainModel::class.java)
-            doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase)
-                .createTokenForSession()
+            doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase).createTokenForSession()
 
+            //Act
             fakeGuestTokenUseCase.createTokenForSession().collect {
-                Assert.assertEquals(mockedInput, it)
+
+             //Assertion
+             Assert.assertEquals(mockedInput, it)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.imoviedb.app.ui.popularshows
 
 import androidx.paging.PagingData
+import app.cash.turbine.test
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.imoviedb.app.presentation.ui.base.State
 import com.imoviedb.app.presentation.ui.popularshows.showslist.viewmodel.PopularShowsViewModel
@@ -18,6 +19,7 @@ import org.mockito.Mockito.verify
 @OptIn(ExperimentalCoroutinesApi::class)
 class PopularShowsViewModelTest : BaseTestClass() {
 
+    //Class to be tested
     lateinit var popularShowsViewModel: PopularShowsViewModel
 
     @Mock
@@ -30,14 +32,21 @@ class PopularShowsViewModelTest : BaseTestClass() {
 
     @Test
     fun getData() {
+        //Arrange
+        val initialState = State.Loading(true)
+
+        //Assertion
         assertNotNull(popularShowsViewModel.data)
-        assertEquals(popularShowsViewModel.data.value, State.Loading(true))
+        assertEquals(popularShowsViewModel.data.value, initialState)
     }
 
     @Test
     fun popularShowsViewModel_getPopularShows_invoked() {
         runTest {
+            //Act
             popularShowsUseCase.fetchPopularShows()
+
+            //Assertion
             verify(popularShowsUseCase).fetchPopularShows()
         }
     }
@@ -45,10 +54,20 @@ class PopularShowsViewModelTest : BaseTestClass() {
     @Test
     fun popularShowsViewModel_getPopularShows_stateflow_result_test() {
         runTest {
-            val mockPagingDataFlow = PagingData.from(listOf(ShowDomainModel()))
+            //Arrange
+            val mockPaging = listOf(ShowDomainModel())
+            val mockPagingDataFlow = PagingData.from(mockPaging)
             doReturn(flowOf(mockPagingDataFlow)).`when`(popularShowsUseCase)
                 .fetchPopularShows()
+
+            //Act
             popularShowsViewModel.getPopularShows()
+            popularShowsUseCase.fetchPopularShows().test {
+
+                //Assertion
+                assertEquals(awaitItem(),mockPagingDataFlow)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 }

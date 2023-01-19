@@ -1,9 +1,10 @@
 package com.imoviedb.app.data.repository.login
 
-import com.imoviedb.app.data.base.BaseDomainTestClass
+import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AuthenticationBodyMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
@@ -26,7 +27,7 @@ import org.mockito.Mockito.verify
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class LoginRepositoryTest : BaseDomainTestClass() {
+class LoginRepositoryTest : BaseDataTestClass() {
 
     @Mock
     private lateinit var userTokenDAO: UserTokenDAO
@@ -55,6 +56,10 @@ class LoginRepositoryTest : BaseDomainTestClass() {
     @Mock
     private lateinit var newSessionModelEntityMapper: NewSessionModelEntityMapper
 
+    @Mock
+    private lateinit var authenticationBodyMapper: AuthenticationBodyMapper
+
+    //Class to be tested
     private lateinit var loginRepository: LoginRepository
 
     override fun onPostSetup() {
@@ -68,6 +73,7 @@ class LoginRepositoryTest : BaseDomainTestClass() {
             newSessionDtoDomainMapper,
             newSessionErrorDtoModelMapper,
             newSessionModelEntityMapper,
+            authenticationBodyMapper,
             dispatcherProvider
         )
     }
@@ -76,28 +82,35 @@ class LoginRepositoryTest : BaseDomainTestClass() {
     @Test
     fun validateUserCredential() {
         runTest {
-
-            val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
+            //Arrange
+            val mockInputData = mock(AuthenticationBody::class.java)
             val userTokenEntityMock = mock(Response::class.java)
-            loginRepository.validateUserCredential(mockInputData)
+            val requestBody =  authenticationBodyMapper.map(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService)
-                .authenticateUserDetails(requestBody = mockInputData.asMap())
+                .authenticateUserDetails(requestBody =requestBody)
 
+            //Act
+            loginRepository.validateUserCredential(mockInputData)
+            val response = authenticationService.authenticateUserDetails(requestBody = requestBody)
 
-            val result =
-                (authenticationService.authenticateUserDetails(requestBody = mockInputData.asMap()))
-            assertEquals(result, userTokenEntityMock)
+            //Assertion
+            verify(authenticationService).authenticateUserDetails(requestBody = requestBody)
+            assertEquals(response,userTokenEntityMock)
         }
     }
 
     @Test
     fun validateUserTokenSavedToDB_func_invoked() {
         runTest {
-
-            val mockInputData = AuthenticationBody("a", "b", "iAz123kaa")
+            //Arrange
+            val mockInputData = mock(AuthenticationBody::class.java)
             val mockedUserTokenEntity = mock(UserTokenEntity::class.java)
+
+            //Act
             loginRepository.validateUserCredential(mockInputData)
             userTokenDAO.saveToken(mockedUserTokenEntity)
+
+            //Assert or verify
             verify(userTokenDAO).saveToken(mockedUserTokenEntity)
         }
     }
@@ -106,20 +119,24 @@ class LoginRepositoryTest : BaseDomainTestClass() {
     @Test
     fun loginRespo_test_createNewSessionIDForUser() {
         runTest {
+            //Arrange
             val mockInputData = HashMap<String, String>().apply { put("a", "b") }
             val userTokenEntityMock = mock(Response::class.java)
             val userSessionEntity = mock(UserSessionEntity::class.java)
-            loginRepository.createNewSessionIDForUser(mockInputData)
             Mockito.doReturn(userTokenEntityMock).`when`(authenticationService)
                 .createSessionID(requestBody = mockInputData)
 
+            //Act
+            loginRepository.createNewSessionIDForUser(mockInputData)
             val result = authenticationService.createSessionID(requestBody = mockInputData)
-            assertEquals(result, userTokenEntityMock)
             userSessionDAO.removeAllSessions()
             userSessionDAO.saveSession(userSessionEntity)
+
+
+            //Assertion
+            assertEquals(result, userTokenEntityMock)
             verify(userSessionDAO).removeAllSessions()
             verify(userSessionDAO).saveSession(userSessionEntity)
-
         }
     }
 }

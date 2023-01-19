@@ -4,6 +4,7 @@ import com.imoviedb.app.data.dto.base.ErrorResponseDto
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
+import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AuthenticationBodyMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
@@ -28,11 +29,12 @@ class LoginRepositoryImpl @Inject constructor(
     private val newSessionDtoDomainMapper: NewSessionDtoDomainMapper,
     private val newSessionErrorDtoModelMapper: NewSessionErrorDtoModelMapper,
     private val newSessionModelEntityMapper: NewSessionModelEntityMapper,
+    private val authenticationBodyMapper: AuthenticationBodyMapper,
     private val dispatcherProvider: DispatcherProvider
 ) : com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository {
 
     override suspend fun validateUserCredential(authenticationBody: AuthenticationBody) = flow {
-        val response = authenticationService.authenticateUserDetails(requestBody = authenticationBody.asMap())
+        val response = authenticationService.authenticateUserDetails(requestBody = authenticationBodyMapper.map(authenticationBody))
         if(response.isSuccessful && response.body() != null){
             response.body()?.let {
                 it.requestToken?.let { _ ->

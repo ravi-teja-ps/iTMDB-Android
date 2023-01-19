@@ -10,7 +10,8 @@ import org.junit.Rule
 import org.junit.rules.TestRule
 import org.mockito.MockitoAnnotations
 
-abstract class BaseDomainTestClass {
+//A class to reduce boilerplate code in Data test class modules
+abstract class BaseDataTestClass {
 
     abstract fun onPostSetup()
 
@@ -24,13 +25,11 @@ abstract class BaseDomainTestClass {
 
     @Before
     fun setup() {
-        initalizeCommonDependencies()
-        onPostSetup()
-    }
-
-    private fun initalizeCommonDependencies(){
+        //Pre initialize
         dispatcherProvider = TestDispatcherProvider()
         MockitoAnnotations.initMocks(this)
+        //invoke child @Before overriding method
+        onPostSetup()
     }
 
 }

@@ -1,6 +1,6 @@
 package com.imoviedb.app.data.repository.account
 
-import com.imoviedb.app.data.base.BaseDomainTestClass
+import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
 import com.imoviedb.app.data.dto.account.mapper.AccountErrorModelMapper
 import com.imoviedb.app.data.dto.account.mapper.AccountModelEntityMapper
@@ -19,7 +19,7 @@ import retrofit2.Response
 
 
 @ExperimentalCoroutinesApi
-class AccountRepositoryTest : BaseDomainTestClass() {
+class AccountRepositoryTest : BaseDataTestClass() {
 
     @Mock
     private lateinit var accountService: AccountService
@@ -28,7 +28,7 @@ class AccountRepositoryTest : BaseDomainTestClass() {
     private lateinit var accountDAO: AccountDAO
 
     @Mock
-    private lateinit var dtoModelMapper : AccountDtoModelMapper
+    private lateinit var dtoModelMapper: AccountDtoModelMapper
 
     @Mock
     private lateinit var modelEntityMapper: AccountModelEntityMapper
@@ -39,32 +39,49 @@ class AccountRepositoryTest : BaseDomainTestClass() {
     @Mock
     private lateinit var userSessionDAO: UserSessionDAO
 
+    //The class under test
     private lateinit var accountRepository: AccountRepository
 
     override fun onPostSetup() {
-        accountRepository =
-            AccountRepositoryImpl(accountService, accountDAO, dtoModelMapper, modelEntityMapper, errorModelMapper, userSessionDAO,dispatcherProvider)
+        accountRepository = AccountRepositoryImpl(
+            accountService,
+            accountDAO,
+            dtoModelMapper,
+            modelEntityMapper,
+            errorModelMapper,
+            userSessionDAO,
+            dispatcherProvider
+        )
     }
 
     @Test
     fun accountRepositoryImplTest_getAccountInfo() {
         runTest {
+            //Arrange
             val mockedSession = "Zi1ao2i3i"
             val mockedAccountModel = mock(Response::class.java)
+            doReturn(mockedAccountModel).`when`(accountService).account(session_id = mockedSession) //Stubbing
+
+            //Act
             accountRepository.getAccountInfo(mockedSession)
-            doReturn(mockedAccountModel).`when`(accountService).account(session_id = mockedSession)
-            val result =  accountService.account(session_id = mockedSession)
-            assertEquals(result,mockedAccountModel)
+            val result = accountService.account(session_id = mockedSession)
+
+            //Assertion
+            assertEquals(result, mockedAccountModel)
         }
     }
 
     @Test
     fun getStoredSessionId() {
+        //Arrange mock
         val mockedSessionEntity = mock(UserSessionEntity::class.java)
         doReturn(mockedSessionEntity).`when`(userSessionDAO).getSession()
-        userSessionDAO.getSession()
-        verify(userSessionDAO).getSession()
-        assertEquals(userSessionDAO.getSession().session_id,mockedSessionEntity.session_id)
 
+        //Act
+        userSessionDAO.getSession()
+
+        //Assertion
+        verify(userSessionDAO).getSession()
+        assertEquals(userSessionDAO.getSession().session_id, mockedSessionEntity.session_id)
     }
 }
