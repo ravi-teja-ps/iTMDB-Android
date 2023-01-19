@@ -8,11 +8,11 @@ import javax.inject.Inject
 class GuestAutTokenErrorDtoDomainMapper @Inject constructor() :
     Mapper<ErrorResponseDto, GuestAuthCreateTokenDomainModel> {
 
-    override fun map(from: ErrorResponseDto): GuestAuthCreateTokenDomainModel {
+    override fun map(input: ErrorResponseDto): GuestAuthCreateTokenDomainModel {
         return GuestAuthCreateTokenDomainModel().apply {
-            statusCode = from.statusCode
-            success = from.success
-            statusMessage = from.statusMessage
+            statusCode = input.statusCode
+            success = input.success
+            statusMessage = input.statusMessage
         }
     }
 }

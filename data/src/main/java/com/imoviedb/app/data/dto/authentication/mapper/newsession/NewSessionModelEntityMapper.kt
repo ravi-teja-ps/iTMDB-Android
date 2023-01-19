@@ -8,12 +8,12 @@ import javax.inject.Inject
 class NewSessionModelEntityMapper @Inject constructor() :
     Mapper<NewSessionDomainModel, UserSessionEntity> {
 
-    override fun map(from: NewSessionDomainModel): UserSessionEntity {
+    override fun map(input: NewSessionDomainModel): UserSessionEntity {
         return UserSessionEntity().apply {
-            sessionId = from.sessionId ?: ""
-            success = from.success
-            statusCode = from.statusCode
-            statusMessage = from.statusMessage
+            sessionId = input.sessionId ?: ""
+            success = input.success
+            statusCode = input.statusCode
+            statusMessage = input.statusMessage
         }
     }
 }

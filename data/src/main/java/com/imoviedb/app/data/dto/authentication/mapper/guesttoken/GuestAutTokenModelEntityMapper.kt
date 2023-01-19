@@ -9,13 +9,13 @@ class GuestAutTokenModelEntityMapper @Inject constructor() :
     Mapper<GuestAuthCreateTokenDomainModel, GuestUserTokenEntity> {
 
 
-    override fun map(from: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
+    override fun map(input: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
         return GuestUserTokenEntity().apply {
-            requestToken = from.requestToken ?: ""
-            expiresAt = from.expiresAt
-            statusCode = from.statusCode
-            success = from.success
-            statusMessage = from.statusMessage
+            requestToken = input.requestToken ?: ""
+            expiresAt = input.expiresAt
+            statusCode = input.statusCode
+            success = input.success
+            statusMessage = input.statusMessage
         }
     }
 }

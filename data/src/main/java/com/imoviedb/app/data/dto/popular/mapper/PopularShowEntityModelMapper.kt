@@ -8,26 +8,26 @@ import javax.inject.Inject
 class PopularShowEntityModelMapper @Inject constructor() :
     Mapper<ShowEntityModel, ShowDomainModel> {
 
-    override fun map(from: ShowEntityModel): ShowDomainModel {
+    override fun map(input: ShowEntityModel): ShowDomainModel {
         return ShowDomainModel().apply {
-            adult = from.adult
-            id = from.id
-            title = from.title
-            originalLanguage = from.originalLanguage
-            originalTitle = from.originalTitle
-            overview = from.overview
-            posterPath = from.posterPath
-            mediaType = from.mediaType
-            backdropPath = from.backdrop_path
-            popularity = from.popularity
-            releaseDate = from.releaseDate
-            video = from.video
-            voteAverage = from.voteAverage
-            voteCount = from.voteCount
-            name = from.name
-            originalName = from.originalName
-            firstAirDate = from.firstAirDate
-            insertOrder = from.insertOrder
+            adult = input.adult
+            id = input.id
+            title = input.title
+            originalLanguage = input.originalLanguage
+            originalTitle = input.originalTitle
+            overview = input.overview
+            posterPath = input.posterPath
+            mediaType = input.mediaType
+            backdropPath = input.backdrop_path
+            popularity = input.popularity
+            releaseDate = input.releaseDate
+            video = input.video
+            voteAverage = input.voteAverage
+            voteCount = input.voteCount
+            name = input.name
+            originalName = input.originalName
+            firstAirDate = input.firstAirDate
+            insertOrder = input.insertOrder
         }
     }
 }

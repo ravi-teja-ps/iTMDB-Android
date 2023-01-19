@@ -9,11 +9,11 @@ class AccessTokenValidateErrorModelMapper @Inject constructor() :
     Mapper<ErrorResponseDto, AccessTokenValidateDomainModel> {
 
     //mapErrorDtoToModel
-    override fun map(from: ErrorResponseDto): AccessTokenValidateDomainModel {
+    override fun map(input: ErrorResponseDto): AccessTokenValidateDomainModel {
         return AccessTokenValidateDomainModel().apply {
-            success = from.success
-            statusMessage = from.statusMessage
-            statusCode = from.statusCode
+            success = input.success
+            statusMessage = input.statusMessage
+            statusCode = input.statusCode
         }
     }
 }

@@ -9,11 +9,11 @@ class AccessTokenValidateModelEntityMapper @Inject constructor() :
     Mapper<AccessTokenValidateDomainModel, UserTokenEntity> {
 
     //mapModelToEntity
-    override fun map(from: AccessTokenValidateDomainModel): UserTokenEntity {
+    override fun map(input: AccessTokenValidateDomainModel): UserTokenEntity {
         return UserTokenEntity().apply {
-            success = from.success
-            requestToken = from.requestToken ?: ""
-            expiresAt = from.expiresAt
+            success = input.success
+            requestToken = input.requestToken ?: ""
+            expiresAt = input.expiresAt
         }
     }
 }

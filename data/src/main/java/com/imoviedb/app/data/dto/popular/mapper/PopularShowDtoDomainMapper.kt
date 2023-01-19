@@ -7,25 +7,25 @@ import javax.inject.Inject
 
 class PopularShowDtoDomainMapper @Inject constructor() : Mapper<ShowDto, ShowDomainModel> {
 
-    override fun map(from: ShowDto): ShowDomainModel {
+    override fun map(input: ShowDto): ShowDomainModel {
         return ShowDomainModel().apply {
-            adult = from.adult
-            id = from.id ?: -1
-            title = from.title
-            originalLanguage = from.originalLanguage
-            originalTitle = from.originalTitle
-            overview = from.overview
-            posterPath = from.posterPath
-            backdropPath = from.backdropPath
-            mediaType = from.mediaType
-            popularity = from.popularity
-            releaseDate = from.releaseDate
-            video = from.video
-            voteAverage = from.voteAverage
-            voteCount = from.voteCount
-            name = from.name
-            originalName = from.originalName
-            firstAirDate = from.firstAirDate
+            adult = input.adult
+            id = input.id ?: -1
+            title = input.title
+            originalLanguage = input.originalLanguage
+            originalTitle = input.originalTitle
+            overview = input.overview
+            posterPath = input.posterPath
+            backdropPath = input.backdropPath
+            mediaType = input.mediaType
+            popularity = input.popularity
+            releaseDate = input.releaseDate
+            video = input.video
+            voteAverage = input.voteAverage
+            voteCount = input.voteCount
+            name = input.name
+            originalName = input.originalName
+            firstAirDate = input.firstAirDate
         }
     }
 }

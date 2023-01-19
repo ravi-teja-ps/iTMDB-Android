@@ -8,13 +8,13 @@ import javax.inject.Inject
 class GuestAutTokenDtoDomainMapper @Inject constructor() :
     Mapper<GuestAuthCreateTokenDto, GuestAuthCreateTokenDomainModel> {
 
-    override fun map(from: GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
+    override fun map(input: GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
         return GuestAuthCreateTokenDomainModel().apply {
-            requestToken = from.requestToken
-            expiresAt = from.expiresAt
-            statusCode = from.statusCode
-            success = from.success
-            statusMessage = from.statusMessage
+            requestToken = input.requestToken
+            expiresAt = input.expiresAt
+            statusCode = input.statusCode
+            success = input.success
+            statusMessage = input.statusMessage
         }
     }
 }

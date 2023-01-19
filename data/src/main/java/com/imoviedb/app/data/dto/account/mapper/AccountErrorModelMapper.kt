@@ -6,10 +6,10 @@ import com.imoviedb.app.domain.account.model.AccountDomainModel
 import javax.inject.Inject
 
 class AccountErrorModelMapper @Inject constructor() : Mapper<ErrorResponseDto, AccountDomainModel> {
-    override fun map(from: ErrorResponseDto): AccountDomainModel {
+    override fun map(input: ErrorResponseDto): AccountDomainModel {
         return AccountDomainModel().apply {
-            statusCode = from.statusCode
-            statusMessage = from.statusMessage
+            statusCode = input.statusCode
+            statusMessage = input.statusMessage
         }
     }
 }

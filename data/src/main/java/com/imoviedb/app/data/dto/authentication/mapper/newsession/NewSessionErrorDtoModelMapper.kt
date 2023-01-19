@@ -8,11 +8,11 @@ import javax.inject.Inject
 class NewSessionErrorDtoModelMapper @Inject constructor() :
     Mapper<ErrorResponseDto, NewSessionDomainModel> {
 
-    override fun map(from: ErrorResponseDto): NewSessionDomainModel {
+    override fun map(input: ErrorResponseDto): NewSessionDomainModel {
         return NewSessionDomainModel().apply {
-            success = from.success
-            statusCode = from.statusCode
-            statusMessage = from.statusMessage
+            success = input.success
+            statusCode = input.statusCode
+            statusMessage = input.statusMessage
         }
     }
 }
