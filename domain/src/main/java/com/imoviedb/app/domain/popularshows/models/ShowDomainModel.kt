@@ -4,41 +4,41 @@ import com.imoviedb.app.domain.base.BaseDomainModel
 
 class ShowDomainModel : BaseDomainModel() {
 
-    var adult: Boolean? = null
+    var adult: Boolean = false
 
     var insertOrder: Int = 0
 
-    var id: Int? = null
+    var id: Int = -1
 
-    var title: String? = null
+    var title: String? = ""
 
-    var originalLanguage: String? = null
+    var originalLanguage: String? = ""
 
-    var originalTitle: String? = null
+    var originalTitle: String? = ""
 
-    var overview: String? = null
+    var overview: String? = ""
 
     var posterPath: String? = null
 
     var backdropPath: String? = null
 
-    var mediaType: String? = null
+    var mediaType: String? = ""
 
-    var popularity: Double? = null
+    var popularity: Double = 0.0
 
-    var releaseDate: String? = null
+    var releaseDate: String? = ""
 
-    var video: Boolean? = null
+    var video: Boolean  = false
 
-    var voteAverage: Double? = null
+    var voteAverage: Double = 0.0
 
-    var voteCount: Int? = null
+    var voteCount: Int = 0
 
-    var name: String? = null
+    var name: String? = ""
 
-    var originalName: String? = null
+    var originalName: String? = ""
 
-    var firstAirDate: String? = null
+    var firstAirDate: String? = ""
 
 
 }

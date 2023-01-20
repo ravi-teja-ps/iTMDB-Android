@@ -5,7 +5,7 @@ import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class NewSessionDto : BaseResponseDto() {
     @SerializedName("success")
-    var success: Boolean? = null
+    var success: Boolean = false
 
     @SerializedName("session_id")
     var sessionId: String? = null

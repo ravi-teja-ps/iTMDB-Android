@@ -11,7 +11,7 @@ class PopularShowDomainEntityMapper @Inject constructor() :
     override fun map(input: ShowDomainModel): ShowEntityModel {
         return ShowEntityModel().apply {
             adult = input.adult
-            id = input.id ?: -1
+            id = input.id
             title = input.title
             originalLanguage = input.originalLanguage
             originalTitle = input.originalTitle

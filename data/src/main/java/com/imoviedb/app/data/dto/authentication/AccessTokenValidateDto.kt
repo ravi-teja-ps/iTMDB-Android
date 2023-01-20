@@ -5,7 +5,7 @@ import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class AccessTokenValidateDto : BaseResponseDto() {
     @SerializedName("success")
-    var success: Boolean? = null
+    var success: Boolean = false
 
     @SerializedName("request_token")
     var requestToken: String? = null

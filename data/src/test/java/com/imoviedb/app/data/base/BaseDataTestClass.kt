@@ -1,9 +1,11 @@
+
 package com.imoviedb.app.data.base
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.imoviedb.app.data.concurrencyutils.TestCoroutineRule
 import com.imoviedb.app.data.concurrencyutils.TestDispatcherProvider
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 
 import org.junit.Rule
@@ -11,7 +13,8 @@ import org.junit.rules.TestRule
 import org.mockito.MockitoAnnotations
 
 //A class to reduce boilerplate code in Data test class modules
-abstract class BaseDataTestClass {
+@OptIn(ExperimentalCoroutinesApi::class)
+ abstract class BaseDataTestClass {
 
     abstract fun onPostSetup()
 

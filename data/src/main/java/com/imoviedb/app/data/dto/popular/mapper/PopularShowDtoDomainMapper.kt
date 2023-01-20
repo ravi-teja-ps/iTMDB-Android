@@ -10,7 +10,7 @@ class PopularShowDtoDomainMapper @Inject constructor() : Mapper<ShowDto, ShowDom
     override fun map(input: ShowDto): ShowDomainModel {
         return ShowDomainModel().apply {
             adult = input.adult
-            id = input.id ?: -1
+            id = input.id
             title = input.title
             originalLanguage = input.originalLanguage
             originalTitle = input.originalTitle

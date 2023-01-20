@@ -9,7 +9,7 @@ class AccountModelEntityMapper @Inject constructor() : Mapper<AccountDomainModel
 
     override fun map(input: AccountDomainModel): AccountEntity {
         return AccountEntity().apply {
-            id = input.id ?: -1
+            id = input.id
             name = input.name
             includeAdult = input.includeAdult
             iso31661 = input.iso31661

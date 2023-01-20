@@ -6,16 +6,16 @@ class AccountDomainModel : BaseDomainModel() {
 
     var avatarHash: String? = null
 
-    var id: Int? = null
+    var id: Int = 0
 
-    var iso6391: String? = null
+    var iso6391: String? = ""
 
-    var iso31661: String? = null
+    var iso31661: String? = ""
 
-    var name: String? = null
+    var name: String? = ""
 
-    var includeAdult: Boolean? = null
+    var includeAdult: Boolean = false
 
-    var username: String? = null
+    var username: String? = ""
 }
 

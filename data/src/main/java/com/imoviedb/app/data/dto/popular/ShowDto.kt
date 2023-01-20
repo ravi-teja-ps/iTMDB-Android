@@ -5,22 +5,22 @@ import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 class ShowDto : BaseResponseDto() {
     @SerializedName("adult")
-    var adult: Boolean? = null
+    var adult: Boolean = false
 
     @SerializedName("id")
-    var id: Int? = null
+    var id: Int  = -1
 
     @SerializedName("title")
-    var title: String? = null
+    var title: String? = ""
 
     @SerializedName("original_language")
-    var originalLanguage: String? = null
+    var originalLanguage: String? = ""
 
     @SerializedName("original_title")
-    var originalTitle: String? = null
+    var originalTitle: String? = ""
 
     @SerializedName("overview")
-    var overview: String? = null
+    var overview: String? = ""
 
     @SerializedName("poster_path")
     var posterPath: String? = null
@@ -29,30 +29,30 @@ class ShowDto : BaseResponseDto() {
     var backdropPath: String? = null
 
     @SerializedName("media_type")
-    var mediaType: String? = null
+    var mediaType: String? = ""
 
 
     @SerializedName("popularity")
-    var popularity: Double? = null
+    var popularity: Double = 0.0
 
     @SerializedName("release_date")
-    var releaseDate: String? = null
+    var releaseDate: String? = ""
 
     @SerializedName("video")
-    var video: Boolean? = null
+    var video: Boolean = false
 
     @SerializedName("vote_average")
-    var voteAverage: Double? = null
+    var voteAverage: Double = 0.0
 
     @SerializedName("vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int = 0
 
     @SerializedName("name")
-    var name: String? = null
+    var name: String? = ""
 
     @SerializedName("original_name")
-    var originalName: String? = null
+    var originalName: String? = ""
 
     @SerializedName("first_air_date")
-    var firstAirDate: String? = null
+    var firstAirDate: String? = ""
 }

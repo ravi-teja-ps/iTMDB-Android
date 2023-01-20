@@ -4,7 +4,7 @@ import com.imoviedb.app.domain.base.BaseDomainModel
 
 class AccessTokenValidateDomainModel : BaseDomainModel() {
 
-    var success: Boolean? = null
+    var success: Boolean = false
 
     var requestToken: String? = null
 

@@ -8,22 +8,22 @@ class AccountDto : BaseResponseDto() {
     var avatarDto: AvatarDto? = null
 
     @SerializedName("id")
-    var id: Int? = null
+    var id: Int = -1
 
     @SerializedName("iso_639_1")
-    var iso6391: String? = null
+    var iso6391: String? = ""
 
     @SerializedName("iso_3166_1")
-    var iso31661: String? = null
+    var iso31661: String? = ""
 
     @SerializedName("name")
-    var name: String? = null
+    var name: String? = ""
 
     @SerializedName("include_adult")
-    var includeAdult: Boolean? = null
+    var includeAdult: Boolean = false
 
     @SerializedName("username")
-    var username: String? = null
+    var username: String? = ""
 }
 
 class AvatarDto {

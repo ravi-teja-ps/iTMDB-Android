@@ -10,7 +10,7 @@ class AccountDtoModelMapper @Inject constructor() : Mapper<AccountDto, AccountDo
 
     override fun map(input: AccountDto): AccountDomainModel {
         return AccountDomainModel().apply {
-            id = input.id ?: -1
+            id = input.id
             name = input.name
             includeAdult = input.includeAdult
             iso31661 = input.iso31661

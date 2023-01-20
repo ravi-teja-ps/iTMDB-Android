@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class ShowEntityModel {
 
     @ColumnInfo(name = "adult")
-    var adult: Boolean? = null
+    var adult: Boolean = false
 
     @PrimaryKey(autoGenerate = true)
     var insertOrder: Int = 0
@@ -17,16 +17,16 @@ class ShowEntityModel {
     var id: Int = -1
 
     @ColumnInfo(name = "title")
-    var title: String? = null
+    var title: String? = ""
 
     @ColumnInfo(name = "original_language")
-    var originalLanguage: String? = null
+    var originalLanguage: String? = ""
 
     @ColumnInfo(name = "original_title")
-    var originalTitle: String? = null
+    var originalTitle: String? = ""
 
     @ColumnInfo(name = "overview")
-    var overview: String? = null
+    var overview: String? = ""
 
     @ColumnInfo(name = "poster_path")
     var posterPath: String? = null
@@ -36,30 +36,30 @@ class ShowEntityModel {
 
 
     @ColumnInfo(name = "media_type")
-    var mediaType: String? = null
+    var mediaType: String? = ""
 
     @ColumnInfo(name = "popularity")
-    var popularity: Double? = null
+    var popularity: Double = 0.0
 
     @ColumnInfo(name = "release_date")
-    var releaseDate: String? = null
+    var releaseDate: String? = ""
 
     @ColumnInfo(name = "video")
-    var video: Boolean? = null
+    var video: Boolean = false
 
     @ColumnInfo(name = "vote_average")
-    var voteAverage: Double? = null
+    var voteAverage: Double = 0.0
 
     @ColumnInfo(name = "vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int = 0
 
     @ColumnInfo(name = "name")
-    var name: String? = null
+    var name: String? = ""
 
     @ColumnInfo(name = "original_name")
-    var originalName: String? = null
+    var originalName: String? = ""
 
     @ColumnInfo(name = "first_air_date")
-    var firstAirDate: String? = null
+    var firstAirDate: String? = ""
 
 }
