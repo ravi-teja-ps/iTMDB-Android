@@ -3,10 +3,19 @@ package com.imoviedb.app.data.dto.authentication
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class NewSessionDto : BaseResponseDto() {
+data class NewSessionDto(
+    @SerializedName("status_code")
+    val statusCode: Int,
+
+    @SerializedName("status_message")
+    val statusMessage: String?,
+
     @SerializedName("success")
-    var success: Boolean = false
+    val success: Boolean,
 
     @SerializedName("session_id")
-    var sessionId: String? = null
-}
+    val sessionId: String,
+
+    @SerializedName("expires_at")
+    val expiresAt: String?
+) : BaseResponseDto

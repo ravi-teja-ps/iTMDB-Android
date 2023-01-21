@@ -1,13 +1,8 @@
 package com.imoviedb.app.domain.base
 
-open class BaseDomainModel {
-
-    var statusCode: Int = 0
-
-    var statusMessage: String? = null
-
-    fun isSuccess(): Boolean {
-        return statusCode <= 0
-    }
-
+/**
+ * Common behaviour of all domain models to return the result of code as success or failure
+ */
+interface BaseDomainModel {
+    fun isResponseSuccessful(): Boolean //later rename statusCode tos to errorCode by default -1 else > 0 is error
 }

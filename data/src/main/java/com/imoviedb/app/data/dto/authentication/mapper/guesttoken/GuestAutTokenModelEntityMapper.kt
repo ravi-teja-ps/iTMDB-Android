@@ -10,12 +10,12 @@ class GuestAutTokenModelEntityMapper @Inject constructor() :
 
 
     override fun map(input: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
-        return GuestUserTokenEntity().apply {
-            requestToken = input.requestToken ?: ""
-            expiresAt = input.expiresAt
-            statusCode = input.statusCode
-            success = input.success
+        return GuestUserTokenEntity(
+            requestToken = input.requestToken ?: "", //Primary key non insertion defaults empty
+            expiresAt = input.expiresAt,
+            statusCode = input.statusCode,
+            success = input.success,
             statusMessage = input.statusMessage
-        }
+        )
     }
 }

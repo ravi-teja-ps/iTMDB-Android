@@ -3,35 +3,42 @@ package com.imoviedb.app.data.dto.account
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class AccountDto : BaseResponseDto() {
+data class AccountDto(
+
+    @SerializedName("status_code")
+    val statusCode: Int,
+
+    @SerializedName("status_message")
+    val statusMessage: String?,
+
     @SerializedName("avatar")
-    var avatarDto: AvatarDto? = null
+    val avatarDto: AvatarDto?,
 
     @SerializedName("id")
-    var id: Int = -1
+    val id: Int,
 
     @SerializedName("iso_639_1")
-    var iso6391: String? = ""
+    val iso6391: String?,
 
     @SerializedName("iso_3166_1")
-    var iso31661: String? = ""
+    val iso31661: String?,
 
     @SerializedName("name")
-    var name: String? = ""
+    val name: String?,
 
     @SerializedName("include_adult")
-    var includeAdult: Boolean = false
+    val includeAdult: Boolean,
 
     @SerializedName("username")
-    var username: String? = ""
-}
+    val username: String?,
+) : BaseResponseDto
 
-class AvatarDto {
+data class AvatarDto(
     @SerializedName("gravatar")
-    var gravatarDto: GravatarDto? = null
-}
+    val gravatarDto: GravatarDto?
+)
 
-class GravatarDto {
+data class GravatarDto(
     @SerializedName("hash")
-    var hash: String? = null
-}
+    val hash: String?
+)

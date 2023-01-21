@@ -5,22 +5,21 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "GuestUserToken")
-class GuestUserTokenEntity {
+data class GuestUserTokenEntity(
 
     @ColumnInfo(name = "success")
-    var success: Boolean? = null
+    val success: Boolean?,
 
     @PrimaryKey
     @ColumnInfo(name = "request_token")
-    var requestToken: String = ""
+    val requestToken: String,
 
     @ColumnInfo(name = "expires_at")
-    var expiresAt: String? = null
+    val expiresAt: String?,
 
     @ColumnInfo(name = "status_code")
-    var statusCode: Int = -1
+    val statusCode: Int,
 
     @ColumnInfo(name = "status_message")
-    var statusMessage: String? = null
-
-}
+    val statusMessage: String?
+)

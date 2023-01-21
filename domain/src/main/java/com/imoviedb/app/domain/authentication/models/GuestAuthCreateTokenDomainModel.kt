@@ -3,11 +3,14 @@ package com.imoviedb.app.domain.authentication.models
 
 import com.imoviedb.app.domain.base.BaseDomainModel
 
-class GuestAuthCreateTokenDomainModel : BaseDomainModel() {
-
-    var success: Boolean = false
-
-    var requestToken: String? = null
-
-    var expiresAt: String? = null
+data class GuestAuthCreateTokenDomainModel(
+    val statusCode: Int,
+    val statusMessage: String?,
+    var success: Boolean,
+    var requestToken: String?,
+    var expiresAt: String?
+) : BaseDomainModel {
+    override fun isResponseSuccessful(): Boolean {
+        return statusCode <= 0
+    }
 }

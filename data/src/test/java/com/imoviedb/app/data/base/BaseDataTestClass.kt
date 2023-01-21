@@ -1,4 +1,3 @@
-
 package com.imoviedb.app.data.base
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -14,7 +13,7 @@ import org.mockito.MockitoAnnotations
 
 //A class to reduce boilerplate code in Data test class modules
 @OptIn(ExperimentalCoroutinesApi::class)
- abstract class BaseDataTestClass {
+abstract class BaseDataTestClass {
 
     abstract fun onPostSetup()
 

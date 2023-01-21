@@ -9,10 +9,12 @@ class NewSessionErrorDtoModelMapper @Inject constructor() :
     Mapper<ErrorResponseDto, NewSessionDomainModel> {
 
     override fun map(input: ErrorResponseDto): NewSessionDomainModel {
-        return NewSessionDomainModel().apply {
-            success = input.success
-            statusCode = input.statusCode
-            statusMessage = input.statusMessage
-        }
+        return NewSessionDomainModel(
+            success = input.success,
+            statusCode = input.statusCode,
+            statusMessage = input.statusMessage,
+            sessionId = "",
+            expiresAt = ""
+        )
     }
 }

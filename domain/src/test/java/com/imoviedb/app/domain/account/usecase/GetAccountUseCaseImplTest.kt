@@ -1,25 +1,26 @@
 package com.imoviedb.app.domain.account.usecase
 
- import com.imoviedb.app.domain.account.model.AccountDomainModel
- import com.imoviedb.app.domain.account.repository.AccountRepository
- import com.imoviedb.app.domain.base.BaseDomainTestClass
- import kotlinx.coroutines.flow.flowOf
- import kotlinx.coroutines.runBlocking
- import org.junit.Test
- import org.mockito.Mockito.*
+import com.imoviedb.app.domain.account.model.AccountDomainModel
+import com.imoviedb.app.domain.account.repository.AccountRepository
+import com.imoviedb.app.domain.base.BaseDomainTestClass
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
+import org.junit.Test
+import org.mockito.Mockito.*
 
 class GetAccountUseCaseImplTest : BaseDomainTestClass() {
 
-    private lateinit var getAccountUseCaseImpl : GetAccountUseCaseImpl
-    private val accountRepository: AccountRepository  = mock()
+    private lateinit var getAccountUseCaseImpl: GetAccountUseCaseImpl
+    private val accountRepository: AccountRepository = mock()
 
     @Test
     fun getAccountInfo() {
         runBlocking {
             //Arrange
-            val mockedInput =  "aaZ1w"
+
             val mockedDomainModel = mock(AccountDomainModel::class.java)
-            doReturn(flowOf(mockedDomainModel)).`when`(accountRepository).getAccountInfo(mockedInput)
+            doReturn(flowOf(mockedDomainModel)).`when`(accountRepository)
+                .getAccountInfo(mockedInput)
 
             //Act
             getAccountUseCaseImpl.getAccountInfo(mockedInput)
@@ -31,5 +32,9 @@ class GetAccountUseCaseImplTest : BaseDomainTestClass() {
 
     override fun postSetup() {
         getAccountUseCaseImpl = GetAccountUseCaseImpl(accountRepository)
+    }
+
+    private companion object {
+        const val mockedInput = "aaZ1w"
     }
 }

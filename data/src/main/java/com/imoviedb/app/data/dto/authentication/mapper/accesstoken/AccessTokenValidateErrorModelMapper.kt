@@ -10,10 +10,12 @@ class AccessTokenValidateErrorModelMapper @Inject constructor() :
 
     //mapErrorDtoToModel
     override fun map(input: ErrorResponseDto): AccessTokenValidateDomainModel {
-        return AccessTokenValidateDomainModel().apply {
-            success = input.success
-            statusMessage = input.statusMessage
-            statusCode = input.statusCode
-        }
+        return AccessTokenValidateDomainModel(
+            success = input.success,
+            statusMessage = input.statusMessage,
+            statusCode = input.statusCode,
+            expiresAt = "",
+            requestToken = ""
+        )
     }
 }

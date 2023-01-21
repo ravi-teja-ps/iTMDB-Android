@@ -14,13 +14,13 @@ import org.mockito.Mockito.*
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginUserUseCaseImplTest : BaseDomainTestClass() {
 
-    private val loginRepository: LoginRepository  = mock()
+    private val loginRepository: LoginRepository = mock()
 
     //Class under test
     private lateinit var loginUseCase: LoginUserUseCaseImpl
 
     override fun postSetup() {
-        loginUseCase =  LoginUserUseCaseImpl(loginRepository)
+        loginUseCase = LoginUserUseCaseImpl(loginRepository)
     }
 
     @Test
@@ -37,7 +37,7 @@ class LoginUserUseCaseImplTest : BaseDomainTestClass() {
             val result = loginRepository.validateUserCredential(authBody)
 
             //Assertion
-            assertEquals(stubObject,result)
+            assertEquals(stubObject, result)
         }
     }
 

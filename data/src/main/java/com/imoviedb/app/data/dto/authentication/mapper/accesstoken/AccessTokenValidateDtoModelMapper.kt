@@ -8,10 +8,12 @@ import javax.inject.Inject
 class AccessTokenValidateDtoModelMapper @Inject constructor() :
     Mapper<AccessTokenValidateDto, AccessTokenValidateDomainModel> {
     override fun map(input: AccessTokenValidateDto): AccessTokenValidateDomainModel {
-        return AccessTokenValidateDomainModel().apply {
-            success = input.success
-            requestToken = input.requestToken
-            expiresAt = input.expiresAt
-        }
+        return AccessTokenValidateDomainModel(
+            success = input.success,
+            requestToken = input.requestToken,
+            expiresAt = input.expiresAt,
+            statusCode = input.statusCode,
+            statusMessage = input.statusMessage
+        )
     }
 }

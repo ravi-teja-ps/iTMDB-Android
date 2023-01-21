@@ -3,56 +3,56 @@ package com.imoviedb.app.data.dto.popular
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class ShowDto : BaseResponseDto() {
+data class ShowDto(
     @SerializedName("adult")
-    var adult: Boolean = false
+    val adult: Boolean,
 
     @SerializedName("id")
-    var id: Int  = -1
+    val id: Int,
 
     @SerializedName("title")
-    var title: String? = ""
+    val title: String?,
 
     @SerializedName("original_language")
-    var originalLanguage: String? = ""
+    val originalLanguage: String?,
 
     @SerializedName("original_title")
-    var originalTitle: String? = ""
+    val originalTitle: String?,
 
     @SerializedName("overview")
-    var overview: String? = ""
+    val overview: String?,
 
     @SerializedName("poster_path")
-    var posterPath: String? = null
+    val posterPath: String?,
 
     @SerializedName("backdrop_path")
-    var backdropPath: String? = null
+    val backdropPath: String?,
 
     @SerializedName("media_type")
-    var mediaType: String? = ""
+    val mediaType: String?,
 
 
     @SerializedName("popularity")
-    var popularity: Double = 0.0
+    val popularity: Double,
 
     @SerializedName("release_date")
-    var releaseDate: String? = ""
+    val releaseDate: String?,
 
     @SerializedName("video")
-    var video: Boolean = false
+    val video: Boolean,
 
     @SerializedName("vote_average")
-    var voteAverage: Double = 0.0
+    val voteAverage: Double,
 
     @SerializedName("vote_count")
-    var voteCount: Int = 0
+    val voteCount: Int,
 
     @SerializedName("name")
-    var name: String? = ""
+    val name: String?,
 
     @SerializedName("original_name")
-    var originalName: String? = ""
+    val originalName: String?,
 
     @SerializedName("first_air_date")
-    var firstAirDate: String? = ""
-}
+    val firstAirDate: String?
+) : BaseResponseDto

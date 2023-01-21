@@ -33,7 +33,7 @@ class GetUserSessionUseCaseImplTest : BaseDomainTestClass() {
             val result = accountRepository.getStoredSessionId()
 
             //Assertion
-            assertEquals(sessionMock,result)
+            assertEquals(sessionMock, result)
         }
     }
 

@@ -3,13 +3,19 @@ package com.imoviedb.app.data.dto.authentication
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class GuestAuthCreateTokenDto : BaseResponseDto() {
+data class GuestAuthCreateTokenDto(
+    @SerializedName("status_code")
+    val statusCode: Int,
+
+    @SerializedName("status_message")
+    val statusMessage: String?,
+
     @SerializedName("success")
-    var success: Boolean = false
+    val success: Boolean,
 
     @SerializedName("request_token")
-    var requestToken: String? = null
+    val requestToken: String?,
 
     @SerializedName("expires_at")
-    var expiresAt: String? = null
-}
+    val expiresAt: String?
+) : BaseResponseDto

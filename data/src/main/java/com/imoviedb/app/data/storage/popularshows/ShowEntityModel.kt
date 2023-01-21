@@ -5,61 +5,61 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "PopularShows")
-class ShowEntityModel {
+data class ShowEntityModel(
 
     @ColumnInfo(name = "adult")
-    var adult: Boolean = false
+    val adult: Boolean,
 
     @PrimaryKey(autoGenerate = true)
-    var insertOrder: Int = 0
+    val insertOrder: Int = 0,
 
     @ColumnInfo(name = "id")
-    var id: Int = -1
+    val id: Int,
 
     @ColumnInfo(name = "title")
-    var title: String? = ""
+    val title: String?,
 
     @ColumnInfo(name = "original_language")
-    var originalLanguage: String? = ""
+    val originalLanguage: String?,
 
     @ColumnInfo(name = "original_title")
-    var originalTitle: String? = ""
+    val originalTitle: String?,
 
     @ColumnInfo(name = "overview")
-    var overview: String? = ""
+    val overview: String?,
 
     @ColumnInfo(name = "poster_path")
-    var posterPath: String? = null
+    val posterPath: String?,
 
     @ColumnInfo(name = "backdrop_path")
-    var backdrop_path: String? = null
+    val backdrop_path: String?,
 
 
     @ColumnInfo(name = "media_type")
-    var mediaType: String? = ""
+    val mediaType: String?,
 
     @ColumnInfo(name = "popularity")
-    var popularity: Double = 0.0
+    val popularity: Double,
 
     @ColumnInfo(name = "release_date")
-    var releaseDate: String? = ""
+    val releaseDate: String?,
 
     @ColumnInfo(name = "video")
-    var video: Boolean = false
+    val video: Boolean,
 
     @ColumnInfo(name = "vote_average")
-    var voteAverage: Double = 0.0
+    val voteAverage: Double,
 
     @ColumnInfo(name = "vote_count")
-    var voteCount: Int = 0
+    val voteCount: Int,
 
     @ColumnInfo(name = "name")
-    var name: String? = ""
+    val name: String?,
 
     @ColumnInfo(name = "original_name")
-    var originalName: String? = ""
+    val originalName: String?,
 
     @ColumnInfo(name = "first_air_date")
-    var firstAirDate: String? = ""
+    val firstAirDate: String?,
 
-}
+    )

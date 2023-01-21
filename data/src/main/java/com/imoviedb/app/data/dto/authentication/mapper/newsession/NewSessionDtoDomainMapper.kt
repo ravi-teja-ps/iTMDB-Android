@@ -9,11 +9,12 @@ class NewSessionDtoDomainMapper @Inject constructor() :
     Mapper<NewSessionDto, NewSessionDomainModel> {
 
     override fun map(input: NewSessionDto): NewSessionDomainModel {
-        return NewSessionDomainModel().apply {
-            sessionId = input.sessionId
-            success = input.success
-            statusCode = input.statusCode
-            statusMessage = input.statusMessage
-        }
+        return NewSessionDomainModel(
+            sessionId = input.sessionId,
+            success = input.success,
+            statusCode = input.statusCode,
+            statusMessage = input.statusMessage,
+            expiresAt = input.expiresAt
+        )
     }
 }

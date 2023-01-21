@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
     //Function to check if sign in button can be enabled or not
     private val _signInButtonStatus: Flow<Boolean> =
         combine(_userName, _password) { userID, password ->
-            val regexString = "[a-zA-Z0-9_]+"
+            val regexString = "\\w+"
             val userIdCorrect = userID.matches(regexString.toRegex())
             val isPasswordCorrect = password.isNotEmpty()
             return@combine userIdCorrect and isPasswordCorrect
@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(
             //Step 0   get access token
             guestTokenUseCase.createTokenForSession().collect { savedUserTokenModel ->
                 //Step 1  authenticate user name password of user for right accounts only
-                if (savedUserTokenModel.success == true) {
+                if (savedUserTokenModel.isResponseSuccessful()) {
                     savedUserTokenModel.requestToken?.let {
                         //Step 2 validate the received access_token for a new session_id and save it across
                         val authenticationBody =
@@ -64,7 +64,10 @@ class LoginViewModel @Inject constructor(
                         validateUserCredential(authenticationBody)
                     }
                 } else {
-                    _loginScreenUiState.value = State.OnError(savedUserTokenModel.statusCode)
+                    _loginScreenUiState.value = State.OnError(
+                        savedUserTokenModel.statusCode,
+                        savedUserTokenModel.statusMessage
+                    )
                     _loginScreenUiState.value = State.Loading(false)
                 }
             }
@@ -77,8 +80,8 @@ class LoginViewModel @Inject constructor(
     private suspend fun validateUserCredential(authenticationBody: AuthenticationBody) {
         loginUserUseCase.validateUserCredential(authenticationBody)
             .collect { accessTokenModel ->
-                if (accessTokenModel.success == true) {
-                    accessTokenModel.requestToken?.let {
+                if (accessTokenModel.isResponseSuccessful()) {
+                    accessTokenModel.requestToken.let {
                         //Step3 use the sessionId and get a account ID and account data for future
                         val accessTokenAsMapBody = HashMap<String, String>().apply {
                             put(KeyUtils.REQUEST_TOKEN_KEY, it)
@@ -99,11 +102,12 @@ class LoginViewModel @Inject constructor(
     private suspend fun createNewSessionPostAuthentication(accessTokenAsMapBody: HashMap<String, String>) {
         createNewSessionUseCase.createNewSession(accessTokenAsMapBody)
             .collect { newSessionModel ->
-                if (newSessionModel.success == true && newSessionModel.sessionId != null) {
+                if (newSessionModel.isResponseSuccessful()) {
                     _loginScreenUiState.value = State.OnComplete(newSessionModel)
 
                 } else {
-                    _loginScreenUiState.value = State.OnError(newSessionModel.statusCode)
+                    _loginScreenUiState.value =
+                        State.OnError(newSessionModel.statusCode, newSessionModel.statusMessage)
                 }
             }
         _loginScreenUiState.value = State.Loading(false)

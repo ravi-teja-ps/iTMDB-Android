@@ -13,8 +13,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PopularShowsViewModelTest : BaseTestClass() {
@@ -55,7 +54,8 @@ class PopularShowsViewModelTest : BaseTestClass() {
     fun popularShowsViewModel_getPopularShows_stateflow_result_test() {
         runTest {
             //Arrange
-            val mockPaging = listOf(ShowDomainModel())
+            val mockInput = mock(ShowDomainModel::class.java)
+            val mockPaging = listOf(mockInput,mockInput)
             val mockPagingDataFlow = PagingData.from(mockPaging)
             doReturn(flowOf(mockPagingDataFlow)).`when`(popularShowsUseCase)
                 .fetchPopularShows()

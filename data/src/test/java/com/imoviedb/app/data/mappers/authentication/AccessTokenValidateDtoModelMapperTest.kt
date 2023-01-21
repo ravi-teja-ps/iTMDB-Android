@@ -1,15 +1,14 @@
 package com.imoviedb.app.data.mappers.authentication
 
-import com.imoviedb.app.data.dto.authentication.AccessTokenValidateDto
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
 import com.imoviedb.app.data.dto.base.mapper.Mapper
 import com.imoviedb.app.data.mappers.BaseMapperTest
+import com.imoviedb.app.data.utils.mockedAccessTokenDto
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.mockito.Mockito.mock
 
 class AccessTokenValidateDtoModelMapperTest : BaseMapperTest() {
 
@@ -23,7 +22,7 @@ class AccessTokenValidateDtoModelMapperTest : BaseMapperTest() {
     @Test
     fun `test mapDtoToModel`() {
         //Arrange inputs
-        val mockInput = mock(AccessTokenValidateDto::class.java)
+        val mockInput = mockedAccessTokenDto
 
         //Act
         val returnObject = accessTokenValidateDtoModelMapper.map(mockInput)

@@ -1,21 +1,20 @@
 package com.imoviedb.app.data.storage.authentication
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "UserToken")
-class UserTokenEntity {
+data class UserTokenEntity(
 
     @ColumnInfo(name = "success")
-    var success: Boolean? = null
+    val success: Boolean,
 
     @PrimaryKey
     @ColumnInfo(name = "request_token")
-    var requestToken: String = ""
+    val requestToken: String,
 
     @ColumnInfo(name = "expires_at")
-    var expiresAt: String? = null
+    val expiresAt: String
 
-}
+)

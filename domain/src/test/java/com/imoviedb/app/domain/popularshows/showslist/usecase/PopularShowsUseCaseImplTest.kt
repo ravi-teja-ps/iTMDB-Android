@@ -21,13 +21,14 @@ class PopularShowsUseCaseImplTest : BaseDomainTestClass() {
 
     override fun postSetup() {
         popularShowsUseCaseImpl = PopularShowsUseCaseImpl(popularShowsRepository)
-     }
+    }
 
     @Test
     fun fetchPopularShows() {
         runTest {
             //Arrange
-            val input = MutableStateFlow(PagingData.from(listOf(ShowDomainModel())))
+            val mock = mock(ShowDomainModel::class.java)
+            val input = MutableStateFlow(PagingData.from(listOf(mock)))
             doReturn(input).`when`(popularShowsRepository).getPopularShows()
 
             //Act

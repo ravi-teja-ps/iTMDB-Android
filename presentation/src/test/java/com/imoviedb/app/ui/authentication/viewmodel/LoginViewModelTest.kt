@@ -4,10 +4,10 @@ import app.cash.turbine.test
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
-import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import com.imoviedb.app.presentation.ui.authentication.viewmodel.LoginViewModel
 import com.imoviedb.app.presentation.ui.base.State
 import com.imoviedb.app.ui.BaseTestClass
+import com.imoviedb.app.ui.mockedSessionDomainModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -124,8 +124,9 @@ class LoginViewModelTest : BaseTestClass() {
     fun loginViewModelLogin_validateCredentials_function() {
         runTest {
             //Arrange
+            val accessTokenValidateDomainModel = mock(AccessTokenValidateDomainModel::class.java)
             val authenticationBody = mock(AuthenticationBody::class.java)
-            doReturn(flowOf(AccessTokenValidateDomainModel())).`when`(fakeLoginUserUseCase)
+            doReturn(flowOf(accessTokenValidateDomainModel)).`when`(fakeLoginUserUseCase)
                 .validateUserCredential(authenticationBody)
 
             //Act
@@ -141,7 +142,7 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockInput = HashMap<String, String>().apply { put("", "") }
-            val mockOutPutModel = NewSessionDomainModel()
+            val mockOutPutModel = mockedSessionDomainModel
             doReturn(flowOf(mockOutPutModel)).`when`(fakeCreateNewSessionUseCase)
                 .createNewSession(mockInput)
 

@@ -4,36 +4,35 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
 @Entity(tableName = "Account")
 
-class AccountEntity {
+data class AccountEntity(
     @ColumnInfo(name = "avatar")
-    var avatarHash: String? = null
+    val avatarHash: String?,
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var id: Int = -1
+    val id: Int,
 
     @ColumnInfo(name = "iso_639_1")
-    var iso6391: String? = ""
+    val iso6391: String?,
 
     @ColumnInfo(name = "iso_3166_1")
-    var iso31661: String? = ""
+    val iso31661: String?,
 
     @ColumnInfo(name = "name")
-    var name: String? = ""
+    val name: String?,
 
     @ColumnInfo(name = "include_adult")
 
-    var includeAdult: Boolean = false
+    val includeAdult: Boolean,
 
     @ColumnInfo(name = "username")
-    var username: String? = ""
+    val username: String?,
 
     @ColumnInfo(name = "status_code")
-    var statusCode: Int = -1
+    val statusCode: Int,
 
     @ColumnInfo(name = "status_message")
-    var statusMessage: String? = ""
-}
+    val statusMessage: String?
+)

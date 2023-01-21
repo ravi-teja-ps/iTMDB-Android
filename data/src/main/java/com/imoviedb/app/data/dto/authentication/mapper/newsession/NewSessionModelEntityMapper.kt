@@ -9,11 +9,12 @@ class NewSessionModelEntityMapper @Inject constructor() :
     Mapper<NewSessionDomainModel, UserSessionEntity> {
 
     override fun map(input: NewSessionDomainModel): UserSessionEntity {
-        return UserSessionEntity().apply {
-            sessionId = input.sessionId ?: ""
-            success = input.success
-            statusCode = input.statusCode
-            statusMessage = input.statusMessage
-        }
+        return UserSessionEntity(
+            sessionId = input.sessionId,
+            success = input.success,
+            statusCode = input.statusCode,
+            statusMessage = input.statusMessage,
+            expiresAt = input.expiresAt
+        )
     }
 }

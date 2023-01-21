@@ -39,7 +39,7 @@ class LoginRepositoryImpl @Inject constructor(
         )
         if (response.isSuccessful && response.body() != null) {
             response.body()?.let {
-                it.requestToken?.let { _ ->
+                it.requestToken.let { _ ->
                     val domainModel = accessTokenDtoModelMapper.map(it)
                     userTokenDAO.saveToken(accessTokenModelEntityMapper.map(domainModel))
                     emit(domainModel)
@@ -57,7 +57,7 @@ class LoginRepositoryImpl @Inject constructor(
             val response = authenticationService.createSessionID(requestBody = requestBody)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.let {
-                    it.sessionId?.let { _ ->
+                    it.sessionId.let { _ ->
                         userSessionDAO.removeAllSessions()
                         val domainModel = newSessionDtoDomainMapper.map(it)
                         userSessionDAO.saveSession(newSessionModelEntityMapper.map(domainModel))

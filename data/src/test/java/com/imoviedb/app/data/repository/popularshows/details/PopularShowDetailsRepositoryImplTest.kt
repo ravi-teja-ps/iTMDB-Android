@@ -3,7 +3,7 @@ package com.imoviedb.app.data.repository.popularshows.details
 import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.popular.mapper.PopularShowEntityModelMapper
 import com.imoviedb.app.data.storage.popularshows.PopularShowsDao
-import com.imoviedb.app.data.storage.popularshows.ShowEntityModel
+import com.imoviedb.app.data.utils.mockedShowEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -19,21 +19,22 @@ class PopularShowDetailsRepositoryImplTest : BaseDataTestClass() {
     private lateinit var popularShowDetailsRepositoryImpl: PopularShowDetailsRepositoryImpl
 
     override fun onPostSetup() {
-        popularShowDetailsRepositoryImpl = PopularShowDetailsRepositoryImpl(popularShowsDao,entityModelMapper,dispatcherProvider)
+        popularShowDetailsRepositoryImpl =
+            PopularShowDetailsRepositoryImpl(popularShowsDao, entityModelMapper, dispatcherProvider)
     }
 
     @Test
     fun getPopularShowDetails() {
         runTest {
             //Arrange
-            val mockStubInput = ShowEntityModel()
+            val mockStubInput = mockedShowEntity
             doReturn(mockStubInput).`when`(popularShowsDao).fetchShowById(MOCK_SHOW_ID)
 
             //Act
             val result = popularShowsDao.fetchShowById(MOCK_SHOW_ID)
 
             //assert
-            assertEquals(result,mockStubInput)
+            assertEquals(result, mockStubInput)
         }
     }
 

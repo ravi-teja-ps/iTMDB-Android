@@ -11,7 +11,7 @@ abstract class BaseDomainTestClass {
 
     @Before
     fun initTestWithPrerequisites() {
-         MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.initMocks(this)
         postSetup()
     }
 }

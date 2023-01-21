@@ -87,6 +87,7 @@ class LoginScreenFragment : BaseFragment() {
         lifecycleScope.launch {
             loginViewModel.signInButtonStatus.collect { value ->
                 binding.signinBtn.isEnabled = value
+                binding.genericErrorLabel.visibility = View.GONE
             }
         }
     }
@@ -107,7 +108,9 @@ class LoginScreenFragment : BaseFragment() {
                         }
 
                         is State.OnError -> {
-                            showErrorScreenWithInfo(it.errorCode, it.errorMessage)
+                            binding.genericErrorLabel.visibility = View.VISIBLE
+                            binding.genericErrorLabel.text = it.errorMessage
+                            binding.signinBtn.isEnabled = false
                         }
 
                         is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result

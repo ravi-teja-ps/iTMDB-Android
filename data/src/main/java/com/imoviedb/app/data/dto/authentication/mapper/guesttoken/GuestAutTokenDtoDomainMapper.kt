@@ -9,12 +9,12 @@ class GuestAutTokenDtoDomainMapper @Inject constructor() :
     Mapper<GuestAuthCreateTokenDto, GuestAuthCreateTokenDomainModel> {
 
     override fun map(input: GuestAuthCreateTokenDto): GuestAuthCreateTokenDomainModel {
-        return GuestAuthCreateTokenDomainModel().apply {
-            requestToken = input.requestToken
-            expiresAt = input.expiresAt
-            statusCode = input.statusCode
-            success = input.success
+        return GuestAuthCreateTokenDomainModel(
+            requestToken = input.requestToken,
+            expiresAt = input.expiresAt,
+            statusCode = input.statusCode,
+            success = input.success,
             statusMessage = input.statusMessage
-        }
+        )
     }
 }

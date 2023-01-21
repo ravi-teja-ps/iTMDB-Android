@@ -1,15 +1,14 @@
 package com.imoviedb.app.data.mappers.account
 
-import com.imoviedb.app.data.dto.account.AccountDto
 import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
 import com.imoviedb.app.data.dto.base.mapper.Mapper
 import com.imoviedb.app.data.mappers.BaseMapperTest
+import com.imoviedb.app.data.utils.mockedAccountDto
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.mockito.Mockito.mock
 
 class AccountDtoModelMapperTest : BaseMapperTest() {
 
@@ -23,7 +22,7 @@ class AccountDtoModelMapperTest : BaseMapperTest() {
     @Test
     fun mapDtoToDomainModel() {
         //Arrange mock
-        val mockAccountDto = mock(AccountDto::class.java)
+        val mockAccountDto = mockedAccountDto
 
         //Act
         val returnObject = accountDtoModelMapper.map(mockAccountDto)

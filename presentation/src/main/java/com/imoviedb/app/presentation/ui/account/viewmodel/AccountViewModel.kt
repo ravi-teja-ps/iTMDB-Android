@@ -28,7 +28,7 @@ class AccountViewModel @Inject constructor(
             _dataState.value = State.Loading(true)
             getUserSessionUseCase.getUserSession().collect { sessionId ->
                 accountUseCase.getAccountInfo(sessionId).collect {
-                    if (it.isSuccess()) {
+                    if (it.isResponseSuccessful()) {
                         _dataState.value = State.OnComplete(it)
                     } else {
                         _dataState.value = State.OnError(it.statusCode, it.statusMessage)

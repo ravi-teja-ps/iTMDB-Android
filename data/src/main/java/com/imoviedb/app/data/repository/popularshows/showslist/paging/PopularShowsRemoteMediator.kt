@@ -53,13 +53,13 @@ class PopularShowsRemoteMediator @Inject constructor(
             loadKey?.let {
                 val response = popularShowService.popularShows(page = it)
                 response.body()?.let { popularShowModel ->
-                    popularShowModel.page?.let { currentPage: Int ->
+                    popularShowModel.page.let { currentPage: Int ->
                         //writing to DB under queuing by Room db for synchronization
                         dbTransaction.executeTransaction {
                             remoteKeyDao.insertOrReplace(
                                 RemoteKey(
                                     currentPage = currentPage,
-                                    lastPage = popularShowModel.totalPages!!
+                                    lastPage = popularShowModel.totalPages
                                 )
                             )
                             val popularShowEntityList = mutableListOf<ShowEntityModel>()

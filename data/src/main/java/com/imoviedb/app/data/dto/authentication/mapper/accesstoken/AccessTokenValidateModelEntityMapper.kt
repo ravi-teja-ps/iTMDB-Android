@@ -10,10 +10,10 @@ class AccessTokenValidateModelEntityMapper @Inject constructor() :
 
     //mapModelToEntity
     override fun map(input: AccessTokenValidateDomainModel): UserTokenEntity {
-        return UserTokenEntity().apply {
-            success = input.success
-            requestToken = input.requestToken ?: ""
+        return UserTokenEntity(
+            success = input.success,
+            requestToken = input.requestToken,
             expiresAt = input.expiresAt
-        }
+        )
     }
 }

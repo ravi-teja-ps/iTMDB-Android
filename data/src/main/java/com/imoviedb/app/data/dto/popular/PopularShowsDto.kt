@@ -3,14 +3,14 @@ package com.imoviedb.app.data.dto.popular
 import com.google.gson.annotations.SerializedName
 import com.imoviedb.app.data.dto.base.BaseResponseDto
 
-class PopularShowsDto : BaseResponseDto() {
+data class PopularShowsDto(
     @SerializedName("page")
-    var page: Int? = null
+    val page: Int,
 
     @SerializedName("results")
-    var shows: List<ShowDto>? = null
+    val shows: List<ShowDto> = emptyList(),
 
     @SerializedName("total_pages")
-    var totalPages: Int? = null
-}
+    val totalPages: Int
+) : BaseResponseDto
 

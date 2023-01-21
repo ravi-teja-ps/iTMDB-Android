@@ -1,15 +1,14 @@
 package com.imoviedb.app.data.mappers.popular
 
 import com.imoviedb.app.data.dto.base.mapper.Mapper
-import com.imoviedb.app.data.dto.popular.ShowDto
 import com.imoviedb.app.data.dto.popular.mapper.PopularShowDtoDomainMapper
 import com.imoviedb.app.data.mappers.BaseMapperTest
+import com.imoviedb.app.data.utils.mockedShowDto
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.mockito.Mockito
 
 class PopularShowDtoDomainMapperTest : BaseMapperTest() {
 
@@ -23,7 +22,7 @@ class PopularShowDtoDomainMapperTest : BaseMapperTest() {
     @Test
     fun `test conversion of dto to domain model`() {
         //Arrange
-        val mockInput = Mockito.mock(ShowDto::class.java)
+        val mockInput = mockedShowDto
 
         //Act
         val returnObject = popularShowDtoDomainMapper.map(mockInput)
