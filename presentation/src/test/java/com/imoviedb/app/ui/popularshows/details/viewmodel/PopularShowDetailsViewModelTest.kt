@@ -44,14 +44,11 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
     @Test
     fun popularShowsDetailsViewModel_testUseCaseInvocation() {
         runTest {
-            //Arrange
-            val mockAccountId = 100
-
             //Act
-            popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
+            popularShowDetailsViewModel.getShowDetailsFromDB(MOCK_ACCOUNT_ID)
 
             //Assert or Verify
-            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(mockAccountId)
+            verify(fakePopularShowDetailsUseCase).getPopularShowDetails(MOCK_ACCOUNT_ID)
         }
     }
 
@@ -59,13 +56,12 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
     fun popularShowsDetailsViewModel_getShowDetailsFromDB() {
         runTest {
             //Arrange
-            val mockAccountId = 100
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
             doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
-                .getPopularShowDetails(mockAccountId)
+                .getPopularShowDetails(MOCK_ACCOUNT_ID)
 
             //Act
-            popularShowDetailsViewModel.getShowDetailsFromDB(mockAccountId)
+            popularShowDetailsViewModel.getShowDetailsFromDB(MOCK_ACCOUNT_ID)
 
             //Assertion
             assertEquals(
@@ -73,5 +69,9 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
                 State.OnComplete(mockShowObjectDto)
             )
         }
+    }
+
+    private companion object {
+        const val MOCK_ACCOUNT_ID = 100
     }
 }

@@ -1,4 +1,4 @@
-package com.imoviedb.app.ui.popularshows
+package com.imoviedb.app.ui.popularshows.showlist
 
 import androidx.paging.PagingData
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel

@@ -28,7 +28,7 @@ class SplashScreenViewModel @Inject constructor(
             _dataState.value = State.Loading(true)
             authenticationUseCase.deleteGuestToken()
             authenticationUseCase.createTokenForSession().collect {
-                if (it.success == true) {
+                if (it.isResponseSuccessful()) {
                     _dataState.value = State.OnComplete(it)
                 } else {
                     _dataState.value = State.OnError(it.statusCode, it.statusMessage)
