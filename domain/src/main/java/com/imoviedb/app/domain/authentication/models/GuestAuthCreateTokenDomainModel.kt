@@ -7,8 +7,8 @@ data class GuestAuthCreateTokenDomainModel(
     val statusCode: Int,
     val statusMessage: String?,
     var success: Boolean,
-    var requestToken: String?,
-    var expiresAt: String?
+    val requestToken: String?,
+    val expiresAt: String?
 ) : BaseDomainModel {
     override fun isResponseSuccessful(): Boolean {
         return statusCode <= 0

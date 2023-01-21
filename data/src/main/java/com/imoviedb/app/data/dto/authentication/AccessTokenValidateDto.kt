@@ -5,18 +5,18 @@ import com.imoviedb.app.data.dto.base.BaseResponseDto
 
 data class AccessTokenValidateDto(
     @SerializedName("status_code")
-    var statusCode: Int,
+    val statusCode: Int,
 
     @SerializedName("status_message")
-    var statusMessage: String?,
+    val statusMessage: String?,
 
     @SerializedName("success")
-    var success: Boolean,
+    val success: Boolean,
 
     @SerializedName("request_token")
-    var requestToken: String,
+    val requestToken: String,
 
     @SerializedName("expires_at")
-    var expiresAt: String
+    val expiresAt: String
 ) : BaseResponseDto
 
