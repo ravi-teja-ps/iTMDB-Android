@@ -17,7 +17,6 @@ class GetAccountUseCaseImplTest : BaseDomainTestClass() {
     fun getAccountInfo() {
         runBlocking {
             //Arrange
-
             val mockedDomainModel = mock(AccountDomainModel::class.java)
             doReturn(flowOf(mockedDomainModel)).`when`(accountRepository)
                 .getAccountInfo(mockedInput)

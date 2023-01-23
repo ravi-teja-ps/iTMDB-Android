@@ -10,7 +10,6 @@ data class AccessTokenValidateDomainModel(
     val expiresAt: String
 ) : BaseDomainModel {
 
-
     override fun isResponseSuccessful(): Boolean {
         return statusCode <= 0
     }

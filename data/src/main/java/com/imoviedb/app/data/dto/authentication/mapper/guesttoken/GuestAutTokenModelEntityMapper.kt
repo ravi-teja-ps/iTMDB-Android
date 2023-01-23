@@ -8,7 +8,6 @@ import javax.inject.Inject
 class GuestAutTokenModelEntityMapper @Inject constructor() :
     Mapper<GuestAuthCreateTokenDomainModel, GuestUserTokenEntity> {
 
-
     override fun map(input: GuestAuthCreateTokenDomainModel): GuestUserTokenEntity {
         return GuestUserTokenEntity(
             requestToken = input.requestToken ?: "", //Primary key non insertion defaults empty

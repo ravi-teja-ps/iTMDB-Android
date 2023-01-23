@@ -21,6 +21,5 @@ class DefaultDispatcherProviderTest {
     @Test
     fun getDefault() {
         Assert.assertEquals(testDispatcherProvider.default, Dispatchers.Default)
-
     }
 }

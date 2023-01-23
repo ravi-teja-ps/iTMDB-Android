@@ -50,8 +50,4 @@ class GuestUserAuthRepositoryImplTest : BaseDataTestClass() {
             assertEquals(result, response)
         }
     }
-
-    @Test
-    fun deletePreviousGuestToken() {
-    }
 }

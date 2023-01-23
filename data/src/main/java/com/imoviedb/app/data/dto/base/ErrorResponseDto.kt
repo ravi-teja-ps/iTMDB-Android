@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 //Add additional exception info if needed to extraData and use that to show details info
 data class ErrorResponseDto(
     @SerializedName("status_code")
-    var statusCode: Int,
+    val statusCode: Int,
     @SerializedName("status_message")
-    var statusMessage: String?,
+    val statusMessage: String?,
     @SerializedName("success")
-    var success: Boolean
+    val success: Boolean
 ) : BaseResponseDto

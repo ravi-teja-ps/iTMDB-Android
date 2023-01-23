@@ -132,7 +132,6 @@ class LoginRepositoryTest : BaseDataTestClass() {
             userSessionDAO.removeAllSessions()
             userSessionDAO.saveSession(userSessionEntity)
 
-
             //Assertion
             assertEquals(result, userTokenEntityMock)
             verify(userSessionDAO).removeAllSessions()

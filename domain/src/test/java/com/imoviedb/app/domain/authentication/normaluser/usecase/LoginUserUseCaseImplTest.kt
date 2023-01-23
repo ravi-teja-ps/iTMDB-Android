@@ -40,6 +40,4 @@ class LoginUserUseCaseImplTest : BaseDomainTestClass() {
             assertEquals(stubObject, result)
         }
     }
-
-
 }

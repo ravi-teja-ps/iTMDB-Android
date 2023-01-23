@@ -4,10 +4,7 @@ import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainM
 import kotlinx.coroutines.flow.Flow
 
 interface GuestUserAuthRepository {
-
-
     suspend fun createGuestTokenForSession(): Flow<GuestAuthCreateTokenDomainModel>
-
 
     suspend fun deletePreviousGuestToken(): Flow<Unit>
 }
