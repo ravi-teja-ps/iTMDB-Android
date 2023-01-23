@@ -68,7 +68,6 @@ class LoginViewModel @Inject constructor(
                         savedUserTokenModel.statusCode,
                         savedUserTokenModel.statusMessage
                     )
-                    _loginScreenUiState.value = State.Loading(false)
                 }
             }
         }
@@ -91,7 +90,6 @@ class LoginViewModel @Inject constructor(
                 } else {
                     _loginScreenUiState.value =
                         State.OnError(accessTokenModel.statusCode, accessTokenModel.statusMessage)
-                    _loginScreenUiState.value = State.Loading(false)
                 }
             }
     }
@@ -110,7 +108,6 @@ class LoginViewModel @Inject constructor(
                         State.OnError(newSessionModel.statusCode, newSessionModel.statusMessage)
                 }
             }
-        _loginScreenUiState.value = State.Loading(false)
     }
 
     fun setPassword(password: String) {

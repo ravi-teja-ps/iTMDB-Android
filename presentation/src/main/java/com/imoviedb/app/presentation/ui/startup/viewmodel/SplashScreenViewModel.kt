@@ -34,7 +34,6 @@ class SplashScreenViewModel @Inject constructor(
                     _dataState.value = State.OnError(it.statusCode, it.statusMessage)
                 }
             }
-            _dataState.value = State.Loading(false)
         }
     }
 }

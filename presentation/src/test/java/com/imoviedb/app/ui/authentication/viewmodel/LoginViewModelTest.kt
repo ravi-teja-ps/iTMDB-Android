@@ -152,7 +152,6 @@ class LoginViewModelTest : BaseTestClass() {
 
             //Assertion
             verify(fakeCreateNewSessionUseCase).createNewSession(mockInput)
-            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(false))
         }
     }
 

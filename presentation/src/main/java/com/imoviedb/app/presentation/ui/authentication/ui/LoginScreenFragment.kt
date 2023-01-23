@@ -99,18 +99,19 @@ class LoginScreenFragment : BaseFragment() {
                 loginViewModel.loginScreenUiState.collect {
                     when (it) {
                         is State.Loading -> {
-                            binding.progressBarView.visibility =
-                                if (it.isLoading) View.VISIBLE else View.GONE
+                            toggleProgressBar(it.isLoading)
                         }
 
                         is State.OnComplete -> {
                             navigateToMainFragment()
+                            toggleProgressBar(false)
                         }
 
                         is State.OnError -> {
                             binding.genericErrorLabel.visibility = View.VISIBLE
                             binding.genericErrorLabel.text = it.errorMessage
                             binding.signinBtn.isEnabled = false
+                            toggleProgressBar(false)
                         }
 
                         is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result
@@ -122,6 +123,11 @@ class LoginScreenFragment : BaseFragment() {
 
     private fun navigateToMainFragment() {
         findNavController().navigate(R.id.action_loginScreenFragment_to_popularShowsFragment)
+    }
+
+    private fun toggleProgressBar(willShowLoading: Boolean) {
+        binding.progressBarView.visibility =
+            if (willShowLoading) View.VISIBLE else View.GONE
     }
 
     /**

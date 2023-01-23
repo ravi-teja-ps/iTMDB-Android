@@ -54,16 +54,17 @@ class SplashFragment : BaseFragment() {
                 splashViewModel.splashScreenState.collect {
                     when (it) {
                         is State.Loading -> {
-                            binding.progressBar.visibility =
-                                if (it.isLoading) View.VISIBLE else View.GONE
+                                toggleProgressBar(it.isLoading)
                         }
 
                         is State.OnComplete -> {
+                            toggleProgressBar(false)
                             navigateToLoginScreen()
                         }
 
                         is State.OnError -> {
                             showErrorScreenWithInfo(it.errorCode, it.errorMessage)
+                            toggleProgressBar(false)
                         }
 
                         is State.OnCompletePagedData -> {}
@@ -71,6 +72,11 @@ class SplashFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun toggleProgressBar(willShowLoading: Boolean) {
+        binding.progressBar.visibility =
+            if (willShowLoading) View.VISIBLE else View.GONE
     }
 
     private fun navigateToLoginScreen() {
