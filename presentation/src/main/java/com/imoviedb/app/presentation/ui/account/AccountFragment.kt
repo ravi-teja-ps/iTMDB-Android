@@ -11,7 +11,7 @@ import com.imoviedb.app.presentation.R
 import com.imoviedb.app.presentation.databinding.FragmentAccountBinding
 import com.imoviedb.app.presentation.ui.account.viewmodel.AccountViewModel
 import com.imoviedb.app.presentation.ui.base.BaseFragment
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.utils.UrlUtils
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,16 +39,15 @@ class AccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
             accountViewModel.getAccountData()
-            accountViewModel.dataState.collect {
+            accountViewModel.uiState.collect {
                 when (it) {
-                    is State.Loading -> {}
-                    is State.OnComplete -> {
-                        updateUi(it.completionResult as AccountDomainModel)
+                    is UiState.Loading -> {}
+                    is UiState.OnComplete -> {
+                        updateUi(it.data)
                     }
-                    is State.OnError -> {
+                    is UiState.OnError -> {
                         showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                     }
-                    is State.OnCompletePagedData -> {}
                 }
             }
         }

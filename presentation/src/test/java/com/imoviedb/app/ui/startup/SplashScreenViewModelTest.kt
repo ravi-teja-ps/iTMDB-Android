@@ -1,10 +1,11 @@
 package com.imoviedb.app.ui.startup
 
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.startup.viewmodel.SplashScreenViewModel
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.authentication.viewmodel.FakeAuthenticationUseCase
 import com.imoviedb.app.ui.mockedGuestAuthTokenDomainModel
+import com.imoviedb.common.state.ResponseWrapper
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -28,24 +29,24 @@ class SplashScreenViewModelTest : BaseTestClass() {
     @Test
     fun getSplashScreenState() {
         //Arrange
-        val expectedState = State.Loading(true)
+        val expectedUiState = UiState.Loading(true)
 
         //Assertion
         Assert.assertNotNull(splashScreenViewModel.splashScreenState)
-        Assert.assertEquals(splashScreenViewModel.splashScreenState.value, expectedState)
+        Assert.assertEquals(splashScreenViewModel.splashScreenState.value, expectedUiState)
     }
 
     @Test
     fun loadAccessTokenWithoutSession() {
         runTest {
             //arrange
-            Mockito.doReturn(flowOf(mockedGuestAuthTokenDomainModel)).`when`(authenticationUseCase).createTokenForSession()
+            Mockito.doReturn(flowOf(ResponseWrapper.Success(mockedGuestAuthTokenDomainModel))).`when`(authenticationUseCase).createTokenForSession()
 
             //Act
              authenticationUseCase.createTokenForSession().collect{
 
                  //Assert
-                assertEquals(it, mockedGuestAuthTokenDomainModel)
+                assertEquals(it.data, mockedGuestAuthTokenDomainModel)
             }
         }
     }

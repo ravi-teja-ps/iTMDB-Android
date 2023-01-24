@@ -11,7 +11,7 @@ import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.imoviedb.app.presentation.R
 import com.imoviedb.app.presentation.databinding.FragmentPopularShowDetailsBinding
 import com.imoviedb.app.presentation.ui.base.BaseFragment
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 
 import com.imoviedb.app.presentation.ui.popularshows.details.viewmodel.PopularShowDetailsViewModel
 import com.imoviedb.app.presentation.ui.utils.KeyUtils
@@ -57,14 +57,13 @@ class PopularShowDetailsFragment : BaseFragment() {
                 popularShowDetailsViewModel.getShowDetailsFromDB(it)
                 popularShowDetailsViewModel.data.collect {
                     when (it) {
-                        is State.Loading -> {
+                        is UiState.Loading -> {
 
                         }
-                        is State.OnComplete -> {
-                            updateUiFromState(it.completionResult as ShowDomainModel)
+                        is UiState.OnComplete -> {
+                            updateUiFromState(it.data)
                         }
-                        is State.OnCompletePagedData -> {}
-                        is State.OnError -> {
+                        is UiState.OnError -> {
                             showErrorScreenWithInfo(code = it.errorCode, it.errorMessage)
                         }
                     }

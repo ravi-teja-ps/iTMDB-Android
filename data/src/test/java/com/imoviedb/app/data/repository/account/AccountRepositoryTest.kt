@@ -2,7 +2,6 @@ package com.imoviedb.app.data.repository.account
 
 import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.account.mapper.AccountDtoModelMapper
-import com.imoviedb.app.data.dto.account.mapper.AccountErrorModelMapper
 import com.imoviedb.app.data.dto.account.mapper.AccountModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AccountService
 import com.imoviedb.app.data.storage.account.AccountDAO
@@ -34,9 +33,6 @@ class AccountRepositoryTest : BaseDataTestClass() {
     private lateinit var modelEntityMapper: AccountModelEntityMapper
 
     @Mock
-    private lateinit var errorModelMapper: AccountErrorModelMapper
-
-    @Mock
     private lateinit var userSessionDAO: UserSessionDAO
 
     //The class under test
@@ -48,7 +44,6 @@ class AccountRepositoryTest : BaseDataTestClass() {
             accountDAO,
             dtoModelMapper,
             modelEntityMapper,
-            errorModelMapper,
             userSessionDAO,
             dispatcherProvider
         )

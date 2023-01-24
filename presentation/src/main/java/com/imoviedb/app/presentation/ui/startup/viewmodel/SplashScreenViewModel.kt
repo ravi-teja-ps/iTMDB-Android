@@ -2,8 +2,10 @@ package com.imoviedb.app.presentation.ui.startup.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
+import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
+import com.imoviedb.common.state.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -14,25 +16,30 @@ class SplashScreenViewModel @Inject constructor(
     private val authenticationUseCase: AuthenticationUseCase
 ) : BaseViewModel() {
 
-    private val _dataState: MutableStateFlow<State> = MutableStateFlow(
-        State.Loading(
+    private val _dataUiState: MutableStateFlow<UiState<GuestAuthCreateTokenDomainModel>> = MutableStateFlow(
+        UiState.Loading(
             true
         )
     )
-    var splashScreenState = _dataState
+    var splashScreenState = _dataUiState
         private set
 
     /** Load access token from service and use it for subsequent calls **/
     fun loadAccessTokenWithoutSession() {
         viewModelScope.launch {
-            _dataState.value = State.Loading(true)
+            _dataUiState.value = UiState.Loading(true)
             authenticationUseCase.deleteGuestToken()
             authenticationUseCase.createTokenForSession().collect {
-                if (it.isResponseSuccessful()) {
-                    _dataState.value = State.OnComplete(it)
-                } else {
-                    _dataState.value = State.OnError(it.statusCode, it.statusMessage)
-                }
+             when(it){
+                 is ResponseWrapper.Error ->  {
+                     _dataUiState.value = UiState.OnError(it.code,it.message)
+                 }
+
+                 is ResponseWrapper.Success ->{
+                     _dataUiState.value = UiState.OnComplete(it.data)
+
+                 }
+             }
             }
         }
     }

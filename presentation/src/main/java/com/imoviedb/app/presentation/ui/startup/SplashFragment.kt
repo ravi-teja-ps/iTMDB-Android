@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.imoviedb.app.presentation.R
 import com.imoviedb.app.presentation.databinding.FragmentSplashBinding
 import com.imoviedb.app.presentation.ui.base.BaseFragment
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.startup.viewmodel.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -53,21 +53,19 @@ class SplashFragment : BaseFragment() {
                 splashViewModel.loadAccessTokenWithoutSession()
                 splashViewModel.splashScreenState.collect {
                     when (it) {
-                        is State.Loading -> {
+                        is UiState.Loading -> {
                                 toggleProgressBar(it.isLoading)
                         }
 
-                        is State.OnComplete -> {
+                        is UiState.OnComplete -> {
                             toggleProgressBar(false)
                             navigateToLoginScreen()
                         }
 
-                        is State.OnError -> {
+                        is UiState.OnError -> {
                             showErrorScreenWithInfo(it.errorCode, it.errorMessage)
                             toggleProgressBar(false)
                         }
-
-                        is State.OnCompletePagedData -> {}
                     }
                 }
             }

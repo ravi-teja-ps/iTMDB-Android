@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.imoviedb.app.presentation.R
 import com.imoviedb.app.presentation.databinding.PopularShowsFragmentBinding
 import com.imoviedb.app.presentation.ui.base.BaseFragment
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.popularshows.showslist.viewmodel.PopularShowsViewModel
 import com.imoviedb.app.presentation.ui.utils.KeyUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,16 +62,15 @@ class PopularShowsFragment : BaseFragment() {
 
         viewModel.data.collectLatest {
             when (it) {
-                is State.Loading -> {}//Ignoring loading par as lazy loading shows items upfront
-                is State.OnCompletePagedData -> {
-                    popularShowsGridAdapter.submitData(it.pagedData)
-                }
+                is UiState.Loading -> {}//Ignoring loading par as lazy loading shows items upfront
 
-                is State.OnError -> {
+                is UiState.OnError -> {
                     showErrorScreenWithInfo(code = it.errorCode, it.errorMessage)
                 }
 
-                is State.OnComplete -> {} //non functional callback for paging3 screen
+                is UiState.OnComplete -> {
+                    popularShowsGridAdapter.submitData(it.data)
+                } //non functional callback for paging3 screen
             }
         }
     }

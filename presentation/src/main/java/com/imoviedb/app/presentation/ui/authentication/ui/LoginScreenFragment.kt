@@ -14,7 +14,8 @@ import com.imoviedb.app.presentation.R
 import com.imoviedb.app.presentation.databinding.LoginScreenBinding
 import com.imoviedb.app.presentation.ui.authentication.viewmodel.LoginViewModel
 import com.imoviedb.app.presentation.ui.base.BaseFragment
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
+import com.imoviedb.app.presentation.ui.utils.closeKeyboardIfShown
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -58,6 +59,7 @@ class LoginScreenFragment : BaseFragment() {
 
             signinBtn.setOnClickListener {
                 loginViewModel.login()
+                requireActivity().closeKeyboardIfShown()
             }
         }
     }
@@ -98,23 +100,21 @@ class LoginScreenFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 loginViewModel.loginScreenUiState.collect {
                     when (it) {
-                        is State.Loading -> {
+                        is UiState.Loading -> {
                             toggleProgressBar(it.isLoading)
                         }
 
-                        is State.OnComplete -> {
+                        is UiState.OnComplete -> {
                             navigateToMainFragment()
                             toggleProgressBar(false)
                         }
 
-                        is State.OnError -> {
+                        is UiState.OnError -> {
                             binding.genericErrorLabel.visibility = View.VISIBLE
                             binding.genericErrorLabel.text = it.errorMessage
                             binding.signinBtn.isEnabled = false
                             toggleProgressBar(false)
                         }
-
-                        is State.OnCompletePagedData -> {} //Case not needed as it is not paged data result
                     }
                 }
             }

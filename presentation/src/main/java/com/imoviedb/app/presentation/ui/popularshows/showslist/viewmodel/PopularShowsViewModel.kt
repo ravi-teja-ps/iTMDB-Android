@@ -1,10 +1,12 @@
 package com.imoviedb.app.presentation.ui.popularshows.showslist.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 import com.imoviedb.app.domain.popularshows.showslist.usecase.PopularShowsUseCase
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -15,8 +17,8 @@ import javax.inject.Inject
 class PopularShowsViewModel @Inject constructor(
     private val popularShowsUseCase: PopularShowsUseCase
 ) : BaseViewModel() {
-    private val _data = MutableStateFlow<State>(
-        State.Loading(
+    private val _data = MutableStateFlow<UiState<PagingData<ShowDomainModel>>>(
+        UiState.Loading(
             true
         )
     )
@@ -28,7 +30,7 @@ class PopularShowsViewModel @Inject constructor(
     fun getPopularShows() {
         viewModelScope.launch {
             popularShowsUseCase.fetchPopularShows().cachedIn(this).collectLatest {
-                _data.value = State.OnCompletePagedData(it)
+                _data.value = UiState.OnComplete(it)
             }
         }
     }

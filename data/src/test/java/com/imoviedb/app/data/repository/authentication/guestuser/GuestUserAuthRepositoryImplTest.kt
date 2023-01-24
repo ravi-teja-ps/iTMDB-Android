@@ -2,7 +2,6 @@ package com.imoviedb.app.data.repository.authentication.guestuser
 
 import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.authentication.mapper.guesttoken.GuestAutTokenDtoDomainMapper
-import com.imoviedb.app.data.dto.authentication.mapper.guesttoken.GuestAutTokenErrorDtoDomainMapper
 import com.imoviedb.app.data.dto.authentication.mapper.guesttoken.GuestAutTokenModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.storage.authentication.GuestUserTokenDAO
@@ -21,7 +20,6 @@ class GuestUserAuthRepositoryImplTest : BaseDataTestClass() {
     private val guestUserTokenDAO: GuestUserTokenDAO = mock()
     private val guestAutTokenDtoDomainMapper: GuestAutTokenDtoDomainMapper = mock()
     private val guestAutTokenModelEntityMapper: GuestAutTokenModelEntityMapper = mock()
-    private val guestAuthTokenValidateErrorModelMapper: GuestAutTokenErrorDtoDomainMapper = mock()
 
     private lateinit var guestUserAuthRepo: GuestUserAuthRepositoryImpl
 
@@ -31,7 +29,6 @@ class GuestUserAuthRepositoryImplTest : BaseDataTestClass() {
             guestUserTokenDAO,
             guestAutTokenDtoDomainMapper,
             guestAutTokenModelEntityMapper,
-            guestAuthTokenValidateErrorModelMapper,
             dispatcherProvider
         )
     }

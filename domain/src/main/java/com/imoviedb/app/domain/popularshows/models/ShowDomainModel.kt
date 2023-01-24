@@ -1,7 +1,5 @@
 package com.imoviedb.app.domain.popularshows.models
 
-import com.imoviedb.app.domain.base.BaseDomainModel
-
 data class ShowDomainModel(
     val adult: Boolean,
     val insertOrder: Int,
@@ -21,8 +19,4 @@ data class ShowDomainModel(
     val name: String?,
     val originalName: String?,
     val firstAirDate: String?,
-) : BaseDomainModel {
-    override fun isResponseSuccessful(): Boolean {
-        return false //Not applicable for list item model.
-    }
-}
+)

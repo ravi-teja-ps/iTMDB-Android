@@ -59,4 +59,6 @@ dependencies {
 
     //Paging
     implementation pagingLib.pagingRuntime
+
+    implementation project(path: ':common')
 }

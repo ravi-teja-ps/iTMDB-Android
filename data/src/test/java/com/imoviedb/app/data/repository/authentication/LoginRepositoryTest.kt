@@ -2,11 +2,9 @@ package com.imoviedb.app.data.repository.authentication
 
 import com.imoviedb.app.data.base.BaseDataTestClass
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateDtoModelMapper
-import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateErrorModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AccessTokenValidateModelEntityMapper
 import com.imoviedb.app.data.dto.authentication.mapper.accesstoken.AuthenticationBodyMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionDtoDomainMapper
-import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionErrorDtoModelMapper
 import com.imoviedb.app.data.dto.authentication.mapper.newsession.NewSessionModelEntityMapper
 import com.imoviedb.app.data.networking.apiservice.AuthenticationService
 import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
@@ -45,13 +43,7 @@ class LoginRepositoryTest : BaseDataTestClass() {
     private lateinit var accessTokenModelEntityMapper: AccessTokenValidateModelEntityMapper
 
     @Mock
-    private lateinit var accessTokenErrorModelMapper: AccessTokenValidateErrorModelMapper
-
-    @Mock
     private lateinit var newSessionDtoDomainMapper: NewSessionDtoDomainMapper
-
-    @Mock
-    private lateinit var newSessionErrorDtoModelMapper: NewSessionErrorDtoModelMapper
 
     @Mock
     private lateinit var newSessionModelEntityMapper: NewSessionModelEntityMapper
@@ -69,9 +61,7 @@ class LoginRepositoryTest : BaseDataTestClass() {
             userSessionDAO,
             accessTokenDtoModelMapper,
             accessTokenModelEntityMapper,
-            accessTokenErrorModelMapper,
             newSessionDtoDomainMapper,
-            newSessionErrorDtoModelMapper,
             newSessionModelEntityMapper,
             authenticationBodyMapper,
             dispatcherProvider

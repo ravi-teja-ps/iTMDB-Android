@@ -1,9 +1,10 @@
 package com.imoviedb.app.ui.popularshows.details.viewmodel
 
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.popularshows.details.viewmodel.PopularShowDetailsViewModel
 import com.imoviedb.app.ui.BaseTestClass
+import com.imoviedb.common.state.ResponseWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -34,11 +35,11 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
     @Test
     fun popularShowsDetailsViewModel_flow_data_initial_value() {
         //Arrange
-        val expectedState = State.Loading(true)
+        val expectedUiState = UiState.Loading(true)
 
         //Assertion
         assertNotNull(popularShowDetailsViewModel.data)
-        assertEquals(popularShowDetailsViewModel.data.value, expectedState)
+        assertEquals(popularShowDetailsViewModel.data.value, expectedUiState)
     }
 
     @Test
@@ -57,7 +58,7 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
-            doReturn(flowOf(mockShowObjectDto)).`when`(fakePopularShowDetailsUseCase)
+            doReturn(flowOf(ResponseWrapper.Success(mockShowObjectDto))).`when`(fakePopularShowDetailsUseCase)
                 .getPopularShowDetails(MOCK_ACCOUNT_ID)
 
             //Act
@@ -66,7 +67,7 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
             //Assertion
             assertEquals(
                 popularShowDetailsViewModel.data.value,
-                State.OnComplete(mockShowObjectDto)
+                UiState.OnComplete(mockShowObjectDto)
             )
         }
     }

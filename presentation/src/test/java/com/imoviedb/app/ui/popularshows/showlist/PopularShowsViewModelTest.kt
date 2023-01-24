@@ -3,7 +3,7 @@ package com.imoviedb.app.ui.popularshows.showlist
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.popularshows.showslist.viewmodel.PopularShowsViewModel
 import com.imoviedb.app.ui.BaseTestClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,11 +32,11 @@ class PopularShowsViewModelTest : BaseTestClass() {
     @Test
     fun getData() {
         //Arrange
-        val initialState = State.Loading(true)
+        val initialUiState = UiState.Loading(true)
 
         //Assertion
         assertNotNull(popularShowsViewModel.data)
-        assertEquals(popularShowsViewModel.data.value, initialState)
+        assertEquals(popularShowsViewModel.data.value, initialUiState)
     }
 
     @Test

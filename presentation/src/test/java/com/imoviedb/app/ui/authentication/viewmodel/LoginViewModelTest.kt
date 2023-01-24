@@ -5,9 +5,10 @@ import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.authentication.models.AccessTokenValidateDomainModel
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import com.imoviedb.app.presentation.ui.authentication.viewmodel.LoginViewModel
-import com.imoviedb.app.presentation.ui.base.State
+import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.ui.BaseTestClass
 import com.imoviedb.app.ui.mockedSessionDomainModel
+import com.imoviedb.common.state.ResponseWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -105,7 +106,7 @@ class LoginViewModelTest : BaseTestClass() {
 
         //Assertions
         Assert.assertNotNull(initialUiState)
-        Assert.assertEquals(initialUiState.value, State.Loading(false))
+        Assert.assertEquals(initialUiState.value, UiState.Loading(false))
     }
 
     @Test
@@ -115,7 +116,7 @@ class LoginViewModelTest : BaseTestClass() {
             loginViewModel.login()
 
             //Assertion
-            Assert.assertEquals(loginViewModel.loginScreenUiState.value, State.Loading(true))
+            Assert.assertEquals(loginViewModel.loginScreenUiState.value, UiState.Loading(true))
             verify(fakeGuestTokenUseCase).createTokenForSession()
         }
     }
@@ -160,13 +161,14 @@ class LoginViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockedInput = mock(GuestAuthCreateTokenDomainModel::class.java)
-            doReturn(flowOf(mockedInput)).`when`(fakeGuestTokenUseCase).createTokenForSession()
+            val stubInput = flowOf(ResponseWrapper.Success(mockedInput))
+            doReturn(stubInput).`when`(fakeGuestTokenUseCase).createTokenForSession()
 
             //Act
             fakeGuestTokenUseCase.createTokenForSession().collect {
 
                 //Assertion
-                Assert.assertEquals(mockedInput, it)
+                Assert.assertEquals(mockedInput, it.data)
             }
         }
     }
