@@ -1,5 +1,6 @@
 package com.imoviedb.app.ui.startup
 
+import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCaseImpl
 import com.imoviedb.app.presentation.ui.base.UiState
 import com.imoviedb.app.presentation.ui.startup.viewmodel.SplashScreenViewModel
 import com.imoviedb.app.ui.BaseTestClass
@@ -20,10 +21,13 @@ class SplashScreenViewModelTest : BaseTestClass() {
 
     private val authenticationUseCase: FakeAuthenticationUseCase = mock()
 
+    private val deleteGuestTokenUseCaseImpl: DeleteGuestTokenUseCaseImpl = mock()
+
     private lateinit var splashScreenViewModel: SplashScreenViewModel
 
     override fun postSetup() {
-        splashScreenViewModel = SplashScreenViewModel(authenticationUseCase)
+        splashScreenViewModel =
+            SplashScreenViewModel(authenticationUseCase, deleteGuestTokenUseCaseImpl)
     }
 
     @Test
@@ -40,12 +44,15 @@ class SplashScreenViewModelTest : BaseTestClass() {
     fun loadAccessTokenWithoutSession() {
         runTest {
             //arrange
-            Mockito.doReturn(flowOf(ResponseWrapper.Success(mockedGuestAuthTokenDomainModel))).`when`(authenticationUseCase).createTokenForSession()
+            Mockito.doReturn(flowOf(ResponseWrapper.Success(mockedGuestAuthTokenDomainModel)))
+                .`when`(authenticationUseCase).createTokenForSession()
 
             //Act
-             authenticationUseCase.createTokenForSession().collect{
+            deleteGuestTokenUseCaseImpl.deleteGuestToken()
 
-                 //Assert
+            authenticationUseCase.createTokenForSession().collect {
+
+                //Assert
                 assertEquals(it.data, mockedGuestAuthTokenDomainModel)
             }
         }

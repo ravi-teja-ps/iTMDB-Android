@@ -55,7 +55,7 @@ class PopularShowsViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockInput = mock(ShowDomainModel::class.java)
-            val mockPaging = listOf(mockInput,mockInput)
+            val mockPaging = listOf(mockInput, mockInput)
             val mockPagingDataFlow = PagingData.from(mockPaging)
             doReturn(flowOf(mockPagingDataFlow)).`when`(popularShowsUseCase)
                 .fetchPopularShows()

@@ -5,11 +5,11 @@ import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainM
 import com.imoviedb.app.domain.authentication.models.NewSessionDomainModel
 import com.imoviedb.app.domain.popularshows.models.ShowDomainModel
 
-val mockedPopularShowsModel : ShowDomainModel by lazy { getShowDomainMock() }
+val mockedPopularShowsModel: ShowDomainModel by lazy { getShowDomainMock() }
 val mockedSessionDomainModel: NewSessionDomainModel by lazy { getSessionDomainModelMock() }
 val mockedAccessTokenDomainModel: AccessTokenValidateDomainModel by lazy { getAccessTokenDomainModelMock() }
 val mockedGuestAuthTokenDomainModel: GuestAuthCreateTokenDomainModel by lazy { getGuestAuthTokenModelMock() }
-private fun getShowDomainMock() : ShowDomainModel {
+private fun getShowDomainMock(): ShowDomainModel {
     return ShowDomainModel(
         adult = false,
         id = 1,
@@ -32,7 +32,7 @@ private fun getShowDomainMock() : ShowDomainModel {
     )
 }
 
-private fun getSessionDomainModelMock() : NewSessionDomainModel {
+private fun getSessionDomainModelMock(): NewSessionDomainModel {
     return NewSessionDomainModel(
         sessionId = "ZiavZdgasdasd",
         success = true,
@@ -42,7 +42,7 @@ private fun getSessionDomainModelMock() : NewSessionDomainModel {
     )
 }
 
-private fun getAccessTokenDomainModelMock() : AccessTokenValidateDomainModel {
+private fun getAccessTokenDomainModelMock(): AccessTokenValidateDomainModel {
     return AccessTokenValidateDomainModel(
         success = false,
         requestToken = "",
@@ -52,7 +52,7 @@ private fun getAccessTokenDomainModelMock() : AccessTokenValidateDomainModel {
     )
 }
 
-private fun getGuestAuthTokenModelMock() : GuestAuthCreateTokenDomainModel {
+private fun getGuestAuthTokenModelMock(): GuestAuthCreateTokenDomainModel {
     return GuestAuthCreateTokenDomainModel(
         requestToken = "Ajada2",
         expiresAt = null,

@@ -7,7 +7,4 @@ import kotlinx.coroutines.flow.Flow
 interface AuthenticationUseCase {
 
     suspend fun createTokenForSession(): Flow<ResponseWrapper<GuestAuthCreateTokenDomainModel>>
-
-    suspend fun deleteGuestToken(): Flow<Unit>
-
 }

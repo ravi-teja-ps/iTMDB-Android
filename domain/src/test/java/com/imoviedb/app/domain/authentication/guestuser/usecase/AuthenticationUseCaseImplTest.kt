@@ -31,17 +31,6 @@ class AuthenticationUseCaseImplTest : BaseDomainTestClass() {
         }
     }
 
-    @Test
-    fun deleteGuestToken() {
-        runTest {
-            //Act
-            authenticationUseCaseImpl.deleteGuestToken()
-
-            //Assertion or validate
-            verify(repository).deletePreviousGuestToken()
-        }
-    }
-
     override fun postSetup() {
         authenticationUseCaseImpl = AuthenticationUseCaseImpl(repository)
     }

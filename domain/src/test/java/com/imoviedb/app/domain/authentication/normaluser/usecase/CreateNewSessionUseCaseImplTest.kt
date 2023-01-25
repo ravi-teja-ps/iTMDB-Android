@@ -18,7 +18,7 @@ import org.mockito.Mockito.verify
 
 class CreateNewSessionUseCaseImplTest : BaseDomainTestClass() {
 
-    private lateinit var createNewSessionUseCase : CreateNewSessionUseCaseImpl
+    private lateinit var createNewSessionUseCase: CreateNewSessionUseCaseImpl
     private val loginRepository: LoginRepository = mock()
 
     override fun postSetup() {
@@ -29,15 +29,16 @@ class CreateNewSessionUseCaseImplTest : BaseDomainTestClass() {
     fun `test flow for creating a new session`() {
         runTest {
             //Arrange
-            val accessTokenMockMap = HashMap<String,String>().apply { put("","") }
+            val accessTokenMockMap = HashMap<String, String>().apply { put("", "") }
             val sessionDomainModelMock = mock(NewSessionDomainModel::class.java)
-            Mockito.doReturn(flowOf(sessionDomainModelMock)).`when`(loginRepository).createNewSessionIDForUser(accessTokenMockMap)
+            Mockito.doReturn(flowOf(sessionDomainModelMock)).`when`(loginRepository)
+                .createNewSessionIDForUser(accessTokenMockMap)
 
             //Act
             createNewSessionUseCase.createNewSession(accessTokenMockMap).test {
 
-               //Assertion
-                assertEquals(awaitItem(),sessionDomainModelMock)
+                //Assertion
+                assertEquals(awaitItem(), sessionDomainModelMock)
                 cancelAndConsumeRemainingEvents()
                 verify(loginRepository).createNewSessionIDForUser(accessTokenMockMap)
             }

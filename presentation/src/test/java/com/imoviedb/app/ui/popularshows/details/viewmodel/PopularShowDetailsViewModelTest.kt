@@ -58,7 +58,9 @@ class PopularShowDetailsViewModelTest : BaseTestClass() {
         runTest {
             //Arrange
             val mockShowObjectDto = mock(ShowDomainModel::class.java)
-            doReturn(flowOf(ResponseWrapper.Success(mockShowObjectDto))).`when`(fakePopularShowDetailsUseCase)
+            doReturn(flowOf(ResponseWrapper.Success(mockShowObjectDto))).`when`(
+                fakePopularShowDetailsUseCase
+            )
                 .getPopularShowDetails(MOCK_ACCOUNT_ID)
 
             //Act

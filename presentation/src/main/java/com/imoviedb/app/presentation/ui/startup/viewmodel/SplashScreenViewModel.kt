@@ -2,6 +2,7 @@ package com.imoviedb.app.presentation.ui.startup.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.imoviedb.app.domain.authentication.guestuser.usecase.AuthenticationUseCase
+import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCase
 import com.imoviedb.app.domain.authentication.models.GuestAuthCreateTokenDomainModel
 import com.imoviedb.app.presentation.ui.base.BaseViewModel
 import com.imoviedb.app.presentation.ui.base.UiState
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
-    private val authenticationUseCase: AuthenticationUseCase
+    private val authenticationUseCase: AuthenticationUseCase,
+    private val deleteGuestTokenUseCase: DeleteGuestTokenUseCase
 ) : BaseViewModel() {
 
     private val _dataUiState: MutableStateFlow<UiState<GuestAuthCreateTokenDomainModel>> = MutableStateFlow(
@@ -28,7 +30,8 @@ class SplashScreenViewModel @Inject constructor(
     fun loadAccessTokenWithoutSession() {
         viewModelScope.launch {
             _dataUiState.value = UiState.Loading(true)
-            authenticationUseCase.deleteGuestToken()
+            //delete previous sessions as a measure
+            deleteGuestTokenUseCase.deleteGuestToken()
             authenticationUseCase.createTokenForSession().collect {
              when(it){
                  is ResponseWrapper.Error ->  {

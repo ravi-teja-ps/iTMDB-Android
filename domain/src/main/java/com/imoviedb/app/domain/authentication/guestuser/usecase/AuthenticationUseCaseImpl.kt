@@ -7,7 +7,4 @@ class AuthenticationUseCaseImpl @Inject constructor(private val repository: Gues
     AuthenticationUseCase {
 
     override suspend fun createTokenForSession() = repository.createGuestTokenForSession()
-
-    override suspend fun deleteGuestToken() = repository.deletePreviousGuestToken()
-
 }

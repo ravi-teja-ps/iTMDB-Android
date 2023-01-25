@@ -5,6 +5,7 @@ import com.imoviedb.app.data.repository.authentication.guestuser.GuestUserAuthRe
 import com.imoviedb.app.data.repository.authentication.normaluser.LoginRepositoryImpl
 import com.imoviedb.app.data.repository.popularshows.details.PopularShowDetailsRepositoryImpl
 import com.imoviedb.app.data.repository.popularshows.showslist.PopularShowsRepositoryImpl
+import com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -54,5 +55,8 @@ abstract class DomainModule {
 
     @Binds
     abstract fun provideCreateNewSessionUseCase(createNewSessionUseCaseImpl: com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCaseImpl): com.imoviedb.app.domain.authentication.normaluser.usecase.CreateNewSessionUseCase
+
+    @Binds
+    abstract fun provideDeleteSessionUseCase(deleteGuestTokenUseCaseImpl: DeleteGuestTokenUseCaseImpl): com.imoviedb.app.domain.authentication.guestuser.usecase.DeleteGuestTokenUseCase
 
 }
