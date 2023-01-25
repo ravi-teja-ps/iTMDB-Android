@@ -10,6 +10,5 @@
     <string name="login_string">Login</string>
     <string name="please_sign_in_to_continue">Please sign in to continue</string>
     <string name="user_name">user name</string>
-
-
+    <string name="quit">Quit</string>
 </resources>

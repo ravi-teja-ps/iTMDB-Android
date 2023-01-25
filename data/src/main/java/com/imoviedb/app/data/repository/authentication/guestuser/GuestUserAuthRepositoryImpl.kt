@@ -9,6 +9,7 @@ import com.imoviedb.app.data.storage.authentication.GuestUserTokenDAO
 import com.imoviedb.app.domain.authentication.guestuser.repository.GuestUserAuthRepository
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.common.state.ResponseWrapper
+import com.imoviedb.app.data.networking.utils.toResponseWrapper
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -24,19 +25,23 @@ class GuestUserAuthRepositoryImpl @Inject constructor(
 
     override suspend fun createGuestTokenForSession() =
         flow {
-            val response = authenticationService.createApiToken()
-            if (response.isSuccess()) {
-                response.body()?.let {
-                    //Store data token in local storage
-                    with(guestAutTokenDtoDomainMapper.map(it)){
-                        guestUserTokenDAO.saveToken(guestAutTokenModelEntityMapper.map(this))
-                        emit(ResponseWrapper.Success(this))
+            try {
+                val response = authenticationService.createApiToken()
+                if (response.isSuccess()) {
+                    response.body()?.let {
+                        //Store data token in local storage
+                        with(guestAutTokenDtoDomainMapper.map(it)) {
+                            guestUserTokenDAO.saveToken(guestAutTokenModelEntityMapper.map(this))
+                            emit(ResponseWrapper.Success(this))
+                        }
+                    }
+                } else {
+                    with(response.asErrorModel()) {
+                        emit(ResponseWrapper.Error(statusCode, statusMessage))
                     }
                 }
-            } else {
-                with(response.asErrorModel()){
-                    emit(ResponseWrapper.Error(statusCode,statusMessage))
-                }
+            }catch (exception: Exception) {
+                emit(exception.toResponseWrapper())
             }
         }.flowOn(dispatcherProvider.io)
 

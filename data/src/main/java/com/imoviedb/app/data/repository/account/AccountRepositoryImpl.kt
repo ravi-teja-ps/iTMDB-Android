@@ -10,6 +10,7 @@ import com.imoviedb.app.data.storage.authentication.UserSessionDAO
 import com.imoviedb.app.domain.account.repository.AccountRepository
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.common.state.ResponseWrapper
+import com.imoviedb.app.data.networking.utils.toResponseWrapper
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -24,20 +25,24 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
     override suspend fun getAccountInfo(sessionId: String) = flow {
-        val response = accountService.account(session_id = sessionId)
-        if (response.isSuccess()) {
-            response.body()?.let {
-                //Ensure to delete previous data if any.
-                accountDAO.deleteAccount()
-                with(dtoModelMapper.map(it)){
-                    accountDAO.insertAccountInfo(modelEntityMapper.map(this))
-                    emit(ResponseWrapper.Success(this))
+        try{
+            val response = accountService.account(session_id = sessionId)
+            if (response.isSuccess()) {
+                response.body()?.let {
+                    //Ensure to delete previous data if any.
+                    accountDAO.deleteAccount()
+                    with(dtoModelMapper.map(it)){
+                        accountDAO.insertAccountInfo(modelEntityMapper.map(this))
+                        emit(ResponseWrapper.Success(this))
+                    }
+                }
+            } else {
+                with(response.asErrorModel()){
+                    emit(ResponseWrapper.Error(statusCode,statusMessage))
                 }
             }
-        } else {
-            with(response.asErrorModel()){
-                emit(ResponseWrapper.Error(statusCode,statusMessage))
-            }
+        } catch (exception : Exception){
+            emit(exception.toResponseWrapper())
         }
     }.flowOn(dispatcherProvider.io)
 

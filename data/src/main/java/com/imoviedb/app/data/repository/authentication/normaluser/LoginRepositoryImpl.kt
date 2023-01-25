@@ -13,6 +13,7 @@ import com.imoviedb.app.data.storage.authentication.UserTokenDAO
 import com.imoviedb.app.domain.account.model.AuthenticationBody
 import com.imoviedb.app.domain.concurrency.DispatcherProvider
 import com.imoviedb.common.state.ResponseWrapper
+import com.imoviedb.app.data.networking.utils.toResponseWrapper
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -31,45 +32,51 @@ class LoginRepositoryImpl @Inject constructor(
 ) : com.imoviedb.app.domain.authentication.normaluser.repository.LoginRepository {
 
     override suspend fun validateUserCredential(authenticationBody: AuthenticationBody) = flow {
-
-        val response = authenticationService.authenticateUserDetails(
-            requestBody = authenticationBodyMapper.map(authenticationBody)
-        )
-        if (response.isSuccess()) {
-            response.body()?.let {
-                it.requestToken.let { _ ->
-                    with(accessTokenDtoModelMapper.map(it)) {
-                        userTokenDAO.saveToken(accessTokenModelEntityMapper.map(this))
-                        emit(ResponseWrapper.Success(this))
-                    }
-                }
-            }
-        } else {
-            with(response.asErrorModel()){
-                emit(ResponseWrapper.Error(statusCode,statusMessage))
-            }
-        }
-
-    }.flowOn(dispatcherProvider.io)
-
-
-    override suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>) =
-        flow {
-            val response = authenticationService.createSessionID(requestBody = requestBody)
-            if (response.isSuccessful && response.body() != null) {
+        try {
+            val response = authenticationService.authenticateUserDetails(
+                requestBody = authenticationBodyMapper.map(authenticationBody)
+            )
+            if (response.isSuccess()) {
                 response.body()?.let {
-                    it.sessionId.let { _ ->
-                        userSessionDAO.removeAllSessions()
-                        with(newSessionDtoDomainMapper.map(it)) {
-                            userSessionDAO.saveSession(newSessionModelEntityMapper.map(this))
+                    it.requestToken.let { _ ->
+                        with(accessTokenDtoModelMapper.map(it)) {
+                            userTokenDAO.saveToken(accessTokenModelEntityMapper.map(this))
                             emit(ResponseWrapper.Success(this))
                         }
                     }
                 }
             } else {
-                with(response.asErrorModel()){
-                    emit(ResponseWrapper.Error(statusCode,statusMessage))
+                with(response.asErrorModel()) {
+                    emit(ResponseWrapper.Error(statusCode, statusMessage))
                 }
+            }
+        } catch (exception : Exception){
+            emit(exception.toResponseWrapper())
+        }
+    }.flowOn(dispatcherProvider.io)
+
+
+    override suspend fun createNewSessionIDForUser(requestBody: HashMap<String, String>) =
+        flow {
+            try {
+                val response = authenticationService.createSessionID(requestBody = requestBody)
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()?.let {
+                        it.sessionId.let { _ ->
+                            userSessionDAO.removeAllSessions()
+                            with(newSessionDtoDomainMapper.map(it)) {
+                                userSessionDAO.saveSession(newSessionModelEntityMapper.map(this))
+                                emit(ResponseWrapper.Success(this))
+                            }
+                        }
+                    }
+                } else {
+                    with(response.asErrorModel()) {
+                        emit(ResponseWrapper.Error(statusCode, statusMessage))
+                    }
+                }
+            }catch (exception : Exception){
+                emit(exception.toResponseWrapper())
             }
         }.flowOn(dispatcherProvider.io)
 
